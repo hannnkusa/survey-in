@@ -1,0 +1,132 @@
+@keyframes backgroundChange {
+    0% {
+        background-image: url('../../_assets/carousel1.png');
+    }
+    25% {
+        background-image: url('../../_assets/carousel2.png');
+    }
+    50% {
+        background-image: url('../../_assets/carousel3.png');
+    }
+    75% {
+        background-image: url('../../_assets/carousel4.png');
+    }
+    100% {
+        background-image: url('../../_assets/carousel1.png');
+    }
+  }
+
+@keyframes fading1 {
+    0% {
+        opacity: 1;
+    }
+    25% {
+        opacity: 0;
+    }
+    50% {
+        opacity: 0;
+    }
+    75% {
+        opacity: 0;
+    }
+    100% {
+        opacity: 1;
+    }
+}
+@keyframes fading2 {
+    0% {
+        opacity: 0;
+    }
+    25% {
+        opacity: 1;
+    }
+    50% {
+        opacity: 0;
+    }
+    75% {
+        opacity: 0;
+    }
+    100% {
+        opacity: 0;
+    }
+}
+@keyframes fading3 {
+    0% {
+        opacity: 0;
+    }
+    25% {
+        opacity: 0;
+    }
+    50% {
+        opacity: 1;
+    }
+    75% {
+        opacity: 0;
+    }
+    100% {
+        opacity: 0;
+    }
+}
+@keyframes fading4 {
+    0% {
+        opacity: 0;
+    }
+    25% {
+        opacity: 0;
+    }
+    50% {
+        opacity: 0;
+    }
+    75% {
+        opacity: 1;
+    }
+    100% {
+        opacity: 0;
+    }
+}
+  
+
+.banner {
+    width: 100%;
+    height: 66.21vh;
+    padding: 8% 10% 5%;
+    background-image: url('../../_assets/carousel1.png');
+    background-size: cover;
+    animation-name: backgroundChange;
+    animation-duration: 25s;
+    animation-delay: 5s;
+    animation-iteration-count: infinite;
+}
+.heading {
+    color: white;
+    font-size: 64px;
+    font-weight: normal;
+    text-shadow: 1px 1px 10px var(--chakra-colors-main-grey2);
+    opacity: 0;
+}
+.carousel1, .carousel2, .carousel3, .carousel4 {
+    animation-duration: 25s;
+    animation-delay: 5s;
+    animation-iteration-count: infinite;
+}
+.carousel1 {
+    opacity: 1;
+    animation-name: fading1;
+}
+.carousel2 {
+    animation-name: fading2;
+}
+.carousel3 {
+    animation-name: fading3;
+}
+.carousel4 {
+    animation-name: fading4;
+}
+@media (prefers-reduced-motion) {
+    .banner, .carousel1 {
+        animation: none;
+    }
+    .carousel2, .carousel3, .carousel4 {
+        display: none;
+    }
+}

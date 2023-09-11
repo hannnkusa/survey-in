@@ -1,0 +1,4 @@
+.vignetteImg {
+  border-top-right-radius: var(--chakra-radii-md);
+  border-bottom-right-radius: var(--chakra-radii-md);
+}
