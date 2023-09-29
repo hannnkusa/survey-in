@@ -12,15 +12,17 @@ import { LOGIN_URL, NAV_URLS, SIGN_UP_URL } from "@/app/_constants/links";
 import Button from "@/components/Button";
 import Grid from "@/components/Grid";
 
+import styles from "./index.module.css";
+
 export function Header() {
   return (
     <Box
       bg="linear-gradient(82.73deg, var(--chakra-colors-main-blue4) -19.44%, var(--chakra-colors-main-blue3) 82.97%, var(--chakra-colors-main-blue1) 106.96%)"
-      p="36px 76px"
+      p="18px 35px"
     >
       <Grid templateRows="1fr" gap={3}>
         <GridItem alignSelf="center" colSpan={2}>
-          <Image width={199} height={53} src={logo} alt="logo" />
+          <Image width={137} src={logo} alt="logo" />
         </GridItem>
         <GridItem alignSelf="center" colSpan={5}>
           <Flex color="white" justifyContent="space-between">
@@ -33,13 +35,15 @@ export function Header() {
         </GridItem>
         <GridItem alignSelf="center" gridColumn="-3 / -1">
           <Flex justifyContent="space-between">
-            <Link href={LOGIN_URL}>
-              <Button width="124.5%" color="main.grey3" bg="white">
+            <Link className={styles.navButton} href={LOGIN_URL}>
+              <Button size="sm" color="main.grey3" bg="white" p="0 34px">
                 Login
               </Button>
             </Link>
-            <Link href={SIGN_UP_URL}>
+            <Link className={styles.navButton} href={SIGN_UP_URL}>
               <Button
+                size="sm"
+                p="0 26px"
                 color="white"
                 bg="main.grey2"
                 _hover={{

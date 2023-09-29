@@ -57,6 +57,7 @@ export default function Carousel() {
                 <Button
                   color="white"
                   bg="main.blue3"
+                  fontWeight="bold"
                   _hover={{
                     bg: "main.grey1",
                     color: "main.grey3",
