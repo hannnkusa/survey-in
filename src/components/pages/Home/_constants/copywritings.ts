@@ -1,6 +1,6 @@
-import IcTime from '@/app/_assets/timesaving.svg';
-import IcStat from '@/app/_assets/stat.svg';
-import IcValid from '@/app/_assets/valid.svg';
+import IcTime from '../_assets/timesaving.svg';
+import IcStat from '../_assets/stat.svg';
+import IcValid from '../_assets/valid.svg';
 
 export const RIGHT_MAIN_CARD_EMPHASIZE = ['valid', 'faster', 'easier'];
 export const RIGHT_MAIN_CARD = {

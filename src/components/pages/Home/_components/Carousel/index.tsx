@@ -3,8 +3,8 @@
 import { Box, GridItem, Heading } from "@chakra-ui/react";
 import Link from "next/link";
 
-import Button from "@/components/Button";
-import Grid from "@/components/Grid";
+import Button from "@/components/elements/Button";
+import Grid from "@/components/elements/Grid";
 
 import styles from "./index.module.css";
 
@@ -13,7 +13,7 @@ export default function Carousel() {
     <Box className={styles.banner}>
       <Grid>
         <GridItem colSpan={8}>
-          <Grid gap={16}>
+          <Grid gap={13}>
             <GridItem colSpan={12}>
               <Grid gridTemplateRows="1fr" gridTemplateColumns="1fr">
                 <GridItem gridRowStart={1} gridColumnStart={1}>

@@ -12,10 +12,11 @@ import {
 } from "@chakra-ui/react";
 import Image from "next/image";
 
-import Button from "@/components/Button";
-import Grid from "@/components/Grid";
+import Button from "@/components/elements/Button";
+import Grid from "@/components/elements/Grid";
+import Navigation from "@/components/fragments/Navigation";
 
-import JoinWithUsVignette from "../_assets/join_us_vignette.png";
+import JoinWithUsVignette from "./_assets/join_us_vignette.png";
 
 import {
   FOOTER_CARD,
@@ -24,32 +25,32 @@ import {
   MIDDLE_TITLE,
   RIGHT_MAIN_CARD,
   RIGHT_MAIN_CARD_EMPHASIZE,
-} from "../_constants/copywritings";
+} from "./_constants/copywritings";
 
-import { Header } from "./Header";
-import Carousel from "./Carousel";
+import Carousel from "./_components/Carousel";
 
-import styles from "../page.module.css";
+import styles from "./index.module.css";
+import { Fragment } from "react";
 
 export default function HomeComponent() {
   const renderWordWithEmphasize = (words: string, emphasize: string[]) => {
     const splittedWords = words.split(" ");
     return splittedWords.map((word, index) => (
-      <>
+      <Fragment key={index}>
         {emphasize.includes(word) ? (
           <span className={styles.rightMainCardEmphasized}>{word}</span>
         ) : (
           word
         )}
         {index === splittedWords.length - 1 ? "" : " "}
-      </>
+      </Fragment>
     ));
   };
 
   return (
     <Grid>
       <GridItem colSpan={12} h="18vh" maxHeight={69} zIndex={10}>
-        <Header />
+        <Navigation />
       </GridItem>
       <GridItem colSpan={12} overflow="scroll" maxHeight="calc(100vh - 69px)">
         <Grid gap={12} paddingBottom={20}>

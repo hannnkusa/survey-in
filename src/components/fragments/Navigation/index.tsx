@@ -5,16 +5,16 @@ import { ChevronDownIcon } from "@chakra-ui/icons";
 import Image from "next/image";
 import Link from "next/link";
 
-import logo from "@/app/_assets/logo.svg";
+import logo from "@/assets/logo.svg";
 
-import { LOGIN_URL, NAV_URLS, SIGN_UP_URL } from "@/app/_constants/links";
+import { LOGIN_URL, NAV_URLS, SIGN_UP_URL } from "@/constants/links";
 
-import Button from "@/components/Button";
-import Grid from "@/components/Grid";
+import Button from "@/components/elements/Button";
+import Grid from "@/components/elements/Grid";
 
 import styles from "./index.module.css";
 
-export function Header() {
+export default function Navigation() {
   return (
     <Box
       bg="linear-gradient(82.73deg, var(--chakra-colors-main-blue4) -19.44%, var(--chakra-colors-main-blue3) 82.97%, var(--chakra-colors-main-blue1) 106.96%)"

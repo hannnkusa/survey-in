@@ -1,10 +1,10 @@
+import { PropsWithRequiredChildren } from "@/types";
+
 import Providers from "./providers";
 
 export default function RootLayout({
   children,
-}: {
-  children: React.ReactNode;
-}) {
+}: PropsWithRequiredChildren<unknown>) {
   return (
     <html lang="en">
       <body>
