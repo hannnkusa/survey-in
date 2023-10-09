@@ -53,18 +53,8 @@ export default function Carousel() {
               </Grid>
             </GridItem>
             <GridItem colSpan={12}>
-              <Link href="#">
-                <Button
-                  color="white"
-                  bg="main.blue3"
-                  fontWeight="bold"
-                  _hover={{
-                    bg: "main.grey1",
-                    color: "main.grey3",
-                  }}
-                >
-                  Survey Now
-                </Button>
+              <Link href="/create">
+                <Button primary>Survey Now</Button>
               </Link>
             </GridItem>
           </Grid>
