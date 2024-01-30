@@ -27,6 +27,7 @@ export const MIDDLE_CARDS = [
     },
 ]
 export const FOOTER_CARD = {
-    title: 'Be our partner! Share your opinion and get paid.',
+    title: 'Be our respondent!',
+    description: 'Share your opinion and get paid.',
     list: ['Get paid by filling questionnaires', 'Simple tasks', 'Work anywhere', 'Work anytime'],
 }
