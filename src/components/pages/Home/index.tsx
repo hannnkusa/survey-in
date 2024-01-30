@@ -53,19 +53,19 @@ export default function HomeComponent() {
         <GridItem colSpan={12}>
           <Carousel />
         </GridItem>
-        <GridItem gridColumn="1 / -1" p="0 4.4vw">
-          <Flex justifyContent="space-between">
+        <GridItem gridColumn="1 / -1">
+          <Flex gap="11.4vh">
             <Box
-              w="40vw"
-              maxW={640}
+              w="100%"
+              // maxW={640}
               h="44vh"
               maxH={415}
               borderRadius={80}
               bg="main.grey1"
             ></Box>
             <Card
-              w="40vw"
-              maxW={640}
+              w="100%"
+              maxW={560}
               h="44vh"
               maxH={415}
               borderRadius={80}
@@ -88,20 +88,20 @@ export default function HomeComponent() {
             </Card>
           </Flex>
         </GridItem>
-        <GridItem gridColumn="1 / 8" p="0 4.4vw">
+        <GridItem gridColumn="1 / 8">
           <Heading as="h2" size="3xl" fontWeight="normal">
             {renderWordWithEmphasize(MIDDLE_TITLE, MIDDLE_EMPHASIZE)}
           </Heading>
         </GridItem>
-        <GridItem gridColumn="1 / -1" p="0 4.4vw">
-          <Flex justifyContent="space-between">
+        <GridItem gridColumn="1 / -1">
+          <Flex gap="3.3vh">
             {MIDDLE_CARDS.map(({ icon, title, description }, index) => (
               <Card
-                w="25.3vw"
-                maxW={364.92}
-                h="27vh"
-                maxH={204}
-                p={4}
+                w="100%"
+                // maxW={364.92}
+                // h="27vh"
+                // maxH={204}
+                p="3.3vh"
                 key={index}
                 borderRadius={40}
                 boxShadow="4px 10px 24px 2px rgba(0, 0, 0, 0.10)"
@@ -118,13 +118,13 @@ export default function HomeComponent() {
                 <Heading
                   as="h4"
                   fontSize={28}
-                  marginTop={15}
-                  marginBottom={4}
+                  marginTop="3.3vh"
+                  marginBottom="1.6vh"
                   fontWeight="600"
                 >
                   {index + 1}. {title}
                 </Heading>
-                <Text size="lg">{description}</Text>
+                <Text>{description}</Text>
               </Card>
             ))}
           </Flex>
@@ -133,31 +133,33 @@ export default function HomeComponent() {
           <Card border="none" boxShadow="none">
             <Grid>
               <GridItem
-                bg="linear-gradient(82.73deg, var(--chakra-colors-main-blue4) -19.44%, var(--chakra-colors-main-blue3) 82.97%)"
+                bg="#1287DB"
                 color="white"
                 colSpan={6}
-                p={50}
+                pl="10.1vh"
+                pt="6.7vh"
                 borderTopLeftRadius="80px"
                 borderBottomLeftRadius="80px"
               >
-                <Heading as="h2" size="2xl" fontWeight="600">
+                <Heading as="h4" size="xl" fontWeight="600">
                   {FOOTER_CARD.title}
                 </Heading>
+                <Heading as="h2" size="2xl" fontWeight="600">
+                  {FOOTER_CARD.description}
+                </Heading>
                 <br />
-                <OrderedList paddingLeft="48px">
+                <OrderedList gap="1.6vh">
                   {FOOTER_CARD.list.map((text, index) => (
                     <ListItem key={index}>{text}</ListItem>
                   ))}
                 </OrderedList>
                 <br />
                 <Button
-                  bg="main.grey2"
-                  color="white"
-                  _hover={{
-                    bg: "main.grey3",
-                  }}
+                  bg="#C7E8F5"
+                  color="#193742"
+                  p="1.6vh"
                 >
-                  Sign up as Partner
+                  Sign Up
                 </Button>
               </GridItem>
               <GridItem colSpan={6}>

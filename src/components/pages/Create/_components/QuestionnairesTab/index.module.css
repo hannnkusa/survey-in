@@ -1,0 +1,7 @@
+.inputLink:not([value=""]):focus:invalid {
+    border: 2px solid var(--chakra-colors-red-500);
+}
+.gdocsIframe {
+    width: 40vw;
+    height: 70vh;
+}

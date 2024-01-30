@@ -1,58 +1,104 @@
 "use client";
 
-import { Box, Flex, GridItem } from "@chakra-ui/react";
-import { ChevronDownIcon } from "@chakra-ui/icons";
+import {
+  Box,
+  Flex,
+  GridItem,
+  Popover,
+  PopoverTrigger,
+  PopoverContent,
+  PopoverHeader,
+  PopoverBody,
+  PopoverFooter,
+  PopoverArrow,
+  PopoverCloseButton,
+  PopoverAnchor,
+  Avatar,
+  Text,
+  Heading,
+  Button,
+  IconButton,
+} from "@chakra-ui/react";
 import Image from "next/image";
 import Link from "next/link";
 
 import logo from "@/assets/logo.svg";
 
-import { LOGIN_URL, NAV_URLS, SIGN_UP_URL } from "@/constants/links";
+import { NAV_URLS } from "@/constants/links";
 
-import Button from "@/components/elements/Button";
 import Grid from "@/components/elements/Grid";
+
+import { ChevronRightIcon } from "@chakra-ui/icons";
 
 import styles from "./index.module.css";
 
+import { useAuthStore } from "@/stores/auth";
+
 export default function Navigation() {
+  const { currentUser } = useAuthStore();
   return (
     <Box
       bg="linear-gradient(82.73deg, var(--chakra-colors-main-blue4) -19.44%, var(--chakra-colors-main-blue3) 82.97%, var(--chakra-colors-main-blue1) 106.96%)"
-      p="18px 35px"
+      p="18px 64px"
     >
       <Grid templateRows="1fr" gap={3}>
         <GridItem alignSelf="center" colSpan={2}>
-          <Image width={137} src={logo} alt="logo" />
+          <Link href={"/"}>
+            <Image width={137} src={logo} alt="logo" />
+          </Link>
         </GridItem>
-        <GridItem alignSelf="center" colSpan={5}>
-          <Flex color="white" justifyContent="space-between">
-            {NAV_URLS.map(({ text, url }, index) => (
-              <Link key={index} href={url}>
-                {text} {index === 0 ? <ChevronDownIcon /> : null}
-              </Link>
-            ))}
-          </Flex>
-        </GridItem>
-        <GridItem alignSelf="center" gridColumn="-3 / -1">
-          <Flex justifyContent="space-between">
-            <Link className={styles.navButton} href={LOGIN_URL}>
-              <Button size="sm" color="main.grey3" bg="white" p="0 34px">
-                Login
-              </Button>
-            </Link>
-            <Link className={styles.navButton} href={SIGN_UP_URL}>
-              <Button
-                size="sm"
-                p="0 26px"
-                color="white"
-                bg="main.grey2"
-                _hover={{
-                  bg: "main.grey3",
-                }}
-              >
-                Sign Up
-              </Button>
-            </Link>
+        <GridItem alignSelf="center" colSpan={10}>
+          <Flex
+            color="white"
+            justifyContent="space-between"
+            alignItems="center"
+          >
+            {NAV_URLS.map(({ text, url }, index) => {
+              if (currentUser && text === "My Account") {
+                return (
+                  <Box key={index}>
+                    <Popover>
+                      <PopoverTrigger>
+                        <Button variant="unstyled">My Account</Button>
+                      </PopoverTrigger>
+                      <PopoverContent color="#193742" borderRadius="40px">
+                        <PopoverArrow />
+                        {/* <PopoverCloseButton /> */}
+                        <PopoverHeader padding="32px">
+                          <Flex justifyContent="center" alignItems="center">
+                            <Flex direction="column">
+                              <Avatar
+                                size="lg"
+                                name={currentUser?.displayName ?? ""}
+                                src={currentUser?.photoURL ?? ""}
+                              />
+                              <Heading as="h3" size="lg" marginTop="16px">
+                                {currentUser.displayName}
+                              </Heading>
+                            </Flex>
+                            <IconButton
+                              variant="unstyled"
+                              aria-label="Call Segun"
+                              size="lg"
+                              icon={<ChevronRightIcon boxSize={10} />}
+                            />
+                          </Flex>
+                        </PopoverHeader>
+                        <PopoverBody paddingX="32px">
+                          <Button variant="unstyled">Logout</Button>
+                        </PopoverBody>
+                      </PopoverContent>
+                    </Popover>
+                  </Box>
+                );
+              } else {
+                return (
+                  <Link key={index} href={url}>
+                    {text}
+                  </Link>
+                );
+              }
+            })}
           </Flex>
         </GridItem>
       </Grid>
