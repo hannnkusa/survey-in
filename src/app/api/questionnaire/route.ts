@@ -7,11 +7,14 @@ export async function GET(req: NextRequest) {
   try {
     const searchParams = req.nextUrl.searchParams;
     const userId = searchParams.get("user-id");
-    const q = query(collection(database, "cities"), where("created_by", "==", userId));
-    console.log({ userId });
-    const questionnaireData = await getDocs(
-      collection(database, "questionnaires")
+    const q = query(
+      collection(database, "questionnaires"),
+      where("created_by", "==", userId)
     );
+
+    const getter = userId ? q : collection(database, "questionnaires");
+
+    const questionnaireData = await getDocs(getter);
     return NextResponse.json({
       message: "Data successfully fetched👍",
       data: questionnaireData.docs.map((doc) => ({
@@ -28,7 +31,13 @@ export async function POST(req: NextRequest) {
   try {
     const searchParams = req.nextUrl.searchParams;
     const userId = searchParams.get("user-id");
-    console.log({ searchParams });
+
+    if (!userId) {
+      return NextResponse.json(
+        { error: "User ID is required" },
+        { status: 422 }
+      );
+    }
 
     const payload = await req.json();
     const questionnaireData = await addDoc(
@@ -38,11 +47,14 @@ export async function POST(req: NextRequest) {
         created_at: new Date().toISOString(),
         updated_at: new Date().toISOString(),
         created_by: userId,
+        questionnaire_filled: 0,
+        status:
+          payload.segmented_type === "request-segment" ? "in review" : "draft",
       }
     );
 
     return NextResponse.json({
-      message: "Questionnaire added to completed tasks successfully👍",
+      message: "Questionnaire added successfully👍",
       data: {
         id: questionnaireData.id,
         ...payload,

@@ -18,6 +18,7 @@ import Image from "next/image";
 
 import Button from "@/components/elements/Button";
 import MainLayout from "@/components/layouts/MainLayout";
+
 import PricingCard from "./_components/PricingCard";
 import QuestionnairesTab from "./_components/QuestionnairesTab";
 import RespondentsTab from "./_components/RespondentsTab";
@@ -29,6 +30,7 @@ import useCreate from "./index.hook";
 import Link from "next/link";
 
 import { useRouter } from "next/navigation";
+import BackButton from "@/components/elements/BackButton";
 
 export default function CreateComponent() {
   const {
@@ -43,56 +45,54 @@ export default function CreateComponent() {
     tabIndex,
     setTabIndex,
     handleTabsChange,
-    respondentsCounter,
-    setRespondentsCounter,
-    respondentSegment,
-    setRespondentSegment,
-    isOpenSelection,
-    onOpenSelection,
-    onCloseSelection,
     respondentDetail,
     setRespondentDetail,
-    respondentType,
-    setRespondentType,
+    handlePay,
+    pricing,
+    setPricing,
+    disabledCheckoutButton,
+    lastChangedAdvanced,
+    setLastChangedAdvanced,
   } = useCreate();
 
   const router = useRouter();
 
-  const content = isURLSubmitted ? (
-    <>
-      <Image alt="Successfully submit the link" src={success} width={169} />
-      <Heading
-        size="xl"
-        color="main.blue2"
-        textAlign="center"
-        margin="20px 0 0"
-      >
-        Thank You
-      </Heading>
-      <Text width="70%" textAlign="center" marginBottom="20px">
-        Our team will be in touch with you for further updates on your form.
-        Additionally, you can monitor your progress by reviewing the responses
-        in Google Forms.
-      </Text>
-      <Link href="/" rel="noopener noreferrer">
-        <Button
-          onClick={onHideForm}
-          color="main.grey3"
-          bg="white"
-          border="1px solid var(--chakra-colors-main-grey2)"
-        >
-          Back to Home
-        </Button>
-      </Link>
-    </>
-  ) : (
+  const content = (
+    // isURLSubmitted ? (
+    //   <>
+    //     <Image alt="Successfully submit the link" src={success} width={169} />
+    //     <Heading
+    //       size="xl"
+    //       color="main.blue2"
+    //       textAlign="center"
+    //       margin="20px 0 0"
+    //     >
+    //       Thank You
+    //     </Heading>
+    //     <Text width="70%" textAlign="center" marginBottom="20px">
+    //       Our team will be in touch with you for further updates on your form.
+    //       Additionally, you can monitor your progress by reviewing the responses
+    //       in Google Forms.
+    //     </Text>
+    //     <Link href="/" rel="noopener noreferrer">
+    //       <Button
+    //         onClick={onHideForm}
+    //         color="main.grey3"
+    //         bg="white"
+    //         border="1px solid var(--chakra-colors-main-grey2)"
+    //       >
+    //         Back to Home
+    //       </Button>
+    //     </Link>
+    //   </>
+    // ) : ()
     <Grid templateColumns="repeat(8, 1fr)">
+      <BackButton hasWarn />
       <GridItem colStart={3} colEnd={7}>
         <Tabs
-          isLazy
           index={tabIndex}
           onChange={handleTabsChange}
-          isFitted
+          // isFitted
           position="relative"
           variant="unstyled"
           w="45vw"
@@ -120,17 +120,12 @@ export default function CreateComponent() {
             </TabPanel>
             <TabPanel>
               <RespondentsTab
-                respondentSegment={respondentSegment}
-                setRespondentSegment={setRespondentSegment}
-                respondentsCounter={respondentsCounter}
-                setRespondentsCounter={setRespondentsCounter}
                 respondentDetail={respondentDetail}
                 setRespondentDetail={setRespondentDetail}
-                respondentType={respondentType}
-                setRespondentType={setRespondentType}
-                isOpen={isOpenSelection}
-                onOpen={onOpenSelection}
-                onClose={onCloseSelection}
+                setPricing={setPricing}
+                handlePay={handlePay}
+                lastChangedAdvanced={lastChangedAdvanced}
+                setLastChangedAdvanced={setLastChangedAdvanced}
               />
             </TabPanel>
           </TabPanels>
@@ -139,26 +134,20 @@ export default function CreateComponent() {
       <GridItem colSpan={2} paddingLeft="20px" paddingTop="6vh">
         <PricingCard
           buttonAction={() => {
-            tabIndex === 0 ? onSubmitURL() : router.push("summary");
+            tabIndex === 0 ? onSubmitURL() : handlePay(router);
           }}
-          buttonTitle={tabIndex === 0 ? "Next" : "Pay"}
-          price={250000}
+          buttonTitle={tabIndex === 0 ? "Next" : "Checkout"}
+          price={pricing}
           isOpen={!!submittedUrl}
+          tabIndex={tabIndex}
+          disabledCheckoutButton={disabledCheckoutButton ?? true}
         />
       </GridItem>
     </Grid>
   );
-
   return (
     <MainLayout>
-      <Flex
-        justifyContent="center"
-        // alignItems="center"
-        // paddingTop={26}
-        // flexDirection={isURLSubmitted ? "column" : "row"}
-      >
-        {content}
-      </Flex>
+      <Flex justifyContent="center">{content}</Flex>
     </MainLayout>
   );
 }

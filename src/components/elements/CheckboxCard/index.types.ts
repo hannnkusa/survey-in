@@ -1,6 +1,7 @@
-export interface RadioButtonGroupProps {
+export interface CheckboxButtonGroupProps {
   name: string;
-  defaultValue: (string | number)[];
+  value?: (string | number)[];
+  defaultValue?: (string | number)[];
   onChange: (value: any) => void;
   options: string[];
 }

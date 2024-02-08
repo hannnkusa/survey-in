@@ -13,31 +13,37 @@ export default function PricingCard({
   buttonAction,
   buttonTitle,
   isOpen,
+  tabIndex,
+  disabledCheckoutButton,
   ...restProps
 }: PricingCardProps) {
   return (
-    <ScaleFade initialScale={0.9} in={isOpen}>
+    <ScaleFade initialScale={0} in={isOpen}>
       <Grid
         w="34.2vh"
         boxShadow="0px 8px 16px -4px rgba(8, 67, 115, 0.30)"
-        h="13.9vh"
         borderRadius="40px"
         {...restProps}
       >
-        <GridItem h="100%" alignItems="center">
-          <Center h="100%">
-            <Text fontSize={25} textAlign="center">
-              Rp. {currencyFormat(price)}
-            </Text>
-          </Center>
-        </GridItem>
-        <GridItem h="100%">
+        {tabIndex > 0 && (
+          <GridItem h="61px" alignItems="center">
+            <Center h="100%">
+              <Text fontSize={25} textAlign="center">
+                Rp. {currencyFormat(price)}
+              </Text>
+            </Center>
+          </GridItem>
+        )}
+        <GridItem h="61px">
           <Button
             primary
             onClick={buttonAction}
             w="100%"
             h="100%"
-            borderRadius="0px 0px 40px 40px"
+            borderRadius={tabIndex > 0 ? "0px 0px 40px 40px" : "40px"}
+            fontWeight={600}
+            fontSize={24}
+            isDisabled={disabledCheckoutButton}
           >
             {buttonTitle}
           </Button>

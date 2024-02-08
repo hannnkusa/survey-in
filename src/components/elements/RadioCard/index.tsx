@@ -1,23 +1,18 @@
-import { HStack, Box, useRadio, useRadioGroup } from "@chakra-ui/react";
-
+import { Wrap, WrapItem, Box, useRadio, useRadioGroup } from "@chakra-ui/react";
 import Image from "next/image";
-
 import male from "./_assets/male.svg";
 import female from "./_assets/female.svg";
-
 import { RadioButtonGroupProps } from "./index.types";
-
 import { capital } from "case";
 
-// 1. Create a component that consumes the `useRadio` hook
-function RadioCard(props: any) {
+function RadioCard({ children, ...props }: any) {
   const { getInputProps, getRadioProps } = useRadio(props);
 
   const input = getInputProps();
   const checkbox = getRadioProps();
 
   return (
-    <Box as="label">
+    <WrapItem as="label">
       <input {...input} />
       <Box
         {...checkbox}
@@ -25,7 +20,6 @@ function RadioCard(props: any) {
         borderWidth="2px"
         borderRadius="8px"
         borderColor="#00ADF0"
-        // h="35px"
         _checked={{
           bg: "#D2F1FE",
         }}
@@ -33,10 +27,14 @@ function RadioCard(props: any) {
           boxShadow: "none",
         }}
         px={3}
+        onClick={() => {
+          // Call your custom onClick handler here
+          props.onClick && props.onClick();
+        }}
       >
-        {props.children}
+        {children}
       </Box>
-    </Box>
+    </WrapItem>
   );
 }
 
@@ -46,27 +44,34 @@ export function RenderGender(gender: "male" | "female") {
   return <></>;
 }
 
-// Step 2: Use the `useRadioGroup` hook to control a group of custom radios.
 export default function RadioButtonGroup({
   name,
-  defaultValue,
-  onChange,
+  defaultValue = "",
+  onChange = () => {},
   options,
+  value
 }: RadioButtonGroupProps) {
-  const { value, getRootProps, getRadioProps } = useRadioGroup({
+  const { getRootProps, getRadioProps } = useRadioGroup({
     name,
     defaultValue,
-    onChange,
+    value,
+    onChange: onChange,
   });
 
   const group = getRootProps();
 
   return (
-    <HStack {...group}>
+    <Wrap {...group}>
       {options.map((value) => {
         const radio = getRadioProps({ value });
         return (
-          <RadioCard key={value} {...radio}>
+          <RadioCard
+            key={value}
+            {...radio}
+            onClick={() => {
+              onChange(value);
+            }}
+          >
             {["male", "female"].includes(value) ? (
               <Box p={2}>{RenderGender(value as "male" | "female")}</Box>
             ) : (
@@ -75,6 +80,6 @@ export default function RadioButtonGroup({
           </RadioCard>
         );
       })}
-    </HStack>
+    </Wrap>
   );
 }

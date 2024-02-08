@@ -34,8 +34,16 @@ import styles from "./index.module.css";
 
 import { useAuthStore } from "@/stores/auth";
 
+import useNavigation from "./index.hook";
+
+import { handleLogout } from "@/firebase/auth/logout";
+
+import { useRouter } from "next/navigation";
+
 export default function Navigation() {
   const { currentUser } = useAuthStore();
+  const { createSupportLink } = useNavigation();
+  const { replace } = useRouter();
   return (
     <Box
       bg="linear-gradient(82.73deg, var(--chakra-colors-main-blue4) -19.44%, var(--chakra-colors-main-blue3) 82.97%, var(--chakra-colors-main-blue1) 106.96%)"
@@ -59,7 +67,9 @@ export default function Navigation() {
                   <Box key={index}>
                     <Popover>
                       <PopoverTrigger>
-                        <Button variant="unstyled">My Account</Button>
+                        <Button variant="unstyled" fontWeight={400}>
+                          My Account
+                        </Button>
                       </PopoverTrigger>
                       <PopoverContent color="#193742" borderRadius="40px">
                         <PopoverArrow />
@@ -85,18 +95,39 @@ export default function Navigation() {
                           </Flex>
                         </PopoverHeader>
                         <PopoverBody paddingX="32px">
-                          <Button variant="unstyled">Logout</Button>
+                          <Button
+                            variant="unstyled"
+                            onClick={() => {
+                              handleLogout();
+                              replace('/');
+                            }}
+                          >
+                            Logout
+                          </Button>
                         </PopoverBody>
                       </PopoverContent>
                     </Popover>
                   </Box>
                 );
               } else {
-                return (
-                  <Link key={index} href={url}>
-                    {text}
-                  </Link>
-                );
+                if (text === "Support") {
+                  return (
+                    <Link
+                      key={index}
+                      href={createSupportLink(currentUser)}
+                      rel="noopener noreferrer"
+                      target="_blank"
+                    >
+                      {text}
+                    </Link>
+                  );
+                } else {
+                  return (
+                    <Link key={index} href={url}>
+                      {text}
+                    </Link>
+                  );
+                }
               }
             })}
           </Flex>

@@ -25,7 +25,7 @@ export default function LoginComponent() {
   const content = (
     <Flex flexDir="column">
       <Flex direction="column" marginBottom="3vh">
-        <Heading as="h2" size="xl" fontWeight={600}>
+        <Heading as="h2" size="xl" fontWeight={600} color="#193742">
           Create your account
         </Heading>
         <Text mt="1.2vh">It’s free and easy</Text>
@@ -51,9 +51,9 @@ export default function LoginComponent() {
           <Flex direction="column">
             <Text>Phone number</Text>
             <Input
-              value={formData.email}
+              value={formData.phone_number}
               placeholder="Type your phone number"
-              onChange={(e) => handleChangeForm("email", e)}
+              onChange={(e) => handleChangeForm("phone_number", e)}
             />
           </Flex>
           <Flex direction="column">
@@ -67,8 +67,8 @@ export default function LoginComponent() {
           </Flex>
           <Flex direction="row">
             <Checkbox marginRight="1vh"></Checkbox>
-            <Text>
-              By creating an account means you agree to the
+            <Text color="#425466">
+              By creating an account means you agree to the{" "}
               <b>Terms and Conditions</b>, and our <b>Privacy Policy</b>
             </Text>
           </Flex>
@@ -84,7 +84,9 @@ export default function LoginComponent() {
         </Flex>
       </form>
       <Flex direction="column" alignItems="center">
-        <Text marginTop="3vh">or do it via other accounts</Text>
+        <Text marginTop="3vh" color="#718096">
+          or do it via other accounts
+        </Text>
         <Flex direction="row" gap="3.2vh" marginTop="2.5vh">
           <Button
             bgColor="white"

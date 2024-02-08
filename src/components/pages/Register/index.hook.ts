@@ -8,7 +8,7 @@ import { useRouter } from "next/navigation";
 
 export default function useAuth() {
   const router = useRouter();
-  
+
   const [formData, setFormData] = useState<FormValue>({
     full_name: "",
     email: "",
@@ -28,7 +28,7 @@ export default function useAuth() {
       await googleSignIn();
       router.push("/questionnaire");
     } catch (error) {
-      console.log(error);
+      // console.log(error);
     }
   };
 
@@ -36,7 +36,7 @@ export default function useAuth() {
     try {
       await facebookSignIn();
     } catch (error) {
-      console.log(error);
+      // console.log(error);
     }
   };
 
@@ -44,11 +44,15 @@ export default function useAuth() {
     event.preventDefault();
     const { result, error } = await signUp(formData);
 
-    if (error) {
-      return console.log(error);
+    if (!!result) {
+      router.push("/questionnaire");
     }
 
-    console.log(result);
+    if (error) {
+      // console.log(error);
+      return error;
+    }
+
   };
 
   return {

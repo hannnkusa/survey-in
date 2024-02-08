@@ -36,7 +36,7 @@ export default function LoginComponent() {
             <Text>E-mail</Text>
             <Input
               value={formData.email}
-              placeholder="Type your e-mail or phone number"
+              placeholder="Type your e-mail"
               onChange={(e) => handleChangeForm("email", e)}
             />
           </Flex>
@@ -57,7 +57,7 @@ export default function LoginComponent() {
             </Text>
           </Flex>
           <Button primary type="submit">
-            Sign Up
+            Log In
           </Button>
           <Flex direction="row" justifyContent="center">
             {/* eslint-disable-next-line react/no-unescaped-entities */}

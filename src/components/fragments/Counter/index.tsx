@@ -24,15 +24,21 @@ export default function Counter({ value, setValue }: PricingCardProps) {
         onClick={() => setValue(value - 1)}
         icon={<Image alt="Min" src={minus} width={32} />}
         variant="unstyled"
+        display="flex"
+        justifyContent="center"
+        alignItems="center"
       />
 
       <Input
         variant="unstyled"
         placeholder="Unstyled"
         value={value}
-        w="3vw"
+        w="5vw"
         onChange={(event) => setValue(+event.target.value)}
         marginX="16px"
+        textAlign="center"
+        fontWeight={500}
+        fontSize="40px"
       />
 
       <IconButton
@@ -40,6 +46,9 @@ export default function Counter({ value, setValue }: PricingCardProps) {
         onClick={() => setValue(value + 1)}
         icon={<Image alt="Plus" src={plus} width={32} />}
         variant="unstyled"
+        display="flex"
+        justifyContent="center"
+        alignItems="center"
       />
     </Flex>
   );
