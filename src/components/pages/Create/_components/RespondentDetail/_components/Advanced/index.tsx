@@ -66,7 +66,7 @@ export default function RespondentDetailAdvancedComponent() {
   return (
     <Flex direction="column" gap="23px">
       <LoaderOverlay isLoading={isLoading} />
-      <NeedsCard title={"Kesibukan"} show={show} handleToggle={handleToggle}>
+      <NeedsCard title={"Kesibukan"}>
         <CheckboxButtonGroup
           name={"busyness"}
           defaultValue={[""]}
@@ -76,11 +76,7 @@ export default function RespondentDetailAdvancedComponent() {
           }}
         />
       </NeedsCard>
-      <NeedsCard
-        title={"Tingkat Pendidikan"}
-        show={show}
-        handleToggle={handleToggle}
-      >
+      <NeedsCard title={"Tingkat Pendidikan"}>
         <CheckboxButtonGroup
           name={"education"}
           defaultValue={[""]}
@@ -90,11 +86,7 @@ export default function RespondentDetailAdvancedComponent() {
           }}
         />
       </NeedsCard>
-      <NeedsCard
-        title={"Pengeluaran per bulan"}
-        show={show}
-        handleToggle={handleToggle}
-      >
+      <NeedsCard title={"Pengeluaran per bulan"}>
         <CheckboxButtonGroup
           name={"expenditure"}
           defaultValue={[""]}
@@ -104,11 +96,7 @@ export default function RespondentDetailAdvancedComponent() {
           }}
         />
       </NeedsCard>
-      <NeedsCard
-        title={"Kebiasan Merokok"}
-        show={show}
-        handleToggle={handleToggle}
-      >
+      <NeedsCard title={"Kebiasan Merokok"}>
         <CheckboxButtonGroup
           name={"smoking"}
           defaultValue={[]}
@@ -118,11 +106,7 @@ export default function RespondentDetailAdvancedComponent() {
           }}
         />
       </NeedsCard>
-      <NeedsCard
-        title={"Kebiasaan Minum Alkohol"}
-        show={show}
-        handleToggle={handleToggle}
-      >
+      <NeedsCard title={"Kebiasaan Minum Alkohol"}>
         <CheckboxButtonGroup
           name={"alcoholic"}
           defaultValue={[]}
@@ -132,11 +116,7 @@ export default function RespondentDetailAdvancedComponent() {
           }}
         />
       </NeedsCard>
-      <NeedsCard
-        title={"Kebiasaan Berolahraga"}
-        show={show}
-        handleToggle={handleToggle}
-      >
+      <NeedsCard title={"Kebiasaan Berolahraga"}>
         <CheckboxButtonGroup
           name={"workout"}
           defaultValue={[""]}
@@ -146,11 +126,7 @@ export default function RespondentDetailAdvancedComponent() {
           }}
         />
       </NeedsCard>
-      <NeedsCard
-        title={"Pengguna Social Media"}
-        show={show}
-        handleToggle={handleToggle}
-      >
+      <NeedsCard title={"Pengguna Social Media"}>
         <CheckboxButtonGroup
           name={"socmed"}
           defaultValue={[""]}
@@ -160,11 +136,7 @@ export default function RespondentDetailAdvancedComponent() {
           }}
         />
       </NeedsCard>
-      <NeedsCard
-        title={"Pengguna e-commerce"}
-        show={show}
-        handleToggle={handleToggle}
-      >
+      <NeedsCard title={"Pengguna e-commerce"}>
         <CheckboxButtonGroup
           name={"ecommerce"}
           defaultValue={[""]}
@@ -174,7 +146,7 @@ export default function RespondentDetailAdvancedComponent() {
           }}
         />
       </NeedsCard>
-      <NeedsCard title={"Olahraga"} show={show} handleToggle={handleToggle}>
+      <NeedsCard title={"Olahraga"}>
         <CheckboxButtonGroup
           name={"sports"}
           defaultValue={[""]}
@@ -184,11 +156,7 @@ export default function RespondentDetailAdvancedComponent() {
           }}
         />
       </NeedsCard>
-      <NeedsCard
-        title={"Hobi"}
-        show={show}
-        handleToggle={handleToggle}
-      >
+      <NeedsCard title={"Hobi"}>
         <CheckboxButtonGroup
           name={"hobby"}
           defaultValue={[""]}
@@ -198,11 +166,7 @@ export default function RespondentDetailAdvancedComponent() {
           }}
         />
       </NeedsCard>
-      <NeedsCard
-        title={"Genre film / buku"}
-        show={show}
-        handleToggle={handleToggle}
-      >
+      <NeedsCard title={"Genre film / buku"}>
         <CheckboxButtonGroup
           name={"genre"}
           defaultValue={[""]}
@@ -212,11 +176,7 @@ export default function RespondentDetailAdvancedComponent() {
           }}
         />
       </NeedsCard>
-      <NeedsCard
-        title={"Genre musik"}
-        show={show}
-        handleToggle={handleToggle}
-      >
+      <NeedsCard title={"Genre musik"}>
         <CheckboxButtonGroup
           name={"music-genre"}
           defaultValue={[""]}
@@ -226,11 +186,7 @@ export default function RespondentDetailAdvancedComponent() {
           }}
         />
       </NeedsCard>
-      <NeedsCard
-        title={"Makanan / Minuman"}
-        show={show}
-        handleToggle={handleToggle}
-      >
+      <NeedsCard title={"Makanan / Minuman"}>
         <CheckboxButtonGroup
           name={"food"}
           defaultValue={[""]}
@@ -240,11 +196,7 @@ export default function RespondentDetailAdvancedComponent() {
           }}
         />
       </NeedsCard>
-      <NeedsCard
-        title={"Hewan peliharaan"}
-        show={show}
-        handleToggle={handleToggle}
-      >
+      <NeedsCard title={"Hewan peliharaan"}>
         <CheckboxButtonGroup
           name={"pet"}
           defaultValue={[""]}
