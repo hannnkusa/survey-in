@@ -32,7 +32,7 @@ export default function RespondentDetailBasicComponent() {
   return (
     <Flex direction="column" gap="23px">
       <LoaderOverlay isLoading={isLoadingReligion || isLoadingLocation} />
-      <NeedsCard title={"Gender"} show={show} handleToggle={handleToggle}>
+      <NeedsCard title={"Gender"}>
         <CheckboxButtonGroup
           name={"respondent-type"}
           defaultValue={[""]}
@@ -42,11 +42,7 @@ export default function RespondentDetailBasicComponent() {
           }}
         />
       </NeedsCard>
-      <NeedsCard
-        title={"Status Pernikahan"}
-        show={show}
-        handleToggle={handleToggle}
-      >
+      <NeedsCard title={"Status Pernikahan"}>
         <CheckboxButtonGroup
           name={"marital-status"}
           defaultValue={[""]}
@@ -56,7 +52,7 @@ export default function RespondentDetailBasicComponent() {
           }}
         />
       </NeedsCard>
-      <NeedsCard title={"Age"} show={show} handleToggle={handleToggle}>
+      <NeedsCard title={"Age"}>
         <Flex justifyContent="space-between" w="100%" direction="column">
           <Text>
             Between {range[0]} and {range[1]}
@@ -77,7 +73,7 @@ export default function RespondentDetailBasicComponent() {
           <RangeSliderThumb index={1} />
         </RangeSlider>
       </NeedsCard>
-      <NeedsCard title={"Agama"} show={show} handleToggle={handleToggle}>
+      <NeedsCard title={"Agama"}>
         <CheckboxButtonGroup
           name={"religion"}
           defaultValue={[""]}
@@ -87,7 +83,7 @@ export default function RespondentDetailBasicComponent() {
           }}
         />
       </NeedsCard>
-      <NeedsCard title={"Lokasi"} show={show} handleToggle={handleToggle}>
+      <NeedsCard title={"Lokasi"}>
         <CheckboxButtonGroup
           name={"location"}
           defaultValue={[""]}

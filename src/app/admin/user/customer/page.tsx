@@ -41,7 +41,7 @@ import { useQueryClient } from "@tanstack/react-query";
 
 import { CustomerModalComponent } from "@/components/pages/Admin/User/Customer";
 
-export default function TransactionOrderPage() {
+export default function UserCustomerPage() {
   const toast = useToast();
   const queryClient = useQueryClient();
   const { isOpen, onClose, onOpen } = useDisclosure();

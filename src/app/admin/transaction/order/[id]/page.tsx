@@ -52,7 +52,7 @@ import {
   constructRespondentRequirementsValue,
 } from "@/utils/helper";
 
-export default function SummaryComponent() {
+export default function TransactionOrderDetailPage() {
   const params = useParams();
   const { currentUser } = useAuthStore.getState();
 

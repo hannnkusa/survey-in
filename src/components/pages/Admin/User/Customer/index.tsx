@@ -61,7 +61,7 @@ export function CustomerModalComponent({
       setValue("full_name", selectedData.displayName);
       setValue("phone_number", selectedData.phone_number);
     }
-  }, [selectedData]);
+  }, [selectedData, setValue]);
 
   const onSubmitForm = async (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault();
