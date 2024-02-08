@@ -19,9 +19,13 @@ import Link from "next/link";
 import { useQuestionnaireList } from "@/services/questionnaire";
 import List from "./_components/List";
 import LoaderOverlay from "@/components/elements/LoaderOverlay";
+import { useAuthStore } from "@/stores/auth";
 
 export default function QuestionnaireComponent() {
-  const { data, isLoading } = useQuestionnaireList();
+  const { currentUser } = useAuthStore();
+  const { data, isLoading } = useQuestionnaireList({
+    userId: currentUser?.uid ?? "",
+  });
 
   return (
     <MainLayout>
@@ -67,12 +71,21 @@ export default function QuestionnaireComponent() {
             left={0}
             bottom={0}
             zIndex={100}
-            paddingTop="40px"
-            paddingLeft="61px"
-            boxShadow="0px 3px 3px 6px rgba(8, 67, 115, 0.30)"
+            paddingTop="32px"
+            paddingRight="61px"
+            boxShadow="4px -10px 24px 2px rgba(0, 0, 0, 0.06)"
+            justifyContent="end"
           >
             <Link href="/questionnaire/create">
-              <Button primary p="24px">
+              <Button
+                primary
+                p="24px"
+                fontWeight={500}
+                fontSize={16}
+                w="236px"
+                h="56px"
+                borderRadius="34px"
+              >
                 Create New
               </Button>
             </Link>

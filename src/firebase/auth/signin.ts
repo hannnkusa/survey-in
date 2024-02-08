@@ -11,8 +11,8 @@ import {
 export async function googleSignIn() {
   const googleProvider = new GoogleAuthProvider();
   signInWithPopup(auth, googleProvider)
-    .then(() => {
-      handleAuthChanges();
+    .then(async () => {
+      await handleAuthChanges();
     })
     .catch((error) => {
       // Handle Errors here.
@@ -30,9 +30,9 @@ export async function facebookSignIn() {
   try {
     const facebookProvider = new FacebookAuthProvider();
     signInWithPopup(auth, facebookProvider);
-    handleAuthChanges();
+    await handleAuthChanges();
   } catch (error) {
-    console.log({ error });
+    // console.log({ error });
   }
 }
 
@@ -47,7 +47,7 @@ export async function signIn({
     error = null;
   try {
     result = await signInWithEmailAndPassword(auth, email, password);
-    handleAuthChanges();
+    await handleAuthChanges();
   } catch (e) {
     error = e;
   }

@@ -1,10 +1,12 @@
 import { auth } from "../config";
 import {
   createUserWithEmailAndPassword,
+  signInWithEmailAndPassword,
   updateProfile,
   PhoneAuthProvider,
   updatePhoneNumber,
   linkWithPhoneNumber,
+  
 } from "firebase/auth";
 import { putUserUpdate } from "@/services/user";
 import { formatPhoneNumber, handleAuthChanges } from "@/utils/helper";
@@ -22,16 +24,23 @@ export default async function signUp({
 }) {
   let result = null;
   let error = null;
+
   try {
-    result = await createUserWithEmailAndPassword(auth, email, password);
+    await createUserWithEmailAndPassword(auth, email, password).then(
+      async (userCredential) => {
+        await putUserUpdate(
+          { role: "admin", phone_number: phone_number },
+          userCredential.user.uid
+        );
 
-    updateProfile(result.user, {
-      displayName: full_name,
-    });
+        await updateProfile(userCredential.user, {
+          displayName: full_name,
+        });
 
-    putUserUpdate({ full_name, phone_number }, result.user.uid);
-
-    handleAuthChanges();
+        await signInWithEmailAndPassword(auth, email, password);
+        await handleAuthChanges();
+      }
+    );
   } catch (e) {
     error = e;
   }

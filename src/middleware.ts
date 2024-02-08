@@ -9,10 +9,12 @@ export async function middleware(request: NextRequest) {
     return NextResponse.next();
   }
 
-  const hasLogin = request.cookies.has('currentUser');
-  console.log({ hasLogin });
+  const hasLogin = request.cookies.has("currentUser");
 
   if (hasLogin) {
+    if (["/register", "/login"].includes(pathname)) {
+      return NextResponse.redirect(`${origin}/questionnaire`);
+    }
     return NextResponse.next();
   } else {
     return NextResponse.redirect(`${origin}/register`);

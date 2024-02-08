@@ -1,0 +1,1 @@
+export const phone_number = '6282119194314'

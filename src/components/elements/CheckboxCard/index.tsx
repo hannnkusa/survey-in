@@ -1,10 +1,12 @@
+import { FormEvent } from "react";
+
 import {
-  HStack,
+  Wrap,
+  WrapItem,
   Box,
-  useRadio,
-  useRadioGroup,
   useCheckbox,
   useCheckboxGroup,
+  Skeleton,
 } from "@chakra-ui/react";
 
 import Image from "next/image";
@@ -12,11 +14,11 @@ import Image from "next/image";
 import male from "./_assets/male.svg";
 import female from "./_assets/female.svg";
 
-import { RadioButtonGroupProps } from "./index.types";
+import { CheckboxButtonGroupProps } from "./index.types";
 
 import { capital } from "case";
 
-// 1. Create a component that consumes the `useRadio` hook
+// 1. Create a component that consumes the `useCheckbox` hook
 function CheckboxCard(props: any) {
   const { getInputProps, getCheckboxProps } = useCheckbox(props);
 
@@ -24,8 +26,8 @@ function CheckboxCard(props: any) {
   const checkbox = getCheckboxProps();
 
   return (
-    <Box as="label">
-      <input {...input} />
+    <WrapItem as="label">
+      <input {...input} name={input.value} />
       <Box
         {...checkbox}
         cursor="pointer"
@@ -43,44 +45,59 @@ function CheckboxCard(props: any) {
       >
         {props.children}
       </Box>
-    </Box>
+    </WrapItem>
   );
 }
 
 export function RenderGender(gender: "male" | "female") {
-  if (gender === "male") return <Image src={male} alt={"male"} />;
-  if (gender === "female") return <Image src={female} alt={"female"} />;
+  if (gender === "male") return <Image src={male} alt={"male"} width={32} />;
+  if (gender === "female")
+    return <Image src={female} alt={"female"} width={32} />;
   return <></>;
 }
 
-// Step 2: Use the `useRadioGroup` hook to control a group of custom radios.
+// Step 2: Use the `useCheckboxGroup` hook to control a group of custom checkboxes.
 export default function CheckboxButtonGroup({
   name,
   defaultValue,
   onChange,
   options,
-}: RadioButtonGroupProps) {
-  const { value, getCheckboxProps } = useCheckboxGroup({
+  value,
+}: CheckboxButtonGroupProps) {
+  const { getCheckboxProps } = useCheckboxGroup({
     defaultValue,
     onChange,
+    value: !!value && value.length > 0 ? value : [],
   });
 
-  // const group = getRootProps();
-
-  return (
-    <HStack maxW="100%">
-      {options.map((value) => {
-        const radio = getCheckboxProps({ value });
-        return (
-          <CheckboxCard key={value} {...radio}>
-            {["male", "female"].includes(value) ? (
-              <Box p={2}>{RenderGender(value as "male" | "female")}</Box>
-            ) : (
-              capital(value)
-            )}
-          </CheckboxCard>
-        );
-      })}
-    </HStack>
-  );
+  if (options && options.length > 0) {
+    return (
+      <Wrap maxW="100%">
+        {options.map((value) => {
+          const checkbox = getCheckboxProps({ value });
+          return (
+            <CheckboxCard
+              key={value}
+              {...checkbox}
+              onClick={(event: FormEvent<HTMLFormElement>) => {
+                event.preventDefault();
+              }}
+            >
+              {["male", "female"].includes(value) ? (
+                <Box p={2}>{RenderGender(value as "male" | "female")}</Box>
+              ) : (
+                capital(value)
+              )}
+            </CheckboxCard>
+          );
+        })}
+      </Wrap>
+    );
+  } else {
+    return (
+      <Wrap maxW="100%">
+        <Skeleton borderRadius="20px" />
+      </Wrap>
+    );
+  }
 }

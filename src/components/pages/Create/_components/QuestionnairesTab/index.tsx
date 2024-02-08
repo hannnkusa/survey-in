@@ -88,8 +88,8 @@ export default function QuestionnairesTab({
           Let&apos;s Start Your Survey!
         </Heading>
       ) : null}
-      {isFormShown ? (
-        questionnaire
+      {questionnaire}
+      {/* {isFormShown ? (
       ) : (
         <Flex
           direction="column"
@@ -133,7 +133,7 @@ export default function QuestionnairesTab({
             </Flex>
           </Card>
         </Flex>
-      )}
+      )} */}
     </Flex>
   );
 }

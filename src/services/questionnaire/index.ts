@@ -1,30 +1,57 @@
 import { callAPI } from "@/services/api";
 import {
-  QuestionnairePostUI,
-  QuestionnairePutUI,
   QuestionnaireResponseUI,
   QuestionnaireUI,
-} from "./index.types";
+} from "../../types/questionnaire";
 import { useMutation, useQuery } from "@tanstack/react-query";
 
 // USERS
 
-export const getQuestionnaireList = async () => {
+export const getQuestionnaireList = async ({
+  search,
+  startDate,
+  endDate,
+  status,
+  userId,
+}: {
+  search?: string;
+  startDate?: Date | null;
+  endDate?: Date | null;
+  status?: string;
+  userId?: string;
+}) => {
+  const params: any = {};
+
+  if (search) params.search = search;
+  if (startDate) {
+    params.startDate = startDate;
+    params.endDate = endDate;
+  }
+  if (status) params.status = status;
+  if (userId) params["user-id"] = userId;
+
   const res = await callAPI({
     path: `/questionnaire`,
+    params: params,
     method: "GET",
   });
 
   return res.data;
 };
 
-export const putUserUpdate = async (
-  data: QuestionnairePutUI,
-  id: string | undefined
-) => {
+export const getQuestionnaireDetail = async (questionnaireId: string) => {
+  const res = await callAPI({
+    path: `/questionnaire/${questionnaireId}`,
+    method: "GET",
+  });
+
+  return res.data;
+};
+
+export const postQuestionnaire = async (data: any, userId: any) => {
   return await callAPI({
-    path: `/user/customer-coordinator/update-user/${id}`,
-    method: "PUT",
+    path: `/questionnaire?user-id=${userId}`,
+    method: "POST",
     data: data,
   });
 };
@@ -36,13 +63,31 @@ export const deleteCalonSiswa = async ({ id }: { id: string | undefined }) => {
   });
 };
 
-export const useQuestionnaireList = (param?: {
-  status?: string[];
-  page?: number;
+export const useQuestionnaireList = ({
+  search,
+  startDate,
+  endDate,
+  status,
+  userId,
+}: {
+  search?: string;
+  startDate?: Date | null;
+  endDate?: Date | null;
+  status?: string;
+  userId?: string;
 }) => {
   return useQuery<QuestionnaireResponseUI>({
-    queryKey: ["questionnaire"],
-    queryFn: () => getQuestionnaireList(),
+    queryKey: ["questionnaire", search, startDate, endDate, status, userId],
+    queryFn: () =>
+      getQuestionnaireList({ search, startDate, endDate, status, userId }),
+    keepPreviousData: false,
+  });
+};
+
+export const useQuestionnaireDetail = (questionnaireId: string) => {
+  return useQuery<QuestionnaireUI>({
+    queryKey: ["questionnaire-detail"],
+    queryFn: () => getQuestionnaireDetail(questionnaireId ?? ""),
     keepPreviousData: false,
   });
 };

@@ -1,4 +1,4 @@
-import { getDoc, setDoc, doc } from "firebase/firestore";
+import { getDoc, updateDoc, doc } from "firebase/firestore";
 import { database } from "@/firebase/config";
 
 export async function GET(
@@ -27,12 +27,12 @@ export async function PUT(
     const payload = await req.json();
     const { id } = params;
 
-    await setDoc(doc(database, "questionnaires", id as string), {
+    await updateDoc(doc(database, "questionnaires", id as string), {
       ...payload,
       updated_at: new Date().toISOString(),
     });
     return Response.json({
-      message: "Questionnaire added to completed tasks successfully👍",
+      message: "Questionnaire updated successfully👍",
       data: {
         id,
         ...payload,

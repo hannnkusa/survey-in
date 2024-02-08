@@ -1,13 +1,10 @@
-import { UseDisclosureProps } from "@chakra-ui/react";
 import { Dispatch, SetStateAction } from "react";
 
-export interface RespondentsTabProps extends UseDisclosureProps {
-  respondentSegment: string;
-  setRespondentSegment: Dispatch<SetStateAction<string>>;
-  respondentsCounter: number;
-  setRespondentsCounter: Dispatch<SetStateAction<number>>;
+export interface RespondentsTabProps {
   respondentDetail: any;
   setRespondentDetail: Dispatch<SetStateAction<any>>;
-  respondentType: string;
-  setRespondentType: Dispatch<SetStateAction<string>>;
+  lastChangedAdvanced: string | null;
+  setLastChangedAdvanced: Dispatch<SetStateAction<string | null>>;
+  setPricing: Dispatch<SetStateAction<number>>;
+  handlePay: any;
 }

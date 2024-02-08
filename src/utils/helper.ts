@@ -3,6 +3,7 @@
 import { auth } from "@/firebase/config";
 import { onAuthStateChanged } from "firebase/auth";
 import { useAuthStore } from "@/stores/auth";
+import { title } from "case";
 import Cookies from "js-cookie";
 
 export function parseNumber(
@@ -48,8 +49,8 @@ export function handleAuthChanges() {
   const { setCurrentUser } = authStore;
 
   onAuthStateChanged(auth, (user) => {
+    console.log({ user });
     if (user) {
-      console.log({ user });
       setCurrentUser(user);
       Cookies.set("currentUser", btoa(JSON.stringify(user)));
     } else {
@@ -57,4 +58,81 @@ export function handleAuthChanges() {
       Cookies.remove("currentUser");
     }
   });
+}
+
+export const constructRespondentRequirement = (data: any) => {
+  const objToGet =
+    data.segmented_type === "basic"
+      ? data.segmented_basic_detail
+      : data.segmented_advanced_detail;
+
+  return Object.entries(objToGet ?? {}).map(([key, value]) => ({
+    key: title(key),
+    value: value,
+  }));
+};
+
+export const constructRespondentRequirementsValue = ({
+  key,
+  value,
+  divider,
+}: {
+  key: string;
+  value: Array<string | number>;
+  divider?: string;
+}) => {
+  if (key === "age") return `${value[0]} - ${value[0]}`;
+  else return value.map((val) => title(val as string)).join(divider ?? ", ");
+};
+
+export const constructWAChat = ({
+  phone_number,
+  head,
+  body,
+}: {
+  phone_number: string;
+  head: string;
+  body: string;
+}) => {
+  return `https://wa.me/${phone_number}?text=${head}%0D%0A${body}`;
+};
+
+export function resolveStatusColor(status: string): string {
+  if (status === "on-going") return "#00ADF0";
+  if (status === "in review") return "#F90";
+  if (status === "cancelled") return "#F62525";
+  if (status === "draft") return "#9C9C9C";
+  if (status === "done") return "#3ED556";
+  return "";
+}
+
+export function toDataURL(
+  url: string,
+  callback: (result: string | ArrayBuffer | null) => void
+) {
+  let xhr = new XMLHttpRequest();
+  xhr.onload = function () {
+    let reader = new FileReader();
+    reader.onloadend = function () {
+      callback(reader.result);
+    };
+    reader.readAsDataURL(xhr.response);
+  };
+  xhr.open("GET", url);
+  xhr.responseType = "blob";
+  xhr.send();
+}
+
+export function convertDataURIToBinary(base64String: string) {
+  let BASE64_MARKER = ";base64,";
+  let base64Index = base64String.indexOf(BASE64_MARKER) + BASE64_MARKER.length;
+  let base64 = base64String.substring(base64Index);
+  let raw = window.atob(base64);
+  let rawLength = raw.length;
+  let array = new Uint8Array(new ArrayBuffer(rawLength));
+
+  for (let i = 0; i < rawLength; i++) {
+    array[i] = raw.charCodeAt(i);
+  }
+  return array;
 }

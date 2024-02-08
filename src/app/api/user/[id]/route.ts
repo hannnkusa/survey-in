@@ -37,7 +37,7 @@ export async function PUT(
     await setDoc(doc(database, "users", id as string), payload);
 
     return Response.json({
-      message: "User updated to completed tasks successfully👍",
+      message: "User updated successfully👍",
       data: {
         id,
         ...payload,

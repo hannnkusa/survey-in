@@ -1,15 +1,20 @@
 /* theme.ts */
 import { extendTheme } from "@chakra-ui/react";
 import { radioTheme } from "./radio";
+import { inputTheme } from "./input";
+import { modalTheme } from "./modal";
+import { sliderTheme } from "./slider";
+import { tabsTheme } from "./tabs";
+import { tableTheme } from "./table";
 
 const theme = extendTheme({
   components: {
-    Input: {
-      baseStyle: {
-        bg: "#0046AF",
-      },
-    },
+    Input: inputTheme,
     Radio: radioTheme,
+    Modal: modalTheme,
+    Slider: sliderTheme,
+    Tabs: tabsTheme,
+    Table: tableTheme,
   },
   colors: {
     main: {
