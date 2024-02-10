@@ -31,10 +31,10 @@ export default function useSummary({
 }) {
   const [blobUrl, setBlobUrl] = useState<any>("");
   const toast = useToast();
-  useEffect(() => {
-    if (process?.env?.NEXT_PUBLIC_EMAILJS_PUBLIC_KEY)
-      emailjs.init(process?.env?.NEXT_PUBLIC_EMAILJS_PUBLIC_KEY);
-  }, []);
+  // useEffect(() => {
+  //   
+  // }, []);
+  if (process?.env?.NEXT_PUBLIC_EMAILJS_PUBLIC_KEY) emailjs.init(process?.env?.NEXT_PUBLIC_EMAILJS_PUBLIC_KEY);
 
   const onDrop = useCallback(
     async (acceptedFiles: any) => {
