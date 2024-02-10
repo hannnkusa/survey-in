@@ -11,6 +11,8 @@ import { uploadString, ref, getDownloadURL } from "firebase/storage";
 import { NextResponse, type NextRequest } from "next/server";
 import { database, storage } from "@/firebase/config";
 import { convertDataURIToBinary } from "@/utils/helper";
+import dayjs from "dayjs";
+import id from "dayjs/locale/id";
 
 export async function GET(req: NextRequest) {
   try {
@@ -48,6 +50,7 @@ export async function POST(
   { params }: { params: { id: string } }
 ) {
   try {
+    await dayjs.locale(id);
     const searchParams = req.nextUrl.searchParams;
     const userId = searchParams.get("user-id");
 
@@ -73,7 +76,7 @@ export async function POST(
 
     const questionnaireData = await addDoc(collection(database, "orders"), {
       ...payload,
-      created_at: new Date().toISOString(),
+      created_at: dayjs().toISOString(),
       created_by: userId,
     });
 

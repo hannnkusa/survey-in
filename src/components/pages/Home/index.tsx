@@ -32,6 +32,10 @@ import Carousel from "./_components/Carousel";
 import styles from "./index.module.css";
 import MainLayout from "@/components/layouts/MainLayout";
 
+import Link from "next/link";
+import { constructWAChat } from "@/utils/helper";
+import { phone_number } from "./index.constants";
+
 export default function HomeComponent() {
   const renderWordWithEmphasize = (words: string, emphasize: string[]) => {
     const splittedWords = words.split(" ");
@@ -45,6 +49,14 @@ export default function HomeComponent() {
         {index === splittedWords.length - 1 ? "" : " "}
       </Fragment>
     ));
+  };
+
+  const createSupportLink = () => {
+    return constructWAChat({
+      head: "Halo+Ka%2C+saya+ingin+mendaftar+sebagai+responden+survey.in",
+      body: `username+%3A+%0D%0Aemail+%3A+`,
+      phone_number,
+    });
   };
 
   return (
@@ -62,7 +74,22 @@ export default function HomeComponent() {
               maxH={415}
               borderRadius={80}
               bg="main.grey1"
-            ></Box>
+            >
+              <video
+                style={{
+                  width: "100%",
+                  height: "100%",
+                  objectFit: "cover",
+                  borderRadius: "inherit",
+                  top: 0,
+                  left: 0,
+                }}
+                controls
+              >
+                <source src="/static/videos/Tutorial Surveyin.mp4" type="video/mp4" />
+                Your browser does not support the video tag.
+              </video>
+            </Box>
             <Card
               w="100%"
               maxW={560}
@@ -154,13 +181,15 @@ export default function HomeComponent() {
                   ))}
                 </OrderedList>
                 <br />
-                <Button
-                  bg="#C7E8F5"
-                  color="#193742"
-                  p="1.6vh"
+                <Link
+                  href={createSupportLink()}
+                  rel="noopener noreferrer"
+                  target="_blank"
                 >
-                  Sign Up
-                </Button>
+                  <Button bg="#C7E8F5" color="#193742" p="1.6vh">
+                    Sign Up
+                  </Button>
+                </Link>
               </GridItem>
               <GridItem colSpan={6}>
                 <Image

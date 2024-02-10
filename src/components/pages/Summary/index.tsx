@@ -94,17 +94,21 @@ export default function SummaryComponent() {
     respondentRequirement,
     respondentRequirementValue,
     blobUrl,
+    onDropRejected,
   } = useSummary({
     setValue,
     watch,
     submitOrder,
     router,
     questionnaireId,
+    questionnaireData: data,
   });
 
   const { getRootProps, getInputProps } = useDropzone({
     onDrop,
+    onDropRejected,
     maxFiles: 1,
+    maxSize: 819200,
     accept: { "image/png": [".png"] },
   });
 
@@ -114,6 +118,7 @@ export default function SummaryComponent() {
         alignItems="center"
         // paddingTop="48px"
         flexDirection="column"
+        justifyItems="center"
         marginBottom="48px"
       >
         <BackButton

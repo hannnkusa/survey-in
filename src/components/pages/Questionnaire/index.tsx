@@ -7,8 +7,10 @@ import {
   Flex,
   Grid,
   GridItem,
-  Box,
-  Spinner,
+  Alert,
+  AlertIcon,
+  AlertTitle,
+  AlertDescription,
 } from "@chakra-ui/react";
 
 import Button from "@/components/elements/Button";
@@ -58,9 +60,15 @@ export default function QuestionnaireComponent() {
               overflowY="auto"
               gap="24px"
             >
-              {data?.data?.map((val, index) => (
-                <List data={val} key={index} />
-              ))}
+              {data?.data && data?.data.length > 0 ? (
+                data?.data?.map((val, index) => <List data={val} key={index} />)
+              ) : !isLoading ? (
+                <Alert status="info">
+                  <AlertIcon />
+                  You haven&apos;t created any questionnaires yet! Click the
+                  &quot;create new&quot; button below to create a new one
+                </Alert>
+              ) : null}
             </Flex>
           </Stack>
           <Flex

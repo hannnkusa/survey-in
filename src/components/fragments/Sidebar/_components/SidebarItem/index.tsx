@@ -9,7 +9,7 @@ import { usePathname } from "next/navigation";
 export default function RenderSidebarItem({ title, link }: SidebarItems) {
   const pathname = usePathname();
   return (
-    <Link href={`/admin/${link}`}>
+    <Link href={`/app-control/${link}`}>
       <Button
         variant="unstyled"
         borderRightRadius="20px"
@@ -23,7 +23,7 @@ export default function RenderSidebarItem({ title, link }: SidebarItems) {
           boxShadow: "0px 12px 16px -4px rgba(8, 67, 115, 0.50)",
         }}
         boxShadow={
-          pathname === `/admin/${link}`
+          pathname === `/app-control/${link}`
             ? "0px 8px 16px -4px rgba(8, 67, 115, 0.30)"
             : ""
         }

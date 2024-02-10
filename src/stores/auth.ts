@@ -2,6 +2,15 @@ import { create } from "zustand";
 import { persist, createJSONStorage } from "zustand/middleware";
 import { type User } from "firebase/auth";
 
+interface CurrentUIProps extends User {
+  userDetail: {
+    created_at: string;
+    phone_number: string;
+    role: string;
+    updated_at: string | null;
+  } | null;
+}
+
 export type GrantedPermissionsUI =
   | "create"
   | "read"
@@ -11,9 +20,9 @@ export type GrantedPermissionsUI =
   | string;
 
 interface AuthStore {
-  currentUser: User | null;
+  currentUser: CurrentUIProps | null;
   grantedPermissions: Record<string, GrantedPermissionsUI[]> | null;
-  setCurrentUser: (data: User | null) => void;
+  setCurrentUser: (data: CurrentUIProps | null) => void;
   setGrantedPermissions: (
     data: Record<string, GrantedPermissionsUI[]> | null
   ) => void;

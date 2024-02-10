@@ -7,6 +7,12 @@ import {
   constructRespondentRequirementsValue,
   toDataURL,
 } from "@/utils/helper";
+import convertSize from "convert-size";
+import dayjs from "dayjs";
+import id from "dayjs/locale/id";
+import { currencyFormat } from "@/utils/helper";
+
+dayjs.locale(id);
 
 export default function useSummary({
   setValue,
@@ -14,19 +20,21 @@ export default function useSummary({
   submitOrder,
   router,
   questionnaireId,
+  questionnaireData,
 }: {
   setValue: any;
   watch: any;
   submitOrder: any;
   router: any;
   questionnaireId: string | string[];
+  questionnaireData: any;
 }) {
   const [blobUrl, setBlobUrl] = useState<any>("");
   const toast = useToast();
-  // useEffect(() => {
-  //   
-  // }, []);
-  if (process?.env?.NEXT_PUBLIC_EMAILJS_PUBLIC_KEY) emailjs.init(process?.env?.NEXT_PUBLIC_EMAILJS_PUBLIC_KEY);
+  useEffect(() => {
+    if (process?.env?.NEXT_PUBLIC_EMAILJS_PUBLIC_KEY)
+      emailjs.init(process?.env?.NEXT_PUBLIC_EMAILJS_PUBLIC_KEY);
+  }, []);
 
   const onDrop = useCallback(
     async (acceptedFiles: any) => {
@@ -48,6 +56,23 @@ export default function useSummary({
     [setValue]
   );
 
+  const onDropRejected = useCallback(
+    async (fileRejections: any) => {
+      fileRejections.forEach((val: any) => {
+        console.log(val);
+        toast({
+          title: `File size is ${convertSize(val.file.size)}.`,
+          description: `The maximum size is 800kb`,
+          status: "error",
+          duration: 3000,
+          isClosable: true,
+          position: "top",
+        });
+      });
+    },
+    [toast]
+  );
+
   const onSubmit = async (data: OrderPostUI) => {
     try {
       if (!watch("file") && !blobUrl) {
@@ -65,22 +90,33 @@ export default function useSummary({
         ...data,
         questionnaire_id: questionnaireId,
       };
-      await submitOrder(payload);
+      const submittedOrder = await submitOrder(payload);
 
       if (
         process?.env?.NEXT_PUBLIC_SERVICE_ID &&
         process?.env?.NEXT_PUBLIC_TEMPLATE
       ) {
+        const createSegmnentData = constructRespondentRequirement(
+          questionnaireData
+        ).map(
+          (val: any) =>
+            `<li>${val.key}: ${constructRespondentRequirementsValue(val)}</li>`
+        );
         // Kirim ke survey in & customer
         await emailjs.send(
           process.env.NEXT_PUBLIC_SERVICE_ID,
           process.env.NEXT_PUBLIC_TEMPLATE,
           {
-            to_name: payload.full_name,
-            reply_to: payload.email,
-            email_target: payload.email,
-            message:
-              "Your order is currently being reviewed by our team, wait until our team confirms your payment",
+            username: payload.full_name,
+            email_to: payload.email,
+            phone_number: payload.phone_number,
+            order_id: submittedOrder?.data.data.id,
+            created_at: dayjs().format("dddd[,] D MMMM YYYY"),
+            respondent_qty: questionnaireData?.respondent_qty,
+            segment: `<ul>${createSegmnentData.join("")}<ul>`,
+            total_price: currencyFormat(
+              questionnaireData?.questionnaire_total_price ?? 0
+            ),
           }
         );
       }
@@ -110,6 +146,7 @@ export default function useSummary({
 
   return {
     onDrop,
+    onDropRejected,
     onSubmit,
     respondentRequirement: constructRespondentRequirement,
     respondentRequirementValue: constructRespondentRequirementsValue,

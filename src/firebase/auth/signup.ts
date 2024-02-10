@@ -6,10 +6,9 @@ import {
   PhoneAuthProvider,
   updatePhoneNumber,
   linkWithPhoneNumber,
-  
 } from "firebase/auth";
 import { putUserUpdate } from "@/services/user";
-import { formatPhoneNumber, handleAuthChanges } from "@/utils/helper";
+import { formatPhoneNumber } from "@/utils/helper";
 
 export default async function signUp({
   email,
@@ -27,18 +26,17 @@ export default async function signUp({
 
   try {
     await createUserWithEmailAndPassword(auth, email, password).then(
-      async (userCredential) => {
-        await putUserUpdate(
-          { role: "admin", phone_number: phone_number },
-          userCredential.user.uid
-        );
-
-        await updateProfile(userCredential.user, {
+      (userCredential) => {
+        updateProfile(userCredential.user, {
           displayName: full_name,
         });
-
-        await signInWithEmailAndPassword(auth, email, password);
-        await handleAuthChanges();
+        putUserUpdate(
+          { role: "admin", phone_number: formatPhoneNumber(phone_number) },
+          userCredential.user.uid
+        );
+        // .then(() => {
+        //   signInWithEmailAndPassword(auth, email, password);
+        // });
       }
     );
   } catch (e) {

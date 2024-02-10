@@ -3,7 +3,8 @@ import { collection, getDocs, getDoc, setDoc, doc } from "firebase/firestore";
 import { NextResponse, type NextRequest } from "next/server";
 import { customInitApp } from "@/firebase-admin/config";
 import { database } from "@/firebase/config";
-import { cookies } from "next/headers";
+import dayjs from "dayjs";
+import id from "dayjs/locale/id";
 
 export async function GET(req: NextRequest) {
   try {
@@ -39,6 +40,7 @@ export async function GET(req: NextRequest) {
 
 export async function POST(req: Request) {
   try {
+    await dayjs.locale(id);
     const bodyFromReq = await req.json();
     const userData = await getAuth().createUser({
       ...bodyFromReq,
@@ -49,7 +51,7 @@ export async function POST(req: Request) {
       phone_number: bodyFromReq.phone_number,
       role: "admin",
       updated_at: null,
-      created_at: new Date().toISOString(),
+      created_at: dayjs().toISOString(),
     };
 
     await setDoc(doc(database, "users", userData?.uid as string), payload);

@@ -27,17 +27,17 @@ export default function useRespondentTab({
     segmented_type: string;
     selection: Record<string, any[]> | any;
   }) => {
-    let total = 0;
+    // let total = 0;
     const currentPrice = 2500 * qty;
-    if (segmented_type === "advanced") {
-      if (!!selection && selection.length > 0) {
-        const multiplier = selection[0][1].length;
-        total = currentPrice * multiplier;
-      }
-    } else {
-      total = currentPrice;
-    }
-    setPricing(total);
+    // if (segmented_type === "advanced") {
+    //   if (!!selection && selection.length > 0) {
+    //     const multiplier = selection[0][1].length;
+    //     total = currentPrice * multiplier;
+    //   }
+    // } else {
+    //   total = currentPrice;
+    // }
+    setPricing(currentPrice);
   };
 
   return {

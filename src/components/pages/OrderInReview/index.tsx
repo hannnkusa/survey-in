@@ -16,6 +16,7 @@ import {
   CardBody,
   Button,
   IconButton,
+  useToast,
 } from "@chakra-ui/react";
 import { useParams } from "next/navigation";
 import dayjs from "dayjs";
@@ -34,9 +35,18 @@ export default function SummaryComponent() {
   const questionnaireId = params?.id;
 
   const { isLoading, data } = useOrderDetail(questionnaireId as string);
+  const toast = useToast();
 
   const copylink = (e: any) => {
     navigator.clipboard.writeText(data?.data?.id ?? "");
+    toast({
+      title: "Success",
+      description: "Order number successfully copied",
+      status: "success",
+      duration: 5000,
+      isClosable: true,
+      position: "top",
+    });
   };
 
   return (
@@ -92,6 +102,7 @@ export default function SummaryComponent() {
                   <IconButton
                     variant="unstyled"
                     aria-label={"copy"}
+                    onClick={copylink}
                     icon={
                       <Image src={copy} alt={"copy to clipboard"} width={22} />
                     }

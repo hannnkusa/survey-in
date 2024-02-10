@@ -25,6 +25,7 @@
     "@types/react-dom": "18.2.7",
     "axios": "^1.6.7",
     "case": "^1.6.3",
+    "convert-size": "^1.2.1",
     "dayjs": "^1.11.10",
     "eslint": "8.49.0",
     "eslint-config-next": "13.4.19",

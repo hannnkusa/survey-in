@@ -55,6 +55,7 @@ export const useOrderDetail = (questionnaireId: string) => {
     queryKey: ["order-detail"],
     queryFn: () => getOrderDetail(questionnaireId ?? ""),
     keepPreviousData: false,
+    retry: 1,
   });
 };
 
