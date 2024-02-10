@@ -1,34 +1,73 @@
-import { collection, getDocs, addDoc, query, where } from "firebase/firestore";
+import { collection, query, where, getDocs, addDoc } from "firebase/firestore";
 import { NextResponse, type NextRequest } from "next/server";
 import { database } from "@/firebase/config";
-import { cookies } from "next/headers";
+import dayjs from "dayjs";
+import id from "dayjs/locale/id";
+import isSameOrAfter from "dayjs/plugin/isSameOrAfter";
+import isSameOrBefore from "dayjs/plugin/isSameOrBefore";
 
 export async function GET(req: NextRequest) {
   try {
     const searchParams = req.nextUrl.searchParams;
     const userId = searchParams.get("user-id");
-    const q = query(
-      collection(database, "questionnaires"),
-      where("created_by", "==", userId)
-    );
+    const search = searchParams.get("search");
+    const startDate = searchParams.get("startDate");
+    const endDate = searchParams.get("endDate");
+    const status = searchParams.get("status");
 
-    const getter = userId ? q : collection(database, "questionnaires");
+    let questionnaireRef = collection(database, "questionnaires");
+    let questionnaireQuery = query(questionnaireRef);
 
-    const questionnaireData = await getDocs(getter);
+    if (userId && userId?.trim() !== "") {
+      questionnaireQuery = query(
+        questionnaireRef,
+        where("created_by", "==", userId)
+      );
+    }
+
+    if (status && status?.trim() !== "") {
+      questionnaireQuery = query(
+        questionnaireRef,
+        where("status", "==", status?.trim())
+      );
+    }
+
+    const questionnaireSnapshot = await getDocs(questionnaireQuery);
+
+    dayjs.locale(id);
+    dayjs.extend(isSameOrBefore);
+    dayjs.extend(isSameOrAfter);
+
+    const filteredData = <any>[];
+    questionnaireSnapshot.forEach((doc) => {
+      const data = doc.data();
+      const createdAt = dayjs(data.created_at);
+
+      if (
+        (search === "" ||
+          data.created_by_name
+            .toLowerCase()
+            .includes(search?.toLowerCase() ?? "")) &&
+        (!startDate || createdAt.isSameOrAfter(dayjs(startDate))) &&
+        (!endDate || createdAt.isSameOrBefore(dayjs(endDate)))
+      ) {
+        filteredData.push({ ...data, id: doc.id });
+      }
+    });
+
     return NextResponse.json({
       message: "Data successfully fetched👍",
-      data: questionnaireData.docs.map((doc) => ({
-        ...doc.data(),
-        id: doc.id,
-      })),
+      data: filteredData,
     });
   } catch (error) {
+    console.error("Error fetching data:", error);
     return NextResponse.error();
   }
 }
 
 export async function POST(req: NextRequest) {
   try {
+    await dayjs.locale(id);
     const searchParams = req.nextUrl.searchParams;
     const userId = searchParams.get("user-id");
 
@@ -44,8 +83,8 @@ export async function POST(req: NextRequest) {
       collection(database, "questionnaires"),
       {
         ...payload,
-        created_at: new Date().toISOString(),
-        updated_at: new Date().toISOString(),
+        created_at: dayjs().toISOString(),
+        updated_at: dayjs().toISOString(),
         created_by: userId,
         questionnaire_filled: 0,
         status:

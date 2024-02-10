@@ -5,14 +5,20 @@ import { UserRecord } from "firebase-admin/auth";
 
 // User
 export interface UserUI extends UserRecord {
-  id: string;
-  role: string;
+  created_at: string;
   phone_number: string;
+  role: string;
+  updated_at: string | null;
 }
 
 export interface UserResponseUI {
   meta: metaResponseUI;
   data: UserUI[];
+}
+
+export interface UserResponseDetailUI {
+  meta: metaResponseUI;
+  data: UserUI;
 }
 
 export type UserPutUI = z.TypeOf<typeof updateUserSchema>;

@@ -104,7 +104,7 @@ export default function UserCustomerPage() {
           Register
         </Button>
       </Flex>
-      <TableContainer>
+      <TableContainer maxH="65vh" overflowY="auto">
         <Table variant="simple">
           <Thead>
             <Tr>

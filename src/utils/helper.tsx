@@ -1,10 +1,6 @@
 "use client";
 
-import { auth } from "@/firebase/config";
-import { onAuthStateChanged } from "firebase/auth";
-import { useAuthStore } from "@/stores/auth";
 import { title } from "case";
-import Cookies from "js-cookie";
 
 export function parseNumber(
   value: string,
@@ -44,22 +40,6 @@ export function formatPhoneNumber(phoneNumber: string) {
   return phoneNumber;
 }
 
-export function handleAuthChanges() {
-  const authStore = useAuthStore.getState();
-  const { setCurrentUser } = authStore;
-
-  onAuthStateChanged(auth, (user) => {
-    console.log({ user });
-    if (user) {
-      setCurrentUser(user);
-      Cookies.set("currentUser", btoa(JSON.stringify(user)));
-    } else {
-      setCurrentUser(null);
-      Cookies.remove("currentUser");
-    }
-  });
-}
-
 export const constructRespondentRequirement = (data: any) => {
   const objToGet =
     data.segmented_type === "basic"
@@ -81,7 +61,7 @@ export const constructRespondentRequirementsValue = ({
   value: Array<string | number>;
   divider?: string;
 }) => {
-  if (key === "age") return `${value[0]} - ${value[0]}`;
+  if (key === "Age") return `${value[0]} - ${value[0]}`;
   else return value.map((val) => title(val as string)).join(divider ?? ", ");
 };
 

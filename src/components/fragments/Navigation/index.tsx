@@ -36,14 +36,25 @@ import { useAuthStore } from "@/stores/auth";
 
 import useNavigation from "./index.hook";
 
-import { handleLogout } from "@/firebase/auth/logout";
+import { handleLogout as logout } from "@/firebase/auth/logout";
 
 import { useRouter } from "next/navigation";
+import Cookies from "js-cookie";
 
 export default function Navigation() {
-  const { currentUser } = useAuthStore();
+  const { setCurrentUser, currentUser } = useAuthStore();
   const { createSupportLink } = useNavigation();
-  const { replace } = useRouter();
+  const { replace, push } = useRouter();
+
+  const handleLogout = async () => {
+    await logout();
+    setCurrentUser(null);
+    Cookies.remove("current-user");
+    Cookies.remove("signed-id");
+    replace("/login");
+    location.reload();
+  };
+
   return (
     <Box
       bg="linear-gradient(82.73deg, var(--chakra-colors-main-blue4) -19.44%, var(--chakra-colors-main-blue3) 82.97%, var(--chakra-colors-main-blue1) 106.96%)"
@@ -95,15 +106,35 @@ export default function Navigation() {
                           </Flex>
                         </PopoverHeader>
                         <PopoverBody paddingX="32px">
-                          <Button
-                            variant="unstyled"
-                            onClick={() => {
-                              handleLogout();
-                              replace('/');
-                            }}
+                          <Flex
+                            direction="column"
+                            justifyContent="flex-start"
+                            gap={2}
                           >
-                            Logout
-                          </Button>
+                            {currentUser?.userDetail?.role ===
+                              "super-admin" && (
+                              <Flex
+                                onClick={() => {
+                                  push("/app-control");
+                                }}
+                                fontWeight={400}
+                                fontSize={16}
+                                cursor="pointer"
+                                w="100%"
+                              >
+                                Super Admin
+                              </Flex>
+                            )}
+                            <Flex
+                              onClick={handleLogout}
+                              fontWeight={400}
+                              fontSize={16}
+                              cursor="pointer"
+                              w="100%"
+                            >
+                              Logout
+                            </Flex>
+                          </Flex>
                         </PopoverBody>
                       </PopoverContent>
                     </Popover>

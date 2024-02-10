@@ -1,4 +1,3 @@
-import { handleAuthChanges } from "@/utils/helper";
 import { auth } from "../config";
 import {
   signInWithEmailAndPassword,
@@ -6,13 +5,28 @@ import {
   signOut,
   GoogleAuthProvider,
   FacebookAuthProvider,
+  updateProfile,
 } from "firebase/auth";
+import { putUserUpdate } from "@/services/user";
+import { formatPhoneNumber } from "@/utils/helper";
 
 export async function googleSignIn() {
   const googleProvider = new GoogleAuthProvider();
   signInWithPopup(auth, googleProvider)
-    .then(async () => {
-      await handleAuthChanges();
+    .then((userCredential) => {
+      console.log({ userCredential });
+      updateProfile(userCredential.user, {
+        displayName: userCredential?.user?.displayName,
+      });
+      putUserUpdate(
+        {
+          role: "admin",
+          phone_number: formatPhoneNumber(
+            userCredential?.user?.phoneNumber ?? ""
+          ),
+        },
+        userCredential.user.uid
+      );
     })
     .catch((error) => {
       // Handle Errors here.
@@ -30,7 +44,6 @@ export async function facebookSignIn() {
   try {
     const facebookProvider = new FacebookAuthProvider();
     signInWithPopup(auth, facebookProvider);
-    await handleAuthChanges();
   } catch (error) {
     // console.log({ error });
   }
@@ -47,7 +60,6 @@ export async function signIn({
     error = null;
   try {
     result = await signInWithEmailAndPassword(auth, email, password);
-    await handleAuthChanges();
   } catch (e) {
     error = e;
   }

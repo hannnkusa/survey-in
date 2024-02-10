@@ -26,7 +26,6 @@ export default function useAuth() {
   const handleSignInWithGoogle = async () => {
     try {
       await googleSignIn();
-      router.push("/questionnaire");
     } catch (error) {
       // console.log(error);
     }
@@ -45,14 +44,12 @@ export default function useAuth() {
     const { result, error } = await signUp(formData);
 
     if (!!result) {
-      router.push("/questionnaire");
     }
 
     if (error) {
       // console.log(error);
       return error;
     }
-
   };
 
   return {

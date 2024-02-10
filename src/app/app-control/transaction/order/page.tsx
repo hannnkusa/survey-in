@@ -15,6 +15,7 @@ import {
   Flex,
   Heading,
   InputGroup,
+  InputLeftAddon,
   InputLeftElement,
   Input,
   Select,
@@ -35,7 +36,9 @@ import { useDebounce } from "use-debounce";
 import "react-datepicker/dist/react-datepicker.css";
 import "react-datepicker/dist/react-datepicker-cssmodules.css";
 
-import "./index.module.css";
+import { ExampleCustomInput } from "@/components/fragments/Datepicker";
+import date from "@/components/fragments/Datepicker/_assets/date.svg";
+import Image from "next/image";
 
 export default function TransactionOrderPage() {
   const { push } = useRouter();
@@ -59,7 +62,7 @@ export default function TransactionOrderPage() {
       <Heading mb="32px" color="#00ADF0" fontWeight={600} fontSize={40}>
         Transaction
       </Heading>
-      <Flex justifyContent="space-between" mb="24px">
+      <Flex justifyContent="space-between" mb="24px" gap="48px">
         <InputGroup>
           <InputLeftElement pointerEvents="none">
             <SearchIcon />
@@ -67,22 +70,40 @@ export default function TransactionOrderPage() {
           <Input
             placeholder="Surveyor"
             onChange={handleSearchChange}
-            // w="500px"
+            maxW={350}
           />
         </InputGroup>
 
-        <Flex>
-          <DatePicker
-            selected={startDate}
-            onChange={(date) => setStartDate(date)}
-            placeholderText="Start Date"
-            className="datepicker"
-          />
-          <DatePicker
-            selected={endDate}
-            onChange={(date) => setEndDate(date)}
-            placeholderText="End Date"
-          />
+        <Flex w={700} gap={4}>
+          <InputGroup>
+            <InputLeftAddon>Start Date</InputLeftAddon>
+            <DatePicker
+              customInput={<ExampleCustomInput />}
+              showIcon
+              icon={<Image src={date} alt="date" />}
+              placeholderText="Start Date"
+              selected={startDate}
+              onChange={(date) => setStartDate(date)}
+              selectsStart
+              startDate={startDate}
+              endDate={endDate}
+            />
+          </InputGroup>
+          <InputGroup>
+            <InputLeftAddon>End Date</InputLeftAddon>
+            <DatePicker
+              customInput={<ExampleCustomInput />}
+              showIcon
+              icon={<Image src={date} alt="date" />}
+              placeholderText="End Date"
+              selected={endDate}
+              onChange={(date) => setEndDate(date)}
+              selectsEnd
+              startDate={startDate}
+              endDate={endDate}
+              minDate={startDate}
+            />
+          </InputGroup>
         </Flex>
 
         <Select
@@ -90,6 +111,7 @@ export default function TransactionOrderPage() {
           onChange={(e) => {
             setStatus(e.target.value);
           }}
+          maxW={350}
         >
           <option value="draft">Draft</option>
           <option value="on-going">On-going</option>
@@ -98,7 +120,7 @@ export default function TransactionOrderPage() {
           <option value="done">Done</option>
         </Select>
       </Flex>
-      <TableContainer>
+      <TableContainer maxH="65vh" overflowY="auto">
         <Table variant="simple">
           <Thead>
             <Tr>

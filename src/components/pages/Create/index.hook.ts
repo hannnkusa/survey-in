@@ -11,6 +11,8 @@ import { postQuestionnaire } from "@/services/questionnaire";
 
 import { useAuthStore } from "@/stores/auth";
 
+import { lower } from "case";
+
 export default function useCreate() {
   const [isFormShown, setShowForm] = useState(false);
   const [isURLSubmitted, setURLSubmitted] = useState(false);
@@ -23,11 +25,6 @@ export default function useCreate() {
   const [lastChangedAdvanced, setLastChangedAdvanced] = useState<string | null>(
     null
   );
-
-  useEffect(() => {
-    if (process?.env?.NEXT_PUBLIC_EMAILJS_PUBLIC_KEY)
-      emailjs.init(process?.env?.NEXT_PUBLIC_EMAILJS_PUBLIC_KEY);
-  }, []);
 
   const handleShowForm = () => setShowForm(true);
   const handleHideForm = () => setShowForm(false);
@@ -65,7 +62,7 @@ export default function useCreate() {
         questionnaire_url: submittedUrl,
         questionnaire_title: formTitle,
         questionnaire_total_price: pricing,
-        created_by_name: currentUser?.displayName
+        created_by_name: currentUser?.displayName,
       };
 
       console.log(currentUser?.uid);
