@@ -1,15 +1,15 @@
 import { NextResponse, type NextRequest } from "next/server";
 
-export const dynamic = 'force-dynamic';
+export const dynamic = "force-dynamic";
 
-export const dynamicParams = true // true | false,
+export const dynamicParams = true; // true | false,
 
 export async function GET(req: NextRequest) {
   try {
     const searchParams = req.nextUrl.searchParams;
     const url = searchParams.get("url");
 
-    if (!!url) {
+    if (!url) {
       return NextResponse.json({ error: "URL is required" }, { status: 422 });
     }
 
