@@ -53,7 +53,7 @@ export default function Carousel() {
               </Grid>
             </GridItem>
             <GridItem colSpan={12}>
-              <Link href="/create">
+              <Link href="/questionnaire">
                 <Button primary>Get Respondent</Button>
               </Link>
             </GridItem>

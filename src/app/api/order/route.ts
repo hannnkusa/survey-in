@@ -74,13 +74,15 @@ export async function POST(
       return NextResponse.json({ error: "File is required" }, { status: 422 });
     }
 
+    const { file, ...rest } = payload;
+
     const questionnaireData = await addDoc(collection(database, "orders"), {
-      ...payload,
+      ...rest,
       created_at: dayjs().toISOString(),
       created_by: userId,
     });
 
-    const base64String = await payload.file;
+    const base64String = await file;
 
     const storageRef = ref(storage, questionnaireData.id);
 
