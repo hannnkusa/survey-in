@@ -43,7 +43,7 @@ export default function QuestionnairesTab({
           <Input
             className={styles.inputLink}
             required
-            pattern="^.*docs.google.com/forms.*$"
+            // pattern="^.*docs.google.com/forms.*$"
             name="url"
             type="url"
             placeholder="https://docs.google.com/forms"
