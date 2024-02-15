@@ -1,7 +1,7 @@
 export const NAV_URLS = [
   {
     text: "My Questionnaire",
-    url: "/questionnaire",
+    url: "/questionnaire/create",
   },
   {
     text: "Company",
