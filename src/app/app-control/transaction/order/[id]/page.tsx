@@ -1,14 +1,17 @@
 "use client";
 
+import { useState } from "react";
 import LoaderOverlay from "@/components/elements/LoaderOverlay";
 import MainLayout from "@/components/layouts/MainLayout";
-import { useQuestionnaireDetail } from "@/services/questionnaire";
+import {
+  useQuestionnaireDetail,
+  putQuestionnaireUpdatePrice,
+} from "@/services/questionnaire";
 import { useOrderQuery, useOrderDetail } from "@/services/order";
 import { useAuthStore } from "@/stores/auth";
 
 import {
   Flex,
-  Box,
   Heading,
   Text,
   Grid,
@@ -21,40 +24,46 @@ import {
   WrapItem,
   Input,
   Button,
-  FormControl,
-  FormLabel,
-  FormErrorMessage,
+  IconButton,
+  ButtonGroup,
+  Popover,
+  PopoverHeader,
+  PopoverTrigger,
+  PopoverContent,
+  PopoverArrow,
+  PopoverCloseButton,
+  useDisclosure,
+  useToast,
 } from "@chakra-ui/react";
+import { EditIcon } from "@chakra-ui/icons";
 import { useParams } from "next/navigation";
 import dayjs from "dayjs";
 
 import date from "@/components/pages/Summary/_assets/date.svg";
-import order from "@/components/pages/Summary/_assets/order.svg";
 import link from "@/components/pages/Summary/_assets/link.svg";
 import qris from "@/components/pages/Summary/_assets/qris.png";
-import upload from "@/components/pages/Summary/_assets/upload.svg";
 
 import Image from "next/image";
 import Link from "next/link";
-
-import { useDropzone } from "react-dropzone";
 
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { OrderPostUI } from "@/types/order";
 import { addOrderSchema } from "@/validations/order";
-import { useRouter } from "next/navigation";
-import { title } from "case";
 import BackButton from "@/components/elements/BackButton";
 import {
+  parseNumber,
   currencyFormat,
   constructRespondentRequirement,
   constructRespondentRequirementsValue,
 } from "@/utils/helper";
+import { useQueryClient } from "@tanstack/react-query";
 
 export default function TransactionOrderDetailPage() {
   const params = useParams();
   const { currentUser } = useAuthStore.getState();
+  const queryClient = useQueryClient();
+  const toast = useToast();
 
   const questionnaireId = params?.id;
 
@@ -65,30 +74,35 @@ export default function TransactionOrderDetailPage() {
   const { isLoading: isLoadingSubmitOrder, mutateAsync: submitOrder } =
     useOrderQuery(currentUser?.uid);
 
-  const {
-    register,
-    handleSubmit,
-    getValues,
-    watch,
-    setValue,
-    reset,
-    resetField,
-    formState: { errors },
-  } = useForm<OrderPostUI>({
-    resolver: zodResolver(addOrderSchema),
-    defaultValues: {
-      email: "",
-      file: {
-        blobUrl: "",
-        name: "",
-      },
-      full_name: "",
-      phone_number: "",
-    },
-    mode: "all",
-  });
+  const { onOpen, onClose, isOpen } = useDisclosure();
+  const [price, setPrice] = useState("");
+  const handleChange = (event: any) => setPrice(event.target.value);
 
-  const router = useRouter();
+  const handleChangePrice = async () => {
+    try {
+      await putQuestionnaireUpdatePrice(
+        { questionnaire_total_price: parseNumber(price) },
+        questionnaireId
+      );
+      toast({
+        title: `Success`,
+        description: "Questionnaire Price updated successfully",
+        status: "success",
+        position: "top",
+        isClosable: true,
+      });
+      onClose();
+      queryClient.invalidateQueries(["questionnaire-detail"]);
+    } catch (error) {
+      toast({
+        title: `Failed`,
+        description: "Questionnaire price failed to update",
+        status: "error",
+        position: "top",
+        isClosable: true,
+      });
+    }
+  };
 
   return (
     <Grid
@@ -237,9 +251,52 @@ export default function TransactionOrderDetailPage() {
                   <Heading fontWeight={500} size="md">
                     TOTAL
                   </Heading>
-                  <Heading fontWeight={500} size="md">
-                    {currencyFormat(data?.questionnaire_total_price ?? 0)}
-                  </Heading>
+                  <Flex justifyContent="center" alignItems="center" gap={4}>
+                    <Heading fontWeight={500} size="md">
+                      {currencyFormat(data?.questionnaire_total_price ?? 0)}
+                    </Heading>
+                    <Popover
+                      isOpen={isOpen}
+                      onOpen={onOpen}
+                      onClose={onClose}
+                      placement="right"
+                      closeOnBlur={false}
+                    >
+                      <PopoverTrigger>
+                        <IconButton
+                          size="sm"
+                          icon={<EditIcon />}
+                          aria-label={"edit"}
+                        />
+                      </PopoverTrigger>
+                      <PopoverContent p={5}>
+                        <PopoverHeader fontWeight="semibold">
+                          Change Price
+                        </PopoverHeader>
+                        <PopoverArrow />
+                        <PopoverCloseButton />
+                        <Stack spacing={4}>
+                          <Input
+                            id="first-name"
+                            defaultValue={data?.questionnaire_total_price}
+                            value={price}
+                            onChange={handleChange}
+                          />
+                          <ButtonGroup display="flex" justifyContent="flex-end">
+                            <Button variant="outline" onClick={onClose}>
+                              Cancel
+                            </Button>
+                            <Button
+                              colorScheme="teal"
+                              onClick={handleChangePrice}
+                            >
+                              Save
+                            </Button>
+                          </ButtonGroup>
+                        </Stack>
+                      </PopoverContent>
+                    </Popover>
+                  </Flex>
                 </Flex>
               </CardBody>
             </Card>
