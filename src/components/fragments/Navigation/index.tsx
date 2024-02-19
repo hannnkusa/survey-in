@@ -1,5 +1,6 @@
 "use client";
 
+import { useState } from "react";
 import {
   Box,
   Flex,
@@ -18,6 +19,7 @@ import {
   Heading,
   Button,
   IconButton,
+  Switch,
 } from "@chakra-ui/react";
 import Image from "next/image";
 import Link from "next/link";
@@ -28,7 +30,7 @@ import { NAV_URLS } from "@/constants/links";
 
 import Grid from "@/components/elements/Grid";
 
-import { ChevronRightIcon } from "@chakra-ui/icons";
+import { ChevronRightIcon, HamburgerIcon, CloseIcon } from "@chakra-ui/icons";
 
 import styles from "./index.module.css";
 
@@ -45,6 +47,7 @@ export default function Navigation() {
   const { setCurrentUser, currentUser } = useAuthStore();
   const { createSupportLink } = useNavigation();
   const { replace, push } = useRouter();
+  const [display, changeDisplay] = useState("none");
 
   const handleLogout = async () => {
     await logout();
@@ -58,19 +61,43 @@ export default function Navigation() {
   return (
     <Box
       bg="linear-gradient(82.73deg, var(--chakra-colors-main-blue4) -19.44%, var(--chakra-colors-main-blue3) 82.97%, var(--chakra-colors-main-blue1) 106.96%)"
-      p="18px 64px"
+      padding={[
+        "14px",
+        "18px 64px",
+        "18px 64px",
+        "18px 64px",
+        "18px 64px",
+        "18px 64px",
+      ]}
+      w="100vw"
     >
       <Grid templateRows="1fr" gap={3}>
         <GridItem alignSelf="center" colSpan={2}>
           <Link href={"/"}>
-            <Image width={137} src={logo} alt="logo" />
+            <Box
+              position="relative"
+              width={[137, 137, 137, 137]}
+              height={[30, 30, 27, 27]}
+            >
+              <Image
+                src={logo}
+                alt="logo"
+                sizes="500px"
+                fill
+                style={{
+                  objectFit: "contain",
+                }}
+              />
+            </Box>
           </Link>
         </GridItem>
         <GridItem alignSelf="center" colSpan={10}>
+          {/* Desktop */}
           <Flex
             color="white"
             justifyContent="space-between"
             alignItems="center"
+            display={["none", "none", "flex", "flex"]}
           >
             {NAV_URLS.map(({ text, url }, index) => {
               if (currentUser && text === "My Account") {
@@ -162,8 +189,67 @@ export default function Navigation() {
               }
             })}
           </Flex>
+
+          {/* Mobile */}
+          <IconButton
+            aria-label="Open Menu"
+            size="lg"
+            ml="auto"
+            variant="unstyled"
+            icon={
+              display === "flex" ? (
+                <CloseIcon color="#FFFFFF" />
+              ) : (
+                <HamburgerIcon color="#FFFFFF" />
+              )
+            }
+            onClick={() => changeDisplay(display === "flex" ? "none" : "flex")}
+            display={["flex", "flex", "none", "none"]}
+          />
+          {/* <Switch color="green" isChecked={isDark} onChange={toggleColorMode} /> */}
         </GridItem>
       </Grid>
+      {/* Mobile Content */}
+      <Flex
+        w="100vw"
+        display={display}
+        bgColor="gray.50"
+        zIndex={20}
+        h="100vh"
+        pos="fixed"
+        top={69}
+        left="0"
+        overflowY="auto"
+        flexDir="column"
+      >
+        <Flex flexDir="column" alignItems="flex-end" justifyContent="center">
+          {NAV_URLS.map(({ text, url }, index) => (
+            <Link key={index} href={url}>
+              <Button
+                as="a"
+                variant="ghost"
+                aria-label={text}
+                my={5}
+                fontWeight={500}
+              >
+                {text}
+              </Button>
+            </Link>
+          ))}
+
+          {/* <Link href="/about" passHref>
+            <Button as="a" variant="ghost" aria-label="About" my={5} w="100%">
+              About
+            </Button>
+          </Link>
+
+          <Link href="/contact" passHref>
+            <Button as="a" variant="ghost" aria-label="Contact" my={5} w="100%">
+              Contact
+            </Button>
+          </Link> */}
+        </Flex>
+      </Flex>
     </Box>
   );
 }

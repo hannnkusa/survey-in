@@ -5,7 +5,7 @@ export const NAV_URLS = [
   },
   {
     text: "Company",
-    url: "#",
+    url: "/company",
   },
   {
     text: "Support",

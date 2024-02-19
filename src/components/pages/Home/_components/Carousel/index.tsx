@@ -10,17 +10,22 @@ import styles from "./index.module.css";
 
 export default function Carousel() {
   return (
-    <Box className={styles.banner}>
+    <Box
+      className={styles.banner}
+      width="100vw"
+      h={["300px", "300px", "66.21vh", "66.21vh"]}
+      borderRadius={["24px", "24px", "80px", "80px"]}
+    >
       <Grid>
         <GridItem colSpan={8}>
-          <Grid gap={13}>
+          <Grid gap={13} alignContent="space-between">
             <GridItem colSpan={12}>
               <Grid gridTemplateRows="1fr" gridTemplateColumns="1fr">
                 <GridItem gridRowStart={1} gridColumnStart={1}>
                   <Heading
                     className={styles.heading + " " + styles.carousel1}
                     as="h1"
-                    fontSize={64}
+                    fontSize={[32, 32, 64, 64]}
                     fontWeight="normal"
                   >
                     SAVE YOUR TIME, WE GOT YOU COVERED.
@@ -29,6 +34,7 @@ export default function Carousel() {
                 <GridItem gridRowStart={1} gridColumnStart={1}>
                   <Heading
                     className={styles.heading + " " + styles.carousel2}
+                    fontSize={[32, 32, 64, 64]}
                     as="h1"
                   >
                     MAKE RESEARCH EASIER.
@@ -37,6 +43,7 @@ export default function Carousel() {
                 <GridItem gridRowStart={1} gridColumnStart={1}>
                   <Heading
                     className={styles.heading + " " + styles.carousel3}
+                    fontSize={[32, 32, 64, 64]}
                     as="h1"
                   >
                     RIGHT DATA. RIGHT HERE. RIGHT NOW.
@@ -45,6 +52,7 @@ export default function Carousel() {
                 <GridItem gridRowStart={1} gridColumnStart={1}>
                   <Heading
                     className={styles.heading + " " + styles.carousel4}
+                    fontSize={[32, 32, 64, 64]}
                     as="h1"
                   >
                     COLLECT DATA WITHOUT HARD TIMES.

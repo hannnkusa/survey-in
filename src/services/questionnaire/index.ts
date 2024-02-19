@@ -67,6 +67,17 @@ export const putQuestionnaireUpdateStatus = async (
   });
 };
 
+export const putQuestionnaireUpdatePrice = async (
+  data: any,
+  questionnaireId: any
+) => {
+  return await callAPI({
+    path: `/questionnaire/${questionnaireId}/price`,
+    method: "PUT",
+    data: data,
+  });
+};
+
 export const getGoogleFormTitle = async (googleFormUrl: string) => {
   const res = await callAPI({
     path: `/get-google-form-title?url=${googleFormUrl}`,

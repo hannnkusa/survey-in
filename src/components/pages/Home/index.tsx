@@ -5,7 +5,6 @@ import {
   Box,
   Card,
   Flex,
-  GridItem,
   Heading,
   ListItem,
   OrderedList,
@@ -14,15 +13,16 @@ import {
 import Image from "next/image";
 
 import Button from "@/components/elements/Button";
-import Grid from "@/components/elements/Grid";
 
 import JoinWithUsVignette from "./_assets/join_us_vignette.png";
 
 import {
   FOOTER_CARD,
   MIDDLE_CARDS,
-  MIDDLE_EMPHASIZE,
-  MIDDLE_TITLE,
+  MIDDLE_EMPHASIZE1,
+  MIDDLE_TITLE1,
+  MIDDLE_EMPHASIZE2,
+  MIDDLE_TITLE2,
   RIGHT_MAIN_CARD,
   RIGHT_MAIN_CARD_EMPHASIZE,
 } from "./_constants/copywritings";
@@ -61,148 +61,207 @@ export default function HomeComponent() {
 
   return (
     <MainLayout>
-      <Grid gap={12} paddingBottom={20}>
-        <GridItem colSpan={12}>
+      <Flex gap={12} paddingBottom={[0, 0, 20, 20]} direction="column">
+        <Flex paddingX={["24px", "24px", "0", "0"]}>
           <Carousel />
-        </GridItem>
-        <GridItem gridColumn="1 / -1">
-          <Flex gap="11.4vh">
-            <Box
-              w="100%"
-              // maxW={640}
-              h="44vh"
-              maxH={415}
-              borderRadius={80}
-              bg="main.grey1"
-            >
-              <video
-                style={{
-                  width: "100%",
-                  height: "100%",
-                  objectFit: "cover",
-                  borderRadius: "inherit",
-                  top: 0,
-                  left: 0,
-                }}
-                controls
-                autoPlay
-              >
-                <source src="/static/videos/Tutorial Surveyin.mp4" type="video/mp4" />
-                Your browser does not support the video tag.
-              </video>
-            </Box>
-            <Card
-              w="100%"
-              maxW={560}
-              h="44vh"
-              maxH={415}
-              borderRadius={80}
-              boxShadow="4px 10px 24px 2px rgba(0, 0, 0, 0.10)"
-              p={14}
-            >
-              <Heading as="h2" size="xl" fontWeight="600">
-                {renderWordWithEmphasize(
-                  RIGHT_MAIN_CARD.title,
-                  RIGHT_MAIN_CARD_EMPHASIZE
-                )}
-                .
-              </Heading>
-              <br />
-              <OrderedList>
-                {RIGHT_MAIN_CARD.list.map((text, index) => (
-                  <ListItem key={index}>{text}</ListItem>
-                ))}
-              </OrderedList>
-            </Card>
+        </Flex>
+        <Flex paddingX={["24px", "24px", "0", "0"]}>
+          <Flex direction="column" display={["flex", "flex", "none", "none"]}>
+            <Heading as="h2" size="xl" fontWeight="700">
+              {renderWordWithEmphasize(
+                RIGHT_MAIN_CARD.title,
+                RIGHT_MAIN_CARD_EMPHASIZE
+              )}
+            </Heading>
+            <br />
+            <OrderedList spacing="16px">
+              {RIGHT_MAIN_CARD.list.map((text, index) => (
+                <ListItem key={index} fontWeight={500} fontSize={16}>
+                  {text}
+                </ListItem>
+              ))}
+            </OrderedList>
           </Flex>
-        </GridItem>
-        <GridItem gridColumn="1 / 8">
-          <Heading as="h2" size="3xl" fontWeight="normal">
-            {renderWordWithEmphasize(MIDDLE_TITLE, MIDDLE_EMPHASIZE)}
-          </Heading>
-        </GridItem>
-        <GridItem gridColumn="1 / -1">
-          <Flex gap="3.3vh">
-            {MIDDLE_CARDS.map(({ icon, title, description }, index) => (
-              <Card
-                w="100%"
-                // maxW={364.92}
-                // h="27vh"
-                // maxH={204}
-                p="3.3vh"
-                key={index}
-                borderRadius={40}
-                boxShadow="4px 10px 24px 2px rgba(0, 0, 0, 0.10)"
-                textAlign="center"
-                boxSizing="content-box"
-              >
-                <Image
-                  className={styles.centerAligned}
-                  alt="title"
-                  src={icon}
-                  width={55}
-                  height={55}
-                />
-                <Heading
-                  as="h4"
-                  fontSize={28}
-                  marginTop="3.3vh"
-                  marginBottom="1.6vh"
-                  fontWeight="600"
-                >
-                  {index + 1}. {title}
-                </Heading>
-                <Text>{description}</Text>
-              </Card>
-            ))}
-          </Flex>
-        </GridItem>
-        <GridItem gridColumn="1 / -1" p="0 4.4vw">
-          <Card border="none" boxShadow="none">
-            <Grid>
-              <GridItem
-                bg="#1287DB"
-                color="white"
-                colSpan={6}
-                pl="10.1vh"
-                pt="6.7vh"
-                borderTopLeftRadius="80px"
-                borderBottomLeftRadius="80px"
-              >
-                <Heading as="h4" size="xl" fontWeight="600">
-                  {FOOTER_CARD.title}
-                </Heading>
-                <Heading as="h2" size="2xl" fontWeight="600">
-                  {FOOTER_CARD.description}
-                </Heading>
-                <br />
-                <OrderedList gap="1.6vh">
-                  {FOOTER_CARD.list.map((text, index) => (
-                    <ListItem key={index}>{text}</ListItem>
-                  ))}
-                </OrderedList>
-                <br />
-                <Link
-                  href={createSupportLink()}
-                  rel="noopener noreferrer"
-                  target="_blank"
-                >
-                  <Button bg="#C7E8F5" color="#193742" p="1.6vh">
-                    Sign Up
-                  </Button>
-                </Link>
-              </GridItem>
-              <GridItem colSpan={6}>
-                <Image
-                  className={styles.vignetteImg}
-                  alt="Join with us"
-                  src={JoinWithUsVignette}
-                />
-              </GridItem>
-            </Grid>
+        </Flex>
+        <Flex gap="11.4vh" paddingX={["24px", "24px", "0", "0"]}>
+          <Box
+            w="100%"
+            h={["320px", "320px", "4125px", "4125px"]}
+            maxH={415}
+            borderRadius={[24, 24, 80, 80]}
+            bg="main.grey1"
+          >
+            <video
+              style={{
+                width: "100%",
+                height: "100%",
+                objectFit: "cover",
+                borderRadius: "inherit",
+                top: 0,
+                left: 0,
+              }}
+              controls
+              autoPlay
+            >
+              <source
+                src="/static/videos/Tutorial Surveyin.mp4"
+                type="video/mp4"
+              />
+              Your browser does not support the video tag.
+            </video>
+          </Box>
+          <Card
+            w="100%"
+            maxW={560}
+            h="44vh"
+            maxH={415}
+            borderRadius={80}
+            boxShadow="4px 10px 24px 2px rgba(0, 0, 0, 0.10)"
+            p={14}
+            display={["none", "none", "flex", "flex"]}
+          >
+            <Heading as="h2" size="xl" fontWeight="700">
+              {renderWordWithEmphasize(
+                RIGHT_MAIN_CARD.title,
+                RIGHT_MAIN_CARD_EMPHASIZE
+              )}
+            </Heading>
+            <br />
+            <OrderedList>
+              {RIGHT_MAIN_CARD.list.map((text, index) => (
+                <ListItem key={index} fontWeight={500}>
+                  {text}
+                </ListItem>
+              ))}
+            </OrderedList>
           </Card>
-        </GridItem>
-      </Grid>
+        </Flex>
+        <Flex direction="column" paddingX={["24px", "24px", "0", "0"]}>
+          <Heading as="h2" fontSize={[24, 24, 64, 64]} fontWeight="700">
+            {renderWordWithEmphasize(MIDDLE_TITLE1, MIDDLE_EMPHASIZE1)}
+          </Heading>
+          <Heading as="h2" fontSize={[24, 24, 64, 64]} fontWeight="700">
+            {renderWordWithEmphasize(MIDDLE_TITLE2, MIDDLE_EMPHASIZE2)}
+          </Heading>
+        </Flex>
+        <Flex
+          gap="3.3vh"
+          direction={["column", "column", "row", "row"]}
+          paddingX={["24px", "24px", "0", "0"]}
+        >
+          {MIDDLE_CARDS.map(({ icon, title, description }, index) => (
+            <Flex
+              w={["", "", "100%", "100%"]}
+              // maxW={364.92}
+              // h="27vh"
+              // maxH={204}
+              direction="column"
+              p="3.3vh"
+              key={index}
+              borderRadius={40}
+              boxShadow="4px 10px 24px 2px rgba(0, 0, 0, 0.10)"
+              textAlign="center"
+              boxSizing="content-box"
+            >
+              <Image
+                className={styles.centerAligned}
+                alt="title"
+                src={icon}
+                width={55}
+                height={55}
+              />
+              <Heading
+                as="h4"
+                fontSize={28}
+                marginTop="3.3vh"
+                marginBottom="1.6vh"
+                fontWeight="600"
+              >
+                {index + 1}. {title}
+              </Heading>
+              <Text>{description}</Text>
+            </Flex>
+          ))}
+        </Flex>
+        <Flex display={["none", "none", "flex", "flex"]} w="100%">
+          <Flex
+            bg="#1287DB"
+            color="white"
+            pl="10.1vh"
+            py="64px"
+            pr="32px"
+            borderTopLeftRadius="80px"
+            borderBottomLeftRadius="80px"
+            direction="column"
+            w="100%"
+            // maxW={740}
+          >
+            <Heading as="h4" size="xl" fontWeight="600">
+              {FOOTER_CARD.title}
+            </Heading>
+            <Heading as="h2" size="2xl" fontWeight="600">
+              {FOOTER_CARD.description}
+            </Heading>
+            <br />
+            <OrderedList spacing="16px">
+              {FOOTER_CARD.list.map((text, index) => (
+                <ListItem key={index}>{text}</ListItem>
+              ))}
+            </OrderedList>
+            <br />
+            <Link
+              href={createSupportLink()}
+              rel="noopener noreferrer"
+              target="_blank"
+            >
+              <Button bg="#C7E8F5" color="#193742" p="1.6vh" w="236px">
+                Sign Up
+              </Button>
+            </Link>
+          </Flex>
+          <Image
+            className={styles.vignetteImg}
+            alt="Join with us"
+            src={JoinWithUsVignette}
+            height={551}
+            width={568}
+          />
+        </Flex>
+        <Flex display={["flex", "flex", "none", "none"]} direction="column">
+          <Image alt="Join with us" src={JoinWithUsVignette} />
+          <Flex
+            bg="#1287DB"
+            color="white"
+            pl="24px"
+            pt="16px"
+            pb="40px"
+            direction="column"
+          >
+            <Heading as="h4" size="xl" fontWeight="600">
+              {FOOTER_CARD.title}
+            </Heading>
+            <Heading as="h2" size="2xl" fontWeight="600">
+              {FOOTER_CARD.description}
+            </Heading>
+            <br />
+            <OrderedList spacing="16px">
+              {FOOTER_CARD.list.map((text, index) => (
+                <ListItem key={index}>{text}</ListItem>
+              ))}
+            </OrderedList>
+            <br />
+            <Link
+              href={createSupportLink()}
+              rel="noopener noreferrer"
+              target="_blank"
+            >
+              <Button bg="#C7E8F5" color="#193742" p="1.6vh" w="160px">
+                Sign Up
+              </Button>
+            </Link>
+          </Flex>
+        </Flex>
+      </Flex>
     </MainLayout>
   );
 }
