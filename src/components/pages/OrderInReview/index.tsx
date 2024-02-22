@@ -51,7 +51,12 @@ export default function SummaryComponent() {
 
   return (
     <MainLayout>
-      <Grid justifyItems="center" marginBottom="48px">
+      {/* Desktop */}
+      <Grid
+        justifyItems="center"
+        marginBottom="48px"
+        display={["none", "none", "grid", "grid"]}
+      >
         <Image alt="Successfully submit the link" src={success} width={169} />
         <Heading
           as="h2"
@@ -142,6 +147,105 @@ export default function SummaryComponent() {
         </Link>
         <LoaderOverlay isLoading={isLoading} />
       </Grid>
+
+      {/* Mobile */}
+      <Stack
+        display={["flex", "flex", "none", "none"]}
+        w="100%"
+        mb="32px"
+        px="24px"
+        justifyContent="center"
+        alignItems="center"
+      >
+        <Image alt="Successfully submit the link" src={success} width={74} />
+        <Heading
+          color="#00ADF0"
+          fontWeight={600}
+          fontSize={24}
+          textAlign="center"
+          mb="32px"
+        >
+          Order In Review
+        </Heading>
+        <Card
+          boxShadow="0px 8px 16px 1px rgb(8, 67, 115, 0.20)"
+          borderRadius={40}
+          w={342}
+          mb="24px"
+        >
+          <CardBody py="16px">
+            <Stack gap="16px" p={0}>
+              <Flex
+                background="#EFF1F7"
+                direction="column"
+                borderRadius={16}
+                px="12px"
+                py="8px"
+              >
+                <Heading fontWeight={300} fontSize={12}>
+                  Purchase time
+                </Heading>
+                <Text fontWeight={500} fontSize={16}>
+                  {dayjs(data?.data?.created_at).format("dddd[,] D MMMM YYYY")}
+                </Text>
+              </Flex>
+              <Flex
+                background="#EFF1F7"
+                direction="column"
+                borderRadius={16}
+                px="12px"
+                py="8px"
+              >
+                <Heading fontWeight={300} fontSize={12}>
+                  Order number
+                </Heading>
+                <Flex alignItems="center">
+                  <Text fontWeight={500} fontSize={16} mr="56px">
+                    {data?.data?.id}
+                  </Text>
+                  <IconButton
+                    variant="unstyled"
+                    aria-label={"copy"}
+                    onClick={copylink}
+                    icon={
+                      <Image src={copy} alt={"copy to clipboard"} width={18} />
+                    }
+                  />
+                </Flex>
+              </Flex>
+              <Flex
+                background="#EFF1F7"
+                direction="column"
+                borderRadius={16}
+                px="12px"
+                py="8px"
+              >
+                <Heading fontWeight={300} fontSize={12}>
+                  Buyer’s detail
+                </Heading>
+                <Text fontWeight={500} fontSize={16}>
+                  {data?.data?.full_name}, {data?.data?.email},{" "}
+                  {data?.data?.phone_number}
+                </Text>
+              </Flex>
+            </Stack>
+          </CardBody>
+        </Card>
+        <Link href="/questionnaire">
+          <Button
+            bg="#00ADF0"
+            color="#FBF9F9"
+            fontWeight={500}
+            fontSize={16}
+            w="236px"
+            h="56px"
+            borderRadius="34px"
+          >
+            Review progress
+          </Button>
+        </Link>
+        <LoaderOverlay isLoading={isLoading} />
+      </Stack>
     </MainLayout>
   );
 }

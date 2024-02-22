@@ -86,7 +86,7 @@ export default function HomeComponent() {
         <Flex gap="11.4vh" paddingX={["24px", "24px", "0", "0"]}>
           <Box
             w="100%"
-            h={["320px", "320px", "4125px", "4125px"]}
+            h={["100%", "100%", "4125px", "4125px"]}
             maxH={415}
             borderRadius={[24, 24, 80, 80]}
             bg="main.grey1"
