@@ -22,7 +22,7 @@ export default function BackButton({ hasWarn, customFunction, left }: BackButton
         onClick={() => executeFunction()}
         position="absolute"
         top={95}
-        left={left ? left : 84}
+        left={[left ? left : 2, left ? left : 2, left ? left : 84, left ? left : 84]}
         icon={<Image src={backIcon} alt="back" width={24} />}
       />
       <WarningComponent

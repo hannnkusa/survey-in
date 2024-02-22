@@ -1,6 +1,6 @@
 "use client";
 
-import { Box, Stack, Text, Heading, Grid, GridItem } from "@chakra-ui/react";
+import { Box, Stack, Text, Heading, Grid, GridItem, Flex } from "@chakra-ui/react";
 
 import Image from "next/image";
 import company from "./_assets/company.png";
@@ -46,7 +46,7 @@ export default function CompanyPage() {
         >
           About
         </Heading>
-        <Text mt="32px" fontWeight={500} fontSize={16} mb="40px">
+        <Text mt="24px" fontWeight={500} fontSize={16} mb="40px">
           survey.in provide reliable respondents to support surveyor’s research
           become a source of value, growth, and improvement. Our mission is to
           modernize research habit for common development. We uphold integrity,
@@ -54,17 +54,25 @@ export default function CompanyPage() {
           support our client effort into a meaningful piece and to accelerate
           its growth by providing useful and reliable data.
         </Text>
-        <Box borderRadius="24px" position="relative" width={1920}>
-          <Image
-            src={companyMobile}
-            alt={"company"}
-            sizes="500px"
-            fill
-            style={{
-              objectFit: "contain",
-            }}
-          />
-        </Box>
+        <Flex>
+          <Box
+          overflow="hidden"
+            borderRadius="24px"
+            position="relative"
+            width={1920}
+            height={240}
+          >
+            <Image
+              src={companyMobile}
+              alt={"company"}
+              sizes="500px"
+              fill
+              style={{
+                objectFit: "contain",
+              }}
+            />
+          </Box>
+        </Flex>
       </Stack>
     </MainLayout>
   );

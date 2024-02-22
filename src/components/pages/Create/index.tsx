@@ -93,9 +93,10 @@ export default function CreateComponent() {
           index={tabIndex}
           onChange={handleTabsChange}
           // isFitted
-          position="relative"
+          position={["static", "static", "relative", "relative"]}
           variant="unstyled"
-          w="45vw"
+          w={["none", "none", "45vw", "45vw"]}
+          size={["sm", "sm", "md", "md"]}
         >
           <TabList>
             <Tab>QUESTIONNAIRES</Tab>
@@ -131,7 +132,13 @@ export default function CreateComponent() {
           </TabPanels>
         </Tabs>
       </GridItem>
-      <GridItem colSpan={2} paddingLeft="20px" paddingTop="6vh">
+      {/* Desktop Pricing Card */}
+      <GridItem
+        colSpan={2}
+        paddingLeft="20px"
+        paddingTop="6vh"
+        display={["none", "none", "grid", "grid"]}
+      >
         <PricingCard
           buttonAction={() => {
             tabIndex === 0 ? onSubmitURL() : handlePay(router);
@@ -143,6 +150,27 @@ export default function CreateComponent() {
           disabledCheckoutButton={disabledCheckoutButton ?? true}
         />
       </GridItem>
+      {/* Mobile Pricing Card */}
+      <Flex
+        w="100%"
+        position="absolute"
+        left={0}
+        bottom="24px"
+        zIndex={100}
+        justifyContent="end"
+        display={["flex", "flex", "none", "none"]}
+      >
+        <PricingCard
+          buttonAction={() => {
+            tabIndex === 0 ? onSubmitURL() : handlePay(router);
+          }}
+          buttonTitle={tabIndex === 0 ? "Next" : "Checkout"}
+          price={pricing}
+          isOpen={!!submittedUrl}
+          tabIndex={tabIndex}
+          disabledCheckoutButton={disabledCheckoutButton ?? true}
+        />
+      </Flex>
     </Grid>
   );
   return (

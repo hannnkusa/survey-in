@@ -1,6 +1,6 @@
 "use client";
 
-import { Flex, Heading, Input, Text, Checkbox } from "@chakra-ui/react";
+import { Flex, Stack, Heading, Input, Text, Checkbox } from "@chakra-ui/react";
 import Image from "next/image";
 import Link from "next/link";
 
@@ -94,9 +94,11 @@ export default function LoginComponent() {
         paddingTop="2vh"
         flexDirection="column"
         paddingX="40vh"
+        display={["none", "none", "flex", "flex"]}
       >
         {content}
       </Flex>
+      <Stack px="24px" display={["flex", "flex", "none", "none"]}>{content}</Stack>
     </MainLayout>
   );
 }
