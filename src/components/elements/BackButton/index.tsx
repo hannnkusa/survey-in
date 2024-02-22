@@ -1,4 +1,4 @@
-import { IconButton, useDisclosure } from "@chakra-ui/react";
+import { Box, IconButton, useDisclosure } from "@chakra-ui/react";
 import Image from "next/image";
 import backIcon from "./_assets/back.svg";
 import { useRouter } from "next/navigation";
@@ -13,7 +13,7 @@ export default function BackButton({ hasWarn, customFunction, left }: BackButton
   const executeFunction = hasWarn ? onOpen : functionToExecute;
 
   return (
-    <>
+    <Box position="relative">
       <IconButton
         variant="unstyled"
         colorScheme="teal"
@@ -21,8 +21,8 @@ export default function BackButton({ hasWarn, customFunction, left }: BackButton
         fontSize="20px"
         onClick={() => executeFunction()}
         position="absolute"
-        top={95}
-        left={[left ? left : 2, left ? left : 2, left ? left : 84, left ? left : 84]}
+        top={0}
+        left={[left ? left : 2, left ? left : 2, left ? left : 0, left ? left : 0]}
         icon={<Image src={backIcon} alt="back" width={24} />}
       />
       <WarningComponent
@@ -31,6 +31,6 @@ export default function BackButton({ hasWarn, customFunction, left }: BackButton
         isOpen={isOpen}
         handler={back}
       />
-    </>
+    </Box>
   );
 }

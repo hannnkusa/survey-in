@@ -59,19 +59,15 @@ export default function Navigation() {
   };
 
   return (
-    <Box
+    <Flex
       bg="linear-gradient(82.73deg, var(--chakra-colors-main-blue4) -19.44%, var(--chakra-colors-main-blue3) 82.97%, var(--chakra-colors-main-blue1) 106.96%)"
-      padding={[
-        "14px",
-        "18px 64px",
-        "18px 64px",
-        "18px 64px",
-        "18px 64px",
-        "18px 64px",
-      ]}
-      w="100vw"
+      paddingX={["14px", "14px", "64px", "64px"]}
+      w="100%"
+      h="100%"
+      // justifyContent="center"
+      alignItems="center"
     >
-      <Grid templateRows="1fr" gap={3}>
+      <Grid templateRows="1fr" gap={3} placeContent="center" w="100%">
         <GridItem alignSelf="center" colSpan={2}>
           <Link href={"/"}>
             <Box
@@ -82,7 +78,7 @@ export default function Navigation() {
               <Image
                 src={logo}
                 alt="logo"
-                sizes="500px"
+                sizes="1024px"
                 fill
                 style={{
                   objectFit: "contain",
@@ -91,7 +87,7 @@ export default function Navigation() {
             </Box>
           </Link>
         </GridItem>
-        <GridItem alignSelf="center" colSpan={10}>
+        <GridItem colSpan={10}>
           {/* Desktop */}
           <Flex
             color="white"
@@ -250,6 +246,6 @@ export default function Navigation() {
           </Link> */}
         </Flex>
       </Flex>
-    </Box>
+    </Flex>
   );
 }

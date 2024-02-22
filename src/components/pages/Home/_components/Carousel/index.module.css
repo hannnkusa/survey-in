@@ -98,8 +98,6 @@
 }
 .heading {
     color: white;
-    font-weight: 600;
-    text-shadow: 1px 1px 10px var(--chakra-colors-main-grey2);
     opacity: 0;
 }
 .carousel1, .carousel2, .carousel3, .carousel4 {

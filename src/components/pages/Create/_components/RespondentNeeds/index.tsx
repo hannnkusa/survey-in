@@ -64,7 +64,7 @@ export function RespondentNeeds({
         isCentered
       >
         <ModalOverlay />
-        <ModalContent maxW="45vw">
+        <ModalContent maxW={["90vw", "90vw", "45vw", "45vw"]}>
           <ModalBody p="45px">
             {segmentedType === "basic" ? (
               <RespondentDetailBasicComponent

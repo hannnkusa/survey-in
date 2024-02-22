@@ -88,12 +88,17 @@ export default function CreateComponent() {
     // ) : ()
     <Grid templateColumns="repeat(8, 1fr)">
       <BackButton hasWarn />
-      <GridItem colStart={3} colEnd={7}>
+      {/* Desktop Tabs */}
+      <GridItem
+        colStart={3}
+        colEnd={7}
+        display={["none", "none", "grid", "grid"]}
+      >
         <Tabs
           index={tabIndex}
           onChange={handleTabsChange}
           // isFitted
-          position={["static", "static", "relative", "relative"]}
+          // position={["static", "static", "relative", "relative"]}
           variant="unstyled"
           w={["none", "none", "45vw", "45vw"]}
           size={["sm", "sm", "md", "md"]}
@@ -150,6 +155,49 @@ export default function CreateComponent() {
           disabledCheckoutButton={disabledCheckoutButton ?? true}
         />
       </GridItem>
+      {/* Mobile Tabs */}
+      <Flex
+        w="100vw"
+        justifyContent="center"
+        alignItems="center"
+        display={["flex", "flex", "none", "none"]}
+      >
+        <Tabs
+          index={tabIndex}
+          onChange={handleTabsChange}
+          // isFitted
+          // position={["static", "static", "relative", "relative"]}
+          variant="unstyled"
+          w="100vw"
+        >
+          <TabList>
+            <Tab>Questionnaires</Tab>
+            <Tab isDisabled={!submittedUrl}>Respondents</Tab>
+          </TabList>
+          <TabIndicator height="2px" bg="#1183D8" borderRadius="1px" />
+          <TabPanels paddingTop="15px">
+            <TabPanel>
+              <QuestionnairesTab
+                isFormShown={isFormShown}
+                submittedUrl={submittedUrl}
+                onSubmitForm={onSubmitForm}
+                onHideForm={onHideForm}
+                onShowForm={onShowForm}
+              />
+            </TabPanel>
+            <TabPanel>
+              <RespondentsTab
+                respondentDetail={respondentDetail}
+                setRespondentDetail={setRespondentDetail}
+                setPricing={setPricing}
+                handlePay={handlePay}
+                lastChangedAdvanced={lastChangedAdvanced}
+                setLastChangedAdvanced={setLastChangedAdvanced}
+              />
+            </TabPanel>
+          </TabPanels>
+        </Tabs>
+      </Flex>
       {/* Mobile Pricing Card */}
       <Flex
         w="100%"
