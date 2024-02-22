@@ -38,7 +38,7 @@ export default function Counter({ value, setValue }: PricingCardProps) {
         marginX="16px"
         textAlign="center"
         fontWeight={500}
-        fontSize="40px"
+        fontSize={["20px", "20px", "40px", "40px"]}
       />
 
       <IconButton

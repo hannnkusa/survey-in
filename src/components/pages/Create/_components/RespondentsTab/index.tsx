@@ -180,26 +180,39 @@ export default function RespondentsTab({
       w="100%"
       boxShadow="0px 8px 16px 1px rgba(8, 67, 115, 0.20);"
       direction="column"
-      borderRadius="60px"
+      borderRadius={["30px", "30px", "60px", "60px"]}
       overflow="hidden"
     >
-      <Box background="#00ADF0" pl="60px" paddingY="21px">
-        <Heading color="#FFF" as="h4" size="md">
+      <Box
+        background="#00ADF0"
+        pl={["30px", "30px", "60px", "60px"]}
+        paddingY={["8px", "8px", "21px", "21px"]}
+      >
+        <Heading
+          color="#FFF"
+          as="h4"
+          fontSize={[16, 16, 24, 24]}
+          fontWeight={600}
+        >
           Respondent Segment
         </Heading>
       </Box>
-      <Stack paddingX="35px" paddingY="24px" gap={6}>
-        <Flex paddingX="25px">
+      <Stack
+        paddingX={["30px", "30px", "35px", "35px"]}
+        paddingY={["16px", "16px", "24px", "24px"]}
+        gap={6}
+      >
+        <Flex paddingX={["", "", "25px", "25px"]}>
           <RadioGroup
             onChange={(val) => setValue("respondent_type", val)}
             value={watch("respondent_type")}
             gap={3}
           >
             <Stack>
-              <Radio value="random" size="lg">
+              <Radio value="random" size={["md", "md", "lg", "lg"]}>
                 Random
               </Radio>
-              <Radio value="segmented" size="lg">
+              <Radio value="segmented" size={["md", "md", "lg", "lg"]}>
                 Segmented
               </Radio>
             </Stack>

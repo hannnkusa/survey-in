@@ -102,6 +102,8 @@ export default function HomeComponent() {
               }}
               controls
               autoPlay
+              loop
+              muted
             >
               <source
                 src="/static/videos/Tutorial Surveyin.mp4"
@@ -144,11 +146,8 @@ export default function HomeComponent() {
             {renderWordWithEmphasize(MIDDLE_TITLE2, MIDDLE_EMPHASIZE2)}
           </Heading>
         </Flex>
-        <Flex
-          gap="3.3vh"
-          direction={["column", "column", "row", "row"]}
-          paddingX={["24px", "24px", "0", "0"]}
-        >
+        {/* Desktop */}
+        <Flex gap="3.3vh" display={["none", "none", "flex", "flex"]}>
           {MIDDLE_CARDS.map(({ icon, title, description }, index) => (
             <Flex
               w={["", "", "100%", "100%"]}
@@ -177,12 +176,56 @@ export default function HomeComponent() {
                 marginBottom="1.6vh"
                 fontWeight="600"
               >
-                {index + 1}. {title}
+                {title}
               </Heading>
               <Text>{description}</Text>
             </Flex>
           ))}
         </Flex>
+        {/* Mobile */}
+        <Flex
+          gap="16px"
+          paddingX="24px"
+          display={["flex", "flex", "none", "none"]}
+          direction="column"
+        >
+          {MIDDLE_CARDS.map(({ icon, title, description }, index) => (
+            <Flex
+              w={["", "", "100%", "100%"]}
+              // maxW={364.92}
+              // h="27vh"
+              // maxH={204}
+              direction="column"
+              p="3.3vh"
+              key={index}
+              borderRadius={24}
+              boxShadow="0px 8px 16px -4px rgba(8, 67, 115, 0.3)"
+              textAlign="center"
+              boxSizing="content-box"
+            >
+              <Image
+                className={styles.centerAligned}
+                alt="title"
+                src={icon}
+                width={32}
+                height={32}
+              />
+              <Heading
+                as="h4"
+                fontSize={24}
+                marginTop="3.3vh"
+                marginBottom="1.6vh"
+                fontWeight="600"
+              >
+                {title}
+              </Heading>
+              <Text fontWeight={400} fontSize={16}>
+                {description}
+              </Text>
+            </Flex>
+          ))}
+        </Flex>
+        {/* Dekstop */}
         <Flex display={["none", "none", "flex", "flex"]} w="100%">
           <Flex
             bg="#1287DB"
@@ -227,6 +270,7 @@ export default function HomeComponent() {
             width={568}
           />
         </Flex>
+        {/* Mobile */}
         <Flex display={["flex", "flex", "none", "none"]} direction="column">
           <Image alt="Join with us" src={JoinWithUsVignette} />
           <Flex
