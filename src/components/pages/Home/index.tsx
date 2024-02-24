@@ -67,7 +67,7 @@ export default function HomeComponent() {
         </Flex>
         <Flex paddingX={["24px", "24px", "0", "0"]}>
           <Flex direction="column" display={["flex", "flex", "none", "none"]}>
-            <Heading as="h2" size="xl" fontWeight="700">
+            <Heading as="h2" size="xl" fontWeight="700" fontSize={24}>
               {renderWordWithEmphasize(
                 RIGHT_MAIN_CARD.title,
                 RIGHT_MAIN_CARD_EMPHASIZE
@@ -121,6 +121,8 @@ export default function HomeComponent() {
             boxShadow="4px 10px 24px 2px rgba(0, 0, 0, 0.10)"
             p={14}
             display={["none", "none", "flex", "flex"]}
+            justifyContent="center"
+            alignItems="center"
           >
             <Heading as="h2" size="xl" fontWeight="700">
               {renderWordWithEmphasize(
@@ -129,7 +131,7 @@ export default function HomeComponent() {
               )}
             </Heading>
             <br />
-            <OrderedList>
+            <OrderedList spacing={2}>
               {RIGHT_MAIN_CARD.list.map((text, index) => (
                 <ListItem key={index} fontWeight={500}>
                   {text}

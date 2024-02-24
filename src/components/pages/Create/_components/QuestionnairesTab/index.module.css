@@ -2,7 +2,7 @@
     border: 2px solid var(--chakra-colors-red-500);
 }
 .gdocsIframe {
-    width: 40vw;
+    width: 100%;
     height: 70vh;
 }
 
