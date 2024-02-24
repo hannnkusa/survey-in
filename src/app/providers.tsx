@@ -15,14 +15,16 @@ import reverse_logo from "@/assets/reverse-logo.svg";
 import Image from "next/image";
 
 import { useAuthStore } from "@/stores/auth";
-import { auth } from "@/firebase/config";
+import { auth, messaging } from "@/firebase/config";
 import { onAuthStateChanged } from "firebase/auth";
 import { getUserDetail } from "@/services/user";
+import { onMessage } from "firebase/messaging";
 import { useRouter } from "next/navigation";
 
 const workSans = Work_Sans({ subsets: ["latin"] });
 
 import Cookies from "js-cookie";
+import useFcmToken from "@/utils/hooks/useFcmToken";
 
 export default function Providers({
   children,
@@ -38,6 +40,10 @@ export default function Providers({
   const { replace } = useRouter();
   const { setCurrentUser, currentUser } = useAuthStore();
   const [redirecting, setRedirecting] = useState(true);
+
+  const { fcmToken, notificationPermissionStatus } = useFcmToken();
+  // Use the token as needed
+  fcmToken && console.log("FCM token:", fcmToken);
 
   useEffect(() => {
     const hasLogin = Cookies.get("signed-id");
@@ -80,6 +86,23 @@ export default function Providers({
       return () => unsubscribe();
     }
   }, [replace, setCurrentUser]);
+
+  useEffect(() => {
+    if (typeof window !== "undefined" && "serviceWorker" in navigator) {
+      const unsubscribe = onMessage(messaging, (payload) => {
+        console.log("Foreground push notification received:", payload);
+        // Handle the received push notification while the app is in the foreground
+        // You can display a notification or update the UI based on the payload
+        new Notification(payload?.notification?.title ?? "", {
+          body: payload?.notification?.body,
+          icon: "./logo.png",
+        });
+      });
+      return () => {
+        unsubscribe(); // Unsubscribe from the onMessage event
+      };
+    }
+  }, []);
 
   return (
     <>

@@ -33,7 +33,7 @@ export default function Counter({ value, setValue }: PricingCardProps) {
         variant="unstyled"
         placeholder="Unstyled"
         value={value}
-        w="5vw"
+        w={["12vw", "12vw", "5vw", "5vw"]}
         onChange={(event) => setValue(+event.target.value)}
         marginX="16px"
         textAlign="center"

@@ -1,3 +1,5 @@
+"use client";
+
 import { PropsWithRequiredChildren } from "@/types";
 
 import Providers from "./providers";
