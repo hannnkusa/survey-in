@@ -1,4 +1,11 @@
-import { useEffect, useCallback, useMemo } from "react";
+import {
+  useEffect,
+  useCallback,
+  useMemo,
+  useRef,
+  RefObject,
+  useState,
+} from "react";
 
 import {
   Flex,
@@ -11,6 +18,15 @@ import {
   Text,
   Box,
   Divider,
+  useDisclosure,
+  AlertDialog,
+  AlertDialogBody,
+  AlertDialogFooter,
+  AlertDialogHeader,
+  AlertDialogContent,
+  AlertDialogOverlay,
+  AlertDialogCloseButton,
+  Button,
 } from "@chakra-ui/react";
 
 import useRespondentTab from "./index.hook";
@@ -20,6 +36,7 @@ import Counter from "@/components/fragments/Counter";
 import { RespondentsTabProps } from "./index.types";
 import { RespondentNeeds } from "../RespondentNeeds";
 import RadioButtonGroup from "@/components/elements/RadioCard";
+import CheckboxButtonGroup from "@/components/elements/CheckboxCard";
 
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
@@ -59,7 +76,7 @@ export default function RespondentsTab({
     resolver: zodResolver(addRespondentSchema),
     defaultValues: {
       respondent_type: "",
-      segmented_type: "",
+      segmented_type: [],
       respondent_qty: 0,
     },
     mode: "onChange",
@@ -75,6 +92,10 @@ export default function RespondentsTab({
     handlePricingCalculation,
   } = useRespondentTab({ setPricing });
 
+  const [recentSegmentType, setRecentSegmentType] = useState<string>("");
+  const { isOpen, onOpen, onClose } = useDisclosure();
+  const cancelRef = useRef();
+
   const respondent_qty = watch("respondent_qty");
   const respondent_type = watch("respondent_type");
   const segmented_type = watch("segmented_type");
@@ -84,7 +105,7 @@ export default function RespondentsTab({
 
   const selection: any[] = useMemo(() => {
     const constructData = !!segmented_advanced_detail
-      ? Object.entries(JSON.parse(segmented_advanced_detail))
+      ? Object.entries(JSON.parse(segmented_advanced_detail) || {})
       : Object.entries({});
 
     return JSON.parse(JSON.stringify(constructData));
@@ -113,19 +134,8 @@ export default function RespondentsTab({
   }, [lastChangedAdvanced, selection]);
 
   useEffect(() => {
-    const payload = {
-      qty: respondent_qty,
-      segmented_type: segmented_type,
-      selection: selection,
-    };
-    handlePricingCalculation(payload);
-  }, [
-    handlePricingCalculation,
-    respondent_qty,
-    segmented_type,
-    selection,
-    watch,
-  ]);
+    handlePricingCalculation(respondent_qty);
+  }, [handlePricingCalculation, respondent_qty]);
 
   useEffect(() => {
     const checkSelection = async () => {
@@ -139,32 +149,41 @@ export default function RespondentsTab({
 
   const handleSegmentedTypeChanges = useCallback(
     async (val: string) => {
-      await setValue("segmented_type", val);
+      setRecentSegmentType(val);
       if (["basic", "advanced"].includes(val)) {
-        onOpenSelection();
-      } else if (segmented_type === "request-segment") {
-        const chatWA = constructWAChat({
-          head: "Halo+Ka%2C+saya+ingin+request+segment+untuk+penelitian+saya",
-          body: `email+%3A+${currentUser?.email}`,
-          phone_number,
-        });
-        const newWindow = window.open(chatWA, "_blank", "noopener,noreferrer");
-        if (newWindow) newWindow.opener = null;
-        handlePay(router);
+        if (segmented_type.includes(val)) {
+          const unselectedSegment =
+            val === "advanced"
+              ? "segmented_advanced_detail"
+              : "segmented_basic_detail";
+          setValue(unselectedSegment, null);
+        } else {
+          onOpenSelection();
+        }
+      } else if (val === "request-segment") {
+        onOpen();
       }
     },
-    [
-      currentUser?.email,
-      handlePay,
-      onOpenSelection,
-      router,
-      segmented_type,
-      setValue,
-    ]
+    [onOpen, onOpenSelection, segmented_type, setValue]
   );
 
+  const redirectReqSegmentToWA = useCallback(async () => {
+    const chatWA = constructWAChat({
+      head: "Halo+Ka%2C+saya+ingin+request+segment+untuk+penelitian+saya",
+      body: `email+%3A+${currentUser?.email}`,
+      phone_number,
+    });
+    const newWindow = window.open(chatWA, "_blank", "noopener,noreferrer");
+    if (newWindow) newWindow.opener = null;
+    handlePay(router, true);
+  }, [currentUser?.email, handlePay, router]);
+
   useEffect(() => {
-    if (!!respondent_qty || !!respondent_type || !!segmented_type) {
+    if (
+      !!respondent_qty ||
+      !!respondent_type ||
+      (!!segmented_type && segmented_type.length > 0)
+    ) {
       setRespondentDetail(getValues());
     }
   }, [
@@ -222,11 +241,16 @@ export default function RespondentsTab({
           <Stack gap={6}>
             <Divider h="2px" background="#E3E3E3" />
             <Flex w="100%" justifyContent="center" gap={4}>
-              <RadioButtonGroup
+              <CheckboxButtonGroup
                 name={"segmented-type"}
                 value={watch("segmented_type")}
-                defaultValue=""
-                onChange={handleSegmentedTypeChanges}
+                onChange={(val) =>
+                  setValue(
+                    "segmented_type",
+                    val.filter((option: string) => option !== "request-segment")
+                  )
+                }
+                onSelectedValue={handleSegmentedTypeChanges}
                 options={["basic", "advanced", "request-segment"]}
               />
             </Flex>
@@ -269,7 +293,7 @@ export default function RespondentsTab({
         isOpen={isOpenSelection}
         onClose={onCloseSelection}
         onOpen={onOpenSelection}
-        segmentedType={watch("segmented_type")}
+        segmentedType={recentSegmentType}
         respondentDetail={respondentDetail}
         setRespondentDetail={setRespondentDetail}
         register={register}
@@ -296,6 +320,40 @@ export default function RespondentsTab({
           setValue(`segmented_advanced_detail`, recentChanged as any);
         }}
       />
+
+      {/* This alert is used to receive confirmation from the user */}
+      <AlertDialog
+        isOpen={isOpen}
+        onClose={onClose}
+        leastDestructiveRef={cancelRef as RefObject<any>}
+        isCentered
+      >
+        <AlertDialogOverlay>
+          <AlertDialogContent p="8px">
+            <AlertDialogHeader fontSize="lg" fontWeight="bold">
+              Attention
+            </AlertDialogHeader>
+
+            <AlertDialogBody>
+              You select the request segment, this action will result in a
+              redirect to WhatsApp admin, continue?
+            </AlertDialogBody>
+
+            <AlertDialogFooter>
+              <Button ref={cancelRef as RefObject<any>} onClick={onClose}>
+                Cancel
+              </Button>
+              <Button
+                colorScheme="green"
+                onClick={redirectReqSegmentToWA}
+                ml={3}
+              >
+                Yes, Direct Me!
+              </Button>
+            </AlertDialogFooter>
+          </AlertDialogContent>
+        </AlertDialogOverlay>
+      </AlertDialog>
     </Flex>
   );
 }

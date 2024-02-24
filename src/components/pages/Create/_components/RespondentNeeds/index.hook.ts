@@ -9,11 +9,12 @@ export default function useRespondentNeeds({
   resetField,
   getValues,
   respondentDetail,
+  segmentedType,
   setRespondentDetail,
 }: RespondentNeedsProps) {
   const handleOnCancel = useCallback(async () => {
     const objToGet =
-      watch("segmented_type") === "basic"
+      segmentedType === "basic"
         ? "segmented_basic_detail"
         : "segmented_advanced_detail";
 
@@ -31,11 +32,11 @@ export default function useRespondentNeeds({
     }
 
     onClose();
-  }, [onClose, respondentDetail, setValue, watch]);
+  }, [onClose, respondentDetail, segmentedType, setValue, watch]);
 
   const handleOnApply = useCallback(() => {
     const objToGet =
-      watch("segmented_type") === "basic"
+      segmentedType === "basic"
         ? "segmented_basic_detail"
         : "segmented_advanced_detail";
     const objDetail = watch(objToGet);
@@ -54,7 +55,7 @@ export default function useRespondentNeeds({
     }
 
     onClose();
-  }, [getValues, onClose, setRespondentDetail, setValue, watch]);
+  }, [getValues, onClose, segmentedType, setRespondentDetail, setValue, watch]);
 
   return {
     handleOnApply,

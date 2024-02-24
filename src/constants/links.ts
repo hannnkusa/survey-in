@@ -13,7 +13,7 @@ export const NAV_URLS = [
   },
   {
     text: "Notification",
-    url: "#",
+    url: "/notification",
   },
   {
     text: "My Account",

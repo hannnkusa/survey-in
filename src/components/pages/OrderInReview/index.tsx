@@ -17,6 +17,7 @@ import {
   Button,
   IconButton,
   useToast,
+  Skeleton,
 } from "@chakra-ui/react";
 import { useParams } from "next/navigation";
 import dayjs from "dayjs";
@@ -86,9 +87,15 @@ export default function SummaryComponent() {
                 <Heading fontWeight={600} fontSize={18}>
                   Purchase time
                 </Heading>
-                <Text fontWeight={300} fontSize={16}>
-                  {dayjs(data?.data?.created_at).format("dddd[,] D MMMM YYYY")}
-                </Text>
+                <Skeleton borderRadius={40} isLoaded={!isLoading}>
+                  <Text fontWeight={300} fontSize={16}>
+                    {!data && !isLoading
+                      ? "Request Segment, Wait From Admin"
+                      : dayjs(data?.data?.created_at).format(
+                          "dddd[,] D MMMM YYYY"
+                        )}
+                  </Text>
+                </Skeleton>
               </Flex>
               <Flex
                 background="#EFF1F7"
@@ -100,19 +107,33 @@ export default function SummaryComponent() {
                 <Heading fontWeight={600} fontSize={18}>
                   Order number
                 </Heading>
-                <Flex alignItems="center">
-                  <Text fontWeight={300} fontSize={16} mr="56px">
-                    {data?.data?.id}
-                  </Text>
-                  <IconButton
-                    variant="unstyled"
-                    aria-label={"copy"}
-                    onClick={copylink}
-                    icon={
-                      <Image src={copy} alt={"copy to clipboard"} width={22} />
-                    }
-                  />
-                </Flex>
+                <Skeleton borderRadius={40} isLoaded={!isLoading}>
+                  <Flex alignItems="center">
+                    {!data && !isLoading ? (
+                      <Text fontWeight={300} fontSize={16} mr="56px">
+                        Request Segment, Wait From Admin
+                      </Text>
+                    ) : (
+                      <>
+                        <Text fontWeight={300} fontSize={16} mr="56px">
+                          {data?.data?.id}
+                        </Text>
+                        <IconButton
+                          variant="unstyled"
+                          aria-label={"copy"}
+                          onClick={copylink}
+                          icon={
+                            <Image
+                              src={copy}
+                              alt={"copy to clipboard"}
+                              width={22}
+                            />
+                          }
+                        />
+                      </>
+                    )}
+                  </Flex>
+                </Skeleton>
               </Flex>
               <Flex
                 background="#EFF1F7"
@@ -124,10 +145,13 @@ export default function SummaryComponent() {
                 <Heading fontWeight={600} fontSize={18}>
                   Buyer’s detail
                 </Heading>
-                <Text fontWeight={300} fontSize={16}>
-                  {data?.data?.full_name}, {data?.data?.email},{" "}
-                  {data?.data?.phone_number}
-                </Text>
+                <Skeleton borderRadius={40} isLoaded={!isLoading}>
+                  <Text fontWeight={300} fontSize={16}>
+                    {!data && !isLoading
+                      ? "Request Segment, Wait From Admin"
+                      : `${data?.data?.full_name}, ${data?.data?.email}, ${data?.data?.phone_number}`}
+                  </Text>
+                </Skeleton>
               </Flex>
             </Stack>
           </CardBody>
@@ -185,9 +209,15 @@ export default function SummaryComponent() {
                 <Heading fontWeight={300} fontSize={12}>
                   Purchase time
                 </Heading>
-                <Text fontWeight={500} fontSize={16}>
-                  {dayjs(data?.data?.created_at).format("dddd[,] D MMMM YYYY")}
-                </Text>
+                <Skeleton borderRadius={16} isLoaded={!isLoading}>
+                  <Text fontWeight={500} fontSize={16}>
+                    {!data && !isLoading
+                      ? "Request Segment, Wait From Admin"
+                      : dayjs(data?.data?.created_at).format(
+                          "dddd[,] D MMMM YYYY"
+                        )}
+                  </Text>
+                </Skeleton>
               </Flex>
               <Flex
                 background="#EFF1F7"
@@ -199,19 +229,33 @@ export default function SummaryComponent() {
                 <Heading fontWeight={300} fontSize={12}>
                   Order number
                 </Heading>
-                <Flex alignItems="center">
-                  <Text fontWeight={500} fontSize={16} mr="56px">
-                    {data?.data?.id}
-                  </Text>
-                  <IconButton
-                    variant="unstyled"
-                    aria-label={"copy"}
-                    onClick={copylink}
-                    icon={
-                      <Image src={copy} alt={"copy to clipboard"} width={18} />
-                    }
-                  />
-                </Flex>
+                <Skeleton borderRadius={16} isLoaded={!isLoading}>
+                  <Flex alignItems="center">
+                    {!data && !isLoading ? (
+                      <Text fontWeight={500} fontSize={16} mr="56px">
+                        Request Segment, Wait From Admin
+                      </Text>
+                    ) : (
+                      <>
+                        <Text fontWeight={500} fontSize={16} mr="56px">
+                          {data?.data?.id}
+                        </Text>
+                        <IconButton
+                          variant="unstyled"
+                          aria-label={"copy"}
+                          onClick={copylink}
+                          icon={
+                            <Image
+                              src={copy}
+                              alt={"copy to clipboard"}
+                              width={22}
+                            />
+                          }
+                        />
+                      </>
+                    )}
+                  </Flex>
+                </Skeleton>
               </Flex>
               <Flex
                 background="#EFF1F7"
@@ -223,10 +267,13 @@ export default function SummaryComponent() {
                 <Heading fontWeight={300} fontSize={12}>
                   Buyer’s detail
                 </Heading>
-                <Text fontWeight={500} fontSize={16}>
-                  {data?.data?.full_name}, {data?.data?.email},{" "}
-                  {data?.data?.phone_number}
-                </Text>
+                <Skeleton borderRadius={16} isLoaded={!isLoading}>
+                  <Text fontWeight={500} fontSize={16}>
+                    {!data && !isLoading
+                      ? "Request Segment, Wait From Admin"
+                      : `${data?.data?.full_name}, ${data?.data?.email}, ${data?.data?.phone_number}`}
+                  </Text>
+                </Skeleton>
               </Flex>
             </Stack>
           </CardBody>

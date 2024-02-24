@@ -87,8 +87,9 @@ export async function POST(req: NextRequest) {
         updated_at: dayjs().toISOString(),
         created_by: userId,
         questionnaire_filled: 0,
-        status:
-          payload.segmented_type === "request-segment" ? "in review" : "draft",
+        status: payload.segmented_type.includes("request-segment")
+          ? "in review"
+          : "draft",
       }
     );
 
