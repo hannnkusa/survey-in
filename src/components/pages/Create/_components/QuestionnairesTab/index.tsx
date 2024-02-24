@@ -27,11 +27,19 @@ export default function QuestionnairesTab({
 }: questionnairesTabProps) {
   const questionnaire = submittedUrl ? (
     <Flex gap="2vw" w="100%">
-      <iframe className={styles.gdocsIframe} src={submittedUrl} />
+      <iframe
+        sandbox="allow-same-origin allow-scripts allow-popups allow-forms"
+        className={styles.gdocsIframe}
+        src={submittedUrl}
+      />
     </Flex>
   ) : (
     <form onSubmit={onSubmitForm}>
-      <Flex flexDirection="column" gap="4vh" maxW={["90vw", "90vw", "none", "none"]}>
+      <Flex
+        flexDirection="column"
+        gap="4vh"
+        maxW={["90vw", "90vw", "none", "none"]}
+      >
         <InputGroup
           _visited={{
             borderColor: "none",

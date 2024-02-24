@@ -32,9 +32,10 @@ export default function useSummary({
   const [blobUrl, setBlobUrl] = useState<any>("");
   const toast = useToast();
   // useEffect(() => {
-  //   
+  //
   // }, []);
-  if (process?.env?.NEXT_PUBLIC_EMAILJS_PUBLIC_KEY) emailjs.init(process?.env?.NEXT_PUBLIC_EMAILJS_PUBLIC_KEY);
+  if (process?.env?.NEXT_PUBLIC_EMAILJS_PUBLIC_KEY)
+    emailjs.init(process?.env?.NEXT_PUBLIC_EMAILJS_PUBLIC_KEY);
 
   const onDrop = useCallback(
     async (acceptedFiles: any) => {
@@ -89,6 +90,27 @@ export default function useSummary({
       };
       const submittedOrder = await submitOrder(payload);
 
+      const summaryPromise = new Promise((resolve, reject) => {
+        if (!!submittedOrder) {
+          resolve(submittedOrder);
+        } else {
+          reject(new Error("Error"));
+        }
+      });
+
+      toast.promise(summaryPromise, {
+        success: {
+          title: "Success",
+          description: "Payment proof successfully submitted",
+        },
+        error: { title: "Failed", description: "Failed to post payment proof" },
+        loading: {
+          title: "Uploading",
+          description: "Please wait",
+          position: "top",
+        },
+      });
+
       if (
         process?.env?.NEXT_PUBLIC_SERVICE_ID &&
         process?.env?.NEXT_PUBLIC_TEMPLATE
@@ -118,20 +140,11 @@ export default function useSummary({
         );
       }
 
-      toast({
-        title: "Success",
-        description: "Payment proof successfully submitted",
-        status: "success",
-        duration: 5000,
-        isClosable: true,
-        position: "top",
-      });
-
       router.push(`/questionnaire/${questionnaireId}/order-in-review`);
     } catch (error) {
       toast({
         title: "Failed.",
-        description: "Failed to post order",
+        description: "Failed to post payment proof",
         status: "error",
         duration: 2000,
         isClosable: true,

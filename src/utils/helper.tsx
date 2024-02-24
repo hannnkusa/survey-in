@@ -41,10 +41,9 @@ export function formatPhoneNumber(phoneNumber: string) {
 }
 
 export const constructRespondentRequirement = (data: any) => {
-  const objToGet =
-    data.segmented_type === "basic"
-      ? data.segmented_basic_detail
-      : data.segmented_advanced_detail;
+  const segmentedBasicDetail = data.segmented_basic_detail || {};
+  const segmentedAdvancedDetail = data.segmented_advanced_detail || {};
+  const objToGet = { ...segmentedBasicDetail, ...segmentedAdvancedDetail };
 
   return Object.entries(objToGet ?? {}).map(([key, value]) => ({
     key: title(key),

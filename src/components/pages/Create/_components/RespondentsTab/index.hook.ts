@@ -18,25 +18,8 @@ export default function useRespondentTab({
     onClose: onCloseWarningAdvanced,
   } = useDisclosure();
 
-  const handlePricingCalculation = ({
-    qty,
-    segmented_type,
-    selection,
-  }: {
-    qty: number;
-    segmented_type: string;
-    selection: Record<string, any[]> | any;
-  }) => {
-    // let total = 0;
+  const handlePricingCalculation = (qty: number) => {
     const currentPrice = 2500 * qty;
-    // if (segmented_type === "advanced") {
-    //   if (!!selection && selection.length > 0) {
-    //     const multiplier = selection[0][1].length;
-    //     total = currentPrice * multiplier;
-    //   }
-    // } else {
-    //   total = currentPrice;
-    // }
     setPricing(currentPrice);
   };
 

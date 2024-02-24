@@ -42,6 +42,10 @@ function CheckboxCard(props: any) {
           boxShadow: "none",
         }}
         px={3}
+        onClick={() => {
+          // Call your custom onClick handler here
+          props.onClick && props.onClick();
+        }}
       >
         {props.children}
       </Box>
@@ -61,6 +65,7 @@ export default function CheckboxButtonGroup({
   name,
   defaultValue,
   onChange,
+  onSelectedValue,
   options,
   value,
 }: CheckboxButtonGroupProps) {
@@ -79,8 +84,8 @@ export default function CheckboxButtonGroup({
             <CheckboxCard
               key={value}
               {...checkbox}
-              onClick={(event: FormEvent<HTMLFormElement>) => {
-                event.preventDefault();
+              onClick={() => {
+                onSelectedValue?.(value);
               }}
             >
               {["male", "female"].includes(value) ? (

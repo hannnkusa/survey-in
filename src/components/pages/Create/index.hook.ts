@@ -5,7 +5,10 @@ import emailjs from "@emailjs/browser";
 import { FormValue, ProcessEnvConstants } from "./index.types";
 
 import { RespondentPostUI } from "@/types/questionnaire";
-import { postQuestionnaire, getGoogleFormTitle } from "@/services/questionnaire";
+import {
+  postQuestionnaire,
+  getGoogleFormTitle,
+} from "@/services/questionnaire";
 
 import { useAuthStore } from "@/stores/auth";
 
@@ -51,24 +54,34 @@ export default function useCreate() {
     }
   };
 
-  const handlePay = async (router: any) => {
+  const handlePay = async (router: any, isReqSegment: boolean = false) => {
     try {
       const { currentUser } = useAuthStore.getState();
 
-      const payload = {
-        ...respondentDetail,
-        questionnaire_url: submittedUrl,
-        questionnaire_title: formTitle,
-        questionnaire_total_price: pricing,
-        created_by_name: currentUser?.displayName,
-      };
+      const payload = isReqSegment
+        ? {
+            created_by_name: currentUser?.displayName,
+            questionnaire_url: submittedUrl,
+            questionnaire_title: formTitle,
+            questionnaire_total_price: 0,
+            respondent_qty: 0,
+            respondent_type: "segmented",
+            segmented_advanced_detail: null,
+            segmented_basic_detail: null,
+            segmented_type: ["request-segment"],
+          }
+        : {
+            ...respondentDetail,
+            created_by_name: currentUser?.displayName,
+            questionnaire_url: submittedUrl,
+            questionnaire_title: formTitle,
+            questionnaire_total_price: pricing,
+          };
 
       const result = await postQuestionnaire(payload, currentUser?.uid);
       router.push(
         `/questionnaire/${result.data.data.id}${
-          respondentDetail?.segmented_type === "request-segment"
-            ? "/order-in-review"
-            : ""
+          isReqSegment ? "/order-in-review" : ""
         }`
       );
     } catch (error) {}
@@ -86,12 +99,12 @@ export default function useCreate() {
               return true;
             } else {
               if (
-                respondentDetail.segmented_type === "basic" &&
+                respondentDetail.segmented_type.includes("basic") &&
                 !!respondentDetail.segmented_basic_detail
               )
                 return false;
               if (
-                respondentDetail.segmented_type === "advanced" &&
+                respondentDetail.segmented_type.includes("advanced") &&
                 !!respondentDetail.segmented_advanced_detail
               )
                 return false;
