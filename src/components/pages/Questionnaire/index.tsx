@@ -120,7 +120,7 @@ export default function QuestionnaireComponent() {
         >
           My Questionnaire
         </Heading>
-        <Stack spacing="4">
+        <Stack spacing="4" marginBottom="96px">
           {data?.data && data?.data.length > 0 ? (
             data?.data?.map((val, index) => (
               <Link href={`/questionnaire/${val?.id}`} key={index}>
