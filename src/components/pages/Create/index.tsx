@@ -16,23 +16,16 @@ import {
   Grid,
 } from "@chakra-ui/react";
 
-import Image from "next/image";
-
-import Button from "@/components/elements/Button";
 import MainLayout from "@/components/layouts/MainLayout";
 
 import PricingCard from "./_components/PricingCard";
 import QuestionnairesTab from "./_components/QuestionnairesTab";
 import RespondentsTab from "./_components/RespondentsTab";
 
-import success from "./_assets/success.svg";
-
 import useCreate from "./index.hook";
 
-import Link from "next/link";
-
 import { useRouter } from "next/navigation";
-import BackButton from "@/components/elements/BackButton";
+import styles from "./index.module.css";
 
 export default function CreateComponent() {
   const {
@@ -181,6 +174,7 @@ export default function CreateComponent() {
           right={["", "", "56px", "72px"]}
           bottom={["24px", "24px", 0, 0]}
           top={["", "", "180px", "180px"]}
+          className={styles.contentPricing}
         >
           {contentPricing}
         </Flex>

@@ -1,7 +1,18 @@
 .inputLink:not([value=""]):focus:invalid {
     border: 2px solid var(--chakra-colors-red-500);
 }
+
 .gdocsIframe {
     width: 40vw;
     height: 70vh;
+}
+
+.contentPricing {
+    display: none;
+}
+
+@media screen and (min-height: 450px) {
+    .contentPricing {
+        display: flex;
+    }
 }

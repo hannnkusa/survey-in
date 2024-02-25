@@ -1,3 +1,7 @@
+"use client";
+
+import { useEffect, useRef } from "react";
+
 import {
   Flex,
   Heading,
@@ -10,11 +14,7 @@ import {
 import { LinkIcon } from "@chakra-ui/icons";
 import Button from "@/components/elements/Button";
 
-import Image from "next/image";
-
 import styles from "./index.module.css";
-
-import dropLink from "../../_assets/dropLink.svg";
 
 import { questionnairesTabProps } from "./index.types";
 
@@ -25,10 +25,29 @@ export default function QuestionnairesTab({
   onHideForm,
   onShowForm,
 }: questionnairesTabProps) {
+  const iframeRef = useRef<HTMLIFrameElement>(null); // Specify the type here
+
+  useEffect(() => {
+    const iframe = iframeRef.current;
+    if (iframe) {
+      const iframeDocument =
+        iframe.contentDocument || iframe.contentWindow?.document;
+      if (iframeDocument) {
+        const links = iframeDocument.getElementsByTagName("a");
+        for (let i = 0; i < links.length; i++) {
+          links[i].addEventListener("click", (event) => {
+            event.preventDefault();
+          });
+        }
+      }
+    }
+  }, []);
+
   const questionnaire = submittedUrl ? (
     <Flex gap="2vw" w="100%">
       <iframe
-        sandbox="allow-same-origin allow-scripts allow-popups allow-forms"
+        ref={iframeRef}
+        sandbox="allow-same-origin allow-scripts allow-forms"
         className={styles.gdocsIframe}
         src={submittedUrl}
       />
