@@ -27,7 +27,12 @@ export default function QuestionnairesTab({
 }: questionnairesTabProps) {
   const questionnaire = submittedUrl ? (
     <Flex gap="2vw" w="100%">
-      <embed className={styles.gdocsIframe} src={submittedUrl} />
+      {/* <embed className={styles.gdocsIframe} src={submittedUrl} /> */}
+      <iframe
+        sandbox="allow-same-origin allow-scripts allow-forms"
+        className={styles.gdocsIframe}
+        src={submittedUrl}
+      />
     </Flex>
   ) : (
     <form onSubmit={onSubmitForm}>
