@@ -11,6 +11,7 @@ import convertSize from "convert-size";
 import dayjs from "dayjs";
 import id from "dayjs/locale/id";
 import { currencyFormat } from "@/utils/helper";
+import { useAuthStore } from "@/stores/auth";
 
 dayjs.locale(id);
 
@@ -73,6 +74,8 @@ export default function useSummary({
 
   const onSubmit = async (data: OrderPostUI) => {
     try {
+      const { currentUser } = useAuthStore.getState();
+
       if (!watch("file") && !blobUrl) {
         return toast({
           title: "Failed",
@@ -86,6 +89,7 @@ export default function useSummary({
 
       const payload = {
         ...data,
+        created_by_name: currentUser?.displayName,
         questionnaire_id: questionnaireId,
       };
       const submittedOrder = await submitOrder(payload);

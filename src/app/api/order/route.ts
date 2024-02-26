@@ -93,6 +93,17 @@ export async function POST(
       updated_at: new Date().toISOString(),
     });
 
+    await addDoc(collection(database, "notifications"), {
+      title: "Payment Proof Uploaded",
+      description: `Payment Proof uploaded by ${payload.created_by_name}}`,
+      url: `/transaction/order/${questionnaireData.id}`,
+      target: "super-admin",
+      created_at: dayjs().toISOString(),
+      updated_at: null,
+      deleted_at: null,
+      readed: false,
+    });
+
     return NextResponse.json({
       message: "Order added successfully👍",
       data: {

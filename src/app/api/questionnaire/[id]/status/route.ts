@@ -1,9 +1,10 @@
-import { updateDoc, doc } from "firebase/firestore";
+import { updateDoc, doc, collection, addDoc, getDoc } from "firebase/firestore";
 import { database } from "@/firebase/config";
+import dayjs from "dayjs";
 
 export async function PUT(
   req: Request,
-  { params }: { params: { id: string } },
+  { params }: { params: { id: string } }
 ) {
   try {
     const payload = await req.json();
@@ -12,6 +13,19 @@ export async function PUT(
     await updateDoc(doc(database, "questionnaires", id as string), {
       ...payload,
       updated_at: new Date().toISOString(),
+    });
+    const questionnaireData = await getDoc(
+      doc(database, "questionnaires", id as string)
+    );
+    await addDoc(collection(database, "notifications"), {
+      title: "Questionnaire Status Updated",
+      description: "Questionnaire status updated by Super Admin",
+      url: `/questionnaire/${id}`,
+      target: questionnaireData?.data()?.created_by,
+      created_at: dayjs().toISOString(),
+      updated_at: null,
+      deleted_at: null,
+      readed: false,
     });
     return Response.json({
       message: "Questionnaire status updated successfully👍",

@@ -1,7 +1,5 @@
 import { FormEvent, useEffect, useMemo, useState } from "react";
-import { useToast } from "@chakra-ui/react";
-import emailjs from "@emailjs/browser";
-import axios from "axios";
+import { useDisclosure } from "@chakra-ui/react";
 
 import { FormValue, ProcessEnvConstants } from "./index.types";
 
@@ -9,6 +7,7 @@ import { RespondentPostUI } from "@/types/questionnaire";
 import {
   postQuestionnaire,
   getGoogleFormTitle,
+  getGoogleFormPureUrl,
 } from "@/services/questionnaire";
 
 import { useAuthStore } from "@/stores/auth";
@@ -36,44 +35,19 @@ export default function useCreate() {
     setTabIndex(index);
   };
 
-  const toast = useToast();
-
-  const handleSubmitForm = (event: FormEvent<HTMLFormElement>) => {
+  const handleSubmitForm = async (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault();
-    setSubmittedUrl(
+    const url = await getGoogleFormPureUrl(
       (event.target as typeof event.target & FormValue).url.value
     );
+    setSubmittedUrl(url?.data?.pure_url);
   };
 
   const sendEmail = async () => {
     try {
-      const response = await axios({
-        url: submittedUrl as string,
-        method: "GET",
-        headers: {
-          "Content-Type": "/",
-          Accept: "/",
-          // Origin: "*",
-          "Access-Control-Allow-Origin": "*",
-          "Access-Control-Allow-Methods": "DELETE, POST, GET, OPTIONS",
-          "Access-Control-Allow-Headers":
-            "Content-Type, Authorization, X-Requested-With",
-        },
-      });
-      const titleMatch = response.data.match(/<title>(.*?)<\/title>/);
-      const title = titleMatch ? titleMatch[1] : undefined;
+      const result = await getGoogleFormTitle(submittedUrl);
 
-      if (title === undefined) {
-        toast({
-          title: `Failed`,
-          description: "Form Title Not Detected!",
-          status: "error",
-          position: "top",
-          isClosable: true,
-        });
-      }
-
-      setFormTitle(title as string);
+      setFormTitle(result.data.title);
 
       setTabIndex(1);
     } catch (error) {
