@@ -93,6 +93,17 @@ export async function POST(req: NextRequest) {
       }
     );
 
+    await addDoc(collection(database, "notifications"), {
+      title: "Questionnaire Created",
+      description: `Questionnaire created by ${payload.created_by_name}`,
+      url: `/transaction/order/${questionnaireData.id}`,
+      target: "super-admin",
+      created_at: dayjs().toISOString(),
+      updated_at: null,
+      deleted_at: null,
+      readed: false,
+    });
+
     return NextResponse.json({
       message: "Questionnaire added successfully👍",
       data: {

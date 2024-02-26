@@ -1,63 +1,71 @@
 import { FC } from "react";
-import { Grid, GridItem, Text } from "@chakra-ui/react";
-import { resolveStatusColor } from "@/utils/helper";
+import {
+  Card,
+  CardHeader,
+  CardBody,
+  Heading,
+  Text,
+  Badge,
+} from "@chakra-ui/react";
 import { ListComponentProps } from "./index.types";
+import { useAuthStore } from "@/stores/auth";
 import Link from "next/link";
+
+import { putNotificationReadedCondition } from "@/services/notification";
 
 import dayjs from "dayjs";
 
 const List: FC<ListComponentProps> = ({ data }) => {
-  const {
-    id,
-    questionnaire_title,
-    created_at,
-    respondent_qty,
-    questionnaire_filled,
-    updated_at,
-    status,
-  } = data;
+  const { currentUser } = useAuthStore();
+  const { id, url, title, description, created_at, readed } = data;
+
+  const handleChangeReadedCondition = async (id: string) => {
+    await putNotificationReadedCondition({ readed: true }, id);
+  };
 
   return (
-    <Link href={`/questionnaire/${id}`}>
-      <Grid
-        templateColumns="repeat(12, 1fr)"
+    <Link
+      href={
+        currentUser?.userDetail?.role === "super-admin"
+          ? `/app-control${url}`
+          : ""
+      }
+    >
+      <Card
         gap={4}
         boxShadow="0px 8px 16px -4px rgba(8, 67, 115, 0.30)"
         borderRadius="16px"
         p="16px"
-        w="100%"
         alignContent="center"
         transition="box-shadow 0.3s ease-in-out"
         _hover={{
           boxShadow: "0px 12px 16px -4px rgba(8, 67, 115, 0.50)",
         }}
+        variant="unstyled"
+        size="sm"
+        onClick={() => {
+          handleChangeReadedCondition(id);
+        }}
       >
-        <GridItem colSpan={4}>
-          <Text fontSize="xl" as="b">
-            {questionnaire_title}
+        <CardHeader>
+          <Heading size="md">
+            {title}
+            {!readed && (
+              <Badge ml="3" fontSize="0.8em" colorScheme="green">
+                New
+              </Badge>
+            )}
+          </Heading>
+        </CardHeader>
+        <CardBody>
+          <Text pt="2" fontSize="sm">
+            {description}
           </Text>
-          <Text fontSize="md">{dayjs(created_at).format("DD MMM YYYY")}</Text>
-        </GridItem>
-        <GridItem colSpan={2} alignSelf="center">
-          <Text fontSize="xl" fontWeight="300">
-            {questionnaire_filled}/{respondent_qty}
+          <Text pt="2" fontSize="sm">
+            {dayjs(created_at).format("dddd[,] D MMMM YYYY")}
           </Text>
-        </GridItem>
-        <GridItem colSpan={2} alignSelf="center">
-          <Text fontSize="xl" fontWeight="300">
-            {dayjs(updated_at).format("DD MMM YYYY")}
-          </Text>
-        </GridItem>
-        <GridItem colSpan={4} alignSelf="center">
-          <Text
-            fontSize="xl"
-            color={resolveStatusColor(status)}
-            textTransform="capitalize"
-          >
-            {status}
-          </Text>
-        </GridItem>
-      </Grid>
+        </CardBody>
+      </Card>
     </Link>
   );
 };

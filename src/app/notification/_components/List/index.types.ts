@@ -1,6 +1,6 @@
-import { QuestionnaireUI } from "@/types/questionnaire";
+import { NotificationUI } from "@/types/notification";
 
 export interface ListComponentProps {
-  data: QuestionnaireUI;
+  data: NotificationUI;
   // other props
 }
