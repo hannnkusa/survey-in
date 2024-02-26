@@ -32,7 +32,7 @@ export async function GET(req: NextRequest) {
     } else {
       const locationHeader = response.headers.get("location");
       if (locationHeader) {
-        return locationHeader; // This is the real redirect URL
+        pure_url = locationHeader; // This is the real redirect URL
       } else {
         pure_url = url; // This is the real redirect URL
       }
