@@ -1,6 +1,7 @@
 import { FormEvent, useEffect, useMemo, useState } from "react";
-import { useDisclosure } from "@chakra-ui/react";
+import { useToast } from "@chakra-ui/react";
 import emailjs from "@emailjs/browser";
+import axios from "axios";
 
 import { FormValue, ProcessEnvConstants } from "./index.types";
 
@@ -35,6 +36,8 @@ export default function useCreate() {
     setTabIndex(index);
   };
 
+  const toast = useToast();
+
   const handleSubmitForm = (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault();
     setSubmittedUrl(
@@ -44,9 +47,33 @@ export default function useCreate() {
 
   const sendEmail = async () => {
     try {
-      const result = await getGoogleFormTitle(submittedUrl);
+      const response = await axios({
+        url: submittedUrl as string,
+        method: "GET",
+        headers: {
+          "Content-Type": "/",
+          Accept: "/",
+          // Origin: "*",
+          "Access-Control-Allow-Origin": "*",
+          "Access-Control-Allow-Methods": "DELETE, POST, GET, OPTIONS",
+          "Access-Control-Allow-Headers":
+            "Content-Type, Authorization, X-Requested-With",
+        },
+      });
+      const titleMatch = response.data.match(/<title>(.*?)<\/title>/);
+      const title = titleMatch ? titleMatch[1] : undefined;
 
-      setFormTitle(result.data.title);
+      if (title === undefined) {
+        toast({
+          title: `Failed`,
+          description: "Form Title Not Detected!",
+          status: "error",
+          position: "top",
+          isClosable: true,
+        });
+      }
+
+      setFormTitle(title as string);
 
       setTabIndex(1);
     } catch (error) {

@@ -80,7 +80,16 @@ export const putQuestionnaireUpdatePrice = async (
 
 export const getGoogleFormTitle = async (googleFormUrl: string) => {
   const res = await callAPI({
-    path: `/get-google-form-title?url=${googleFormUrl}`,
+    path: `/google-form/get-title?url=${googleFormUrl}`,
+    method: "GET",
+  });
+
+  return res.data;
+};
+
+export const getGoogleFormPureUrl = async (googleFormUrl: string) => {
+  const res = await callAPI({
+    path: `/google-form/get-pure-url?url=${googleFormUrl}`,
     method: "GET",
   });
 
