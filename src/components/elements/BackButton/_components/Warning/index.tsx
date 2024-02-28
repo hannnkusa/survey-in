@@ -6,8 +6,10 @@ import {
   AlertDialogHeader,
   AlertDialogContent,
   AlertDialogOverlay,
-  Button,
+  // Button,
 } from "@chakra-ui/react";
+
+import Button from "@/components/elements/Button";
 
 import { WarningComponentProps } from "./index.types";
 
@@ -30,13 +32,17 @@ export default function WarningComponent({
       >
         <AlertDialogOverlay />
 
-        <AlertDialogContent p="8px">
+        <AlertDialogContent p="8px" marginX={[8, 8, 0, 0]}>
           <AlertDialogHeader>Discard Changes?</AlertDialogHeader>
           <AlertDialogBody>
             Are you sure you want to discard all of your changes?
           </AlertDialogBody>
           <AlertDialogFooter>
-            <Button ref={cancelRef as RefObject<any>} onClick={onClose} w="134px">
+            <Button
+              ref={cancelRef as RefObject<any>}
+              onClick={onClose}
+              w="134px"
+            >
               No
             </Button>
             <Button colorScheme="red" ml={3} w="134px" onClick={handler}>

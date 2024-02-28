@@ -13,7 +13,7 @@ export default function BackButton({ hasWarn, customFunction, left }: BackButton
   const executeFunction = hasWarn ? onOpen : functionToExecute;
 
   return (
-    <Box position="relative">
+    <Box position="relative" zIndex={100}>
       <IconButton
         variant="unstyled"
         colorScheme="teal"
