@@ -27,6 +27,8 @@ import useCreate from "./index.hook";
 import { useRouter } from "next/navigation";
 import styles from "./index.module.css";
 
+import BackButton from "@/components/elements/BackButton";
+
 export default function CreateComponent() {
   const {
     submittedUrl,
@@ -165,6 +167,12 @@ export default function CreateComponent() {
 
   return (
     <MainLayout>
+      <BackButton
+        hasWarn
+        customFunction={() => {
+          router.push("/questionnaire");
+        }}
+      />
       <Flex justifyContent="center">
         <Flex w="100vw" justifyContent="center" alignItems="center">
           {contentTab}

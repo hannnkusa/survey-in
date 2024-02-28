@@ -95,7 +95,7 @@ export async function POST(
 
     await addDoc(collection(database, "notifications"), {
       title: "Payment Proof Uploaded",
-      description: `Payment Proof uploaded by ${payload.created_by_name}}`,
+      description: `Payment Proof uploaded by ${payload.created_by_name}`,
       url: `/transaction/order/${questionnaireData.id}`,
       target: "super-admin",
       created_at: dayjs().toISOString(),

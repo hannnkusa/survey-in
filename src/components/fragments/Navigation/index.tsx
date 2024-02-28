@@ -219,31 +219,102 @@ export default function Navigation() {
         flexDir="column"
       >
         <Flex flexDir="column" alignItems="flex-end" justifyContent="center">
-          {NAV_URLS.map(({ text, url }, index) => (
-            <Link key={index} href={url}>
-              <Button
-                as="a"
-                variant="ghost"
-                aria-label={text}
-                my={5}
-                fontWeight={500}
-              >
-                {text}
-              </Button>
-            </Link>
-          ))}
-
-          {/* <Link href="/about" passHref>
-            <Button as="a" variant="ghost" aria-label="About" my={5} w="100%">
-              About
-            </Button>
-          </Link>
-
-          <Link href="/contact" passHref>
-            <Button as="a" variant="ghost" aria-label="Contact" my={5} w="100%">
-              Contact
-            </Button>
-          </Link> */}
+          {NAV_URLS.map(({ text, url }, index) => {
+            if (currentUser && text === "My Account") {
+              return (
+                <Box key={index}>
+                  <Popover>
+                    <PopoverTrigger>
+                      <Button
+                        as="a"
+                        variant="ghost"
+                        aria-label={text}
+                        my={5}
+                        fontWeight={500}
+                      >
+                        {text}
+                      </Button>
+                    </PopoverTrigger>
+                    <PopoverContent color="#193742" borderRadius="40px">
+                      <PopoverArrow />
+                      {/* <PopoverCloseButton /> */}
+                      <PopoverHeader padding="32px">
+                        <Flex justifyContent="center" alignItems="center">
+                          <Flex direction="column">
+                            <Avatar
+                              size="lg"
+                              name={currentUser?.displayName ?? ""}
+                              src={currentUser?.photoURL ?? ""}
+                            />
+                            <Heading as="h3" size="lg" marginTop="16px">
+                              {currentUser.displayName}
+                            </Heading>
+                          </Flex>
+                          <IconButton
+                            variant="unstyled"
+                            aria-label="Call Segun"
+                            size="lg"
+                            icon={<ChevronRightIcon boxSize={10} />}
+                          />
+                        </Flex>
+                      </PopoverHeader>
+                      <PopoverBody paddingX="32px">
+                        <Flex
+                          direction="column"
+                          justifyContent="flex-start"
+                          gap={2}
+                        >
+                          {currentUser?.userDetail?.role === "super-admin" && (
+                            <Flex
+                              onClick={() => {
+                                push("/app-control");
+                              }}
+                              fontWeight={400}
+                              fontSize={16}
+                              cursor="pointer"
+                              w="100%"
+                            >
+                              Super Admin
+                            </Flex>
+                          )}
+                          <Flex
+                            onClick={handleLogout}
+                            fontWeight={400}
+                            fontSize={16}
+                            cursor="pointer"
+                            w="100%"
+                          >
+                            Logout
+                          </Flex>
+                        </Flex>
+                      </PopoverBody>
+                    </PopoverContent>
+                  </Popover>
+                </Box>
+              );
+            } else {
+              return (
+                <Link
+                  key={index}
+                  href={
+                    text === "Support" ? createSupportLink(currentUser) : url
+                  }
+                  rel={text === "Support" ? "noopener noreferrer" : ""}
+                  target={text === "Support" ? "_blank" : ""}
+                >
+                  <Button
+                    as="a"
+                    variant="ghost"
+                    aria-label={text}
+                    my={5}
+                    fontWeight={500}
+                  >
+                    {text}
+                  </Button>
+                </Link>
+              );
+            }
+          })}
         </Flex>
       </Flex>
     </Flex>

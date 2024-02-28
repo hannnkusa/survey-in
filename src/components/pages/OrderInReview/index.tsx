@@ -1,8 +1,9 @@
 "use client";
 
+import { useState } from "react";
 import LoaderOverlay from "@/components/elements/LoaderOverlay";
 import MainLayout from "@/components/layouts/MainLayout";
-import { useQuestionnaireDetail } from "@/services/questionnaire";
+import { postRating } from "@/services/rating";
 import { useOrderDetail } from "@/services/order";
 import { useAuthStore } from "@/stores/auth";
 
@@ -14,11 +15,23 @@ import {
   Stack,
   Card,
   CardBody,
-  Button,
+  // Button,
   IconButton,
   useToast,
   Skeleton,
+  Modal,
+  ModalOverlay,
+  ModalContent,
+  ModalHeader,
+  ModalFooter,
+  ModalBody,
+  ModalCloseButton,
+  useDisclosure,
+  Textarea,
 } from "@chakra-ui/react";
+
+import Button from "@/components/elements/Button";
+
 import { useParams } from "next/navigation";
 import dayjs from "dayjs";
 
@@ -29,9 +42,17 @@ import copy from "./_assets/copy.svg";
 
 import Image from "next/image";
 
-export default function SummaryComponent() {
+import StarRating from "@/components/fragments/StarRating";
+
+import { useRouter } from "next/navigation";
+
+export default function OrderInReviewComponent() {
   const params = useParams();
   const { currentUser } = useAuthStore.getState();
+  const { isOpen, onOpen, onClose } = useDisclosure();
+  const [rating, setRating] = useState(0);
+  const [feedback, setFeedback] = useState("");
+  const { push } = useRouter();
 
   const questionnaireId = params?.id;
 
@@ -48,6 +69,52 @@ export default function SummaryComponent() {
       isClosable: true,
       position: "top",
     });
+  };
+
+  const handleSubmitRating = async () => {
+    try {
+      if (rating < 1) {
+        toast({
+          title: "Please give us rating and feedback",
+          description:
+            "To improve our service and quality, please give us a rating and feedback, thanks!",
+          status: "info",
+          duration: 5000,
+          isClosable: true,
+          position: "top",
+        });
+        return;
+      }
+
+      const payload = {
+        rating: rating,
+        feedback: feedback,
+        created_by: currentUser?.uid,
+        created_by_name: currentUser?.displayName,
+        created_by_email: currentUser?.email,
+      };
+      await postRating(payload);
+
+      toast({
+        title: "Your rating and feedback has been saved",
+        description: "Thanks for your rating and feedback.",
+        status: "success",
+        duration: 5000,
+        isClosable: true,
+        position: "top",
+      });
+
+      push("/questionnaire");
+    } catch (error) {
+      toast({
+        title: "Ups, there was an error!",
+        description: "Something went wrong, please try again later.",
+        status: "error",
+        duration: 5000,
+        isClosable: true,
+        position: "top",
+      });
+    }
   };
 
   return (
@@ -156,19 +223,20 @@ export default function SummaryComponent() {
             </Stack>
           </CardBody>
         </Card>
-        <Link href="/questionnaire">
-          <Button
-            bg="#00ADF0"
-            color="#FBF9F9"
-            fontWeight={500}
-            fontSize={16}
-            w="236px"
-            h="56px"
-            borderRadius="34px"
-          >
-            Review progress
-          </Button>
-        </Link>
+        {/* <Link href="/questionnaire"> */}
+        <Button
+          bg="#00ADF0"
+          color="#FBF9F9"
+          fontWeight={500}
+          fontSize={16}
+          w="236px"
+          h="56px"
+          borderRadius="34px"
+          onClick={onOpen}
+        >
+          Review progress
+        </Button>
+        {/* </Link> */}
         <LoaderOverlay isLoading={isLoading} />
       </Grid>
 
@@ -278,21 +346,71 @@ export default function SummaryComponent() {
             </Stack>
           </CardBody>
         </Card>
-        <Link href="/questionnaire">
-          <Button
-            bg="#00ADF0"
-            color="#FBF9F9"
-            fontWeight={500}
-            fontSize={16}
-            w="236px"
-            h="56px"
-            borderRadius="34px"
-          >
-            Review progress
-          </Button>
-        </Link>
+        {/* <Link href="/questionnaire"> */}
+        <Button
+          bg="#00ADF0"
+          color="#FBF9F9"
+          fontWeight={500}
+          fontSize={16}
+          w="236px"
+          h="56px"
+          borderRadius="34px"
+          onClick={onOpen}
+        >
+          Review progress
+        </Button>
+        {/* </Link> */}
         <LoaderOverlay isLoading={isLoading} />
       </Stack>
+
+      {/* Rating Modal */}
+      <Modal
+        isOpen={isOpen ?? false}
+        onClose={() => {}}
+        scrollBehavior="inside"
+        closeOnOverlayClick={false}
+        isCentered
+      >
+        <ModalOverlay />
+        <ModalContent maxW={["90vw", "90vw", "45vw", "45vw"]}>
+          <ModalBody p="45px">
+            <Flex
+              justifyContent="center"
+              alignItems="center"
+              direction="column"
+              gap={4}
+            >
+              <Text>What you think about Survey-in?</Text>
+              <StarRating rating={rating} setRating={setRating} size={10} />
+              {rating < 1 && (
+                <Text size="sm" color="#3ED556">
+                  Please, rate us from 1 to 5
+                </Text>
+              )}
+              <Textarea
+                placeholder="Any feedback? Describe it here. (optional)"
+                value={feedback}
+                onChange={(e) => setFeedback(e.target.value)}
+              />
+            </Flex>
+          </ModalBody>
+
+          <ModalFooter
+            boxShadow="4px -10px 24px 2px rgba(0, 0, 0, 0.06)"
+            padding="32px"
+          >
+            <Button
+              bg="#00ADF0"
+              color="white"
+              h="35px"
+              w="134px"
+              onClick={handleSubmitRating}
+            >
+              Submit
+            </Button>
+          </ModalFooter>
+        </ModalContent>
+      </Modal>
     </MainLayout>
   );
 }
