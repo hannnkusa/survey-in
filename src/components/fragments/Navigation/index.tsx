@@ -20,6 +20,8 @@ import {
   Button,
   IconButton,
   Switch,
+  Collapse,
+  useDisclosure,
 } from "@chakra-ui/react";
 import Image from "next/image";
 import Link from "next/link";
@@ -47,7 +49,8 @@ export default function Navigation() {
   const { setCurrentUser, currentUser } = useAuthStore();
   const { createSupportLink } = useNavigation();
   const { replace, push } = useRouter();
-  const [display, changeDisplay] = useState("none");
+  const [display, changeDisplay] = useState(["none", "none", "none", "none"]);
+  const { isOpen, onToggle } = useDisclosure();
 
   const handleLogout = async () => {
     await logout();
@@ -193,13 +196,19 @@ export default function Navigation() {
             ml="auto"
             variant="unstyled"
             icon={
-              display === "flex" ? (
+              display[0] === "flex" ? (
                 <CloseIcon color="#FFFFFF" />
               ) : (
                 <HamburgerIcon color="#FFFFFF" />
               )
             }
-            onClick={() => changeDisplay(display === "flex" ? "none" : "flex")}
+            onClick={() =>
+              changeDisplay(
+                display[0] === "flex"
+                  ? ["none", "none", "none", "none"]
+                  : ["flex", "flex", "none", "none"]
+              )
+            }
             display={["flex", "flex", "none", "none"]}
           />
           {/* <Switch color="green" isChecked={isDark} onChange={toggleColorMode} /> */}
@@ -210,7 +219,7 @@ export default function Navigation() {
         w="100vw"
         display={display}
         bgColor="gray.50"
-        zIndex={20}
+        zIndex={1000}
         h="100vh"
         pos="fixed"
         top={69}
@@ -222,75 +231,83 @@ export default function Navigation() {
           {NAV_URLS.map(({ text, url }, index) => {
             if (currentUser && text === "My Account") {
               return (
-                <Box key={index}>
-                  <Popover>
-                    <PopoverTrigger>
-                      <Button
-                        as="a"
-                        variant="ghost"
-                        aria-label={text}
-                        my={5}
-                        fontWeight={500}
-                      >
-                        {text}
-                      </Button>
-                    </PopoverTrigger>
-                    <PopoverContent color="#193742" borderRadius="40px">
-                      <PopoverArrow />
-                      {/* <PopoverCloseButton /> */}
-                      <PopoverHeader padding="32px">
-                        <Flex justifyContent="center" alignItems="center">
-                          <Flex direction="column">
-                            <Avatar
-                              size="lg"
-                              name={currentUser?.displayName ?? ""}
-                              src={currentUser?.photoURL ?? ""}
-                            />
-                            <Heading as="h3" size="lg" marginTop="16px">
-                              {currentUser.displayName}
-                            </Heading>
-                          </Flex>
-                          <IconButton
-                            variant="unstyled"
-                            aria-label="Call Segun"
+                <Flex
+                  key={index}
+                  direction="column"
+                  alignItems="flex-end"
+                  justifyContent="center"
+                >
+                  <Flex>
+                    <Button
+                      as="a"
+                      variant="ghost"
+                      aria-label={text}
+                      my={5}
+                      fontWeight={500}
+                      onClick={onToggle}
+                    >
+                      {text}
+                    </Button>
+                  </Flex>
+                  <Collapse in={isOpen} animateOpacity>
+                    <Flex
+                      direction="column"
+                      color="#193742"
+                      borderRadius="40px"
+                      background="#FFFFFF"
+                      padding="32px"
+                      gap={4}
+                      w="100%"
+                    >
+                      <Flex justifyContent="center" alignItems="center">
+                        <Flex direction="column">
+                          <Avatar
                             size="lg"
-                            icon={<ChevronRightIcon boxSize={10} />}
+                            name={currentUser?.displayName ?? ""}
+                            src={currentUser?.photoURL ?? ""}
                           />
+                          <Heading as="h3" size="lg" marginTop="16px">
+                            {currentUser.displayName}
+                          </Heading>
                         </Flex>
-                      </PopoverHeader>
-                      <PopoverBody paddingX="32px">
-                        <Flex
-                          direction="column"
-                          justifyContent="flex-start"
-                          gap={2}
-                        >
-                          {currentUser?.userDetail?.role === "super-admin" && (
-                            <Flex
-                              onClick={() => {
-                                push("/app-control");
-                              }}
-                              fontWeight={400}
-                              fontSize={16}
-                              cursor="pointer"
-                              w="100%"
-                            >
-                              Super Admin
-                            </Flex>
-                          )}
+                        <IconButton
+                          variant="unstyled"
+                          aria-label="Call Segun"
+                          size="lg"
+                          icon={<ChevronRightIcon boxSize={10} />}
+                        />
+                      </Flex>
+                      <Flex
+                        direction="column"
+                        justifyContent="flex-start"
+                        gap={2}
+                      >
+                        {currentUser?.userDetail?.role === "super-admin" && (
                           <Flex
-                            onClick={handleLogout}
+                            onClick={() => {
+                              push("/app-control");
+                            }}
                             fontWeight={400}
                             fontSize={16}
                             cursor="pointer"
                             w="100%"
                           >
-                            Logout
+                            Super Admin
                           </Flex>
+                        )}
+                        <Flex
+                          onClick={handleLogout}
+                          fontWeight={400}
+                          fontSize={16}
+                          cursor="pointer"
+                          w="100%"
+                        >
+                          Logout
                         </Flex>
-                      </PopoverBody>
-                    </PopoverContent>
-                  </Popover>
-                </Box>
+                      </Flex>
+                    </Flex>
+                  </Collapse>
+                </Flex>
               );
             } else {
               return (
