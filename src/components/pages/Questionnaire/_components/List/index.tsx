@@ -1,6 +1,6 @@
 import { FC } from "react";
 import { Grid, GridItem, Text } from "@chakra-ui/react";
-import { resolveStatusColor } from "@/utils/helper";
+import { resolveStatusColor, currencyFormat } from "@/utils/helper";
 import { ListComponentProps } from "./index.types";
 import Link from "next/link";
 
@@ -10,6 +10,7 @@ const List: FC<ListComponentProps> = ({ data }) => {
   const {
     id,
     questionnaire_title,
+    questionnaire_total_price,
     created_at,
     respondent_qty,
     questionnaire_filled,
@@ -40,7 +41,7 @@ const List: FC<ListComponentProps> = ({ data }) => {
         </GridItem>
         <GridItem colSpan={2} alignSelf="center">
           <Text fontSize="xl" fontWeight="300">
-            {questionnaire_filled}/{respondent_qty}
+            Rp {currencyFormat(questionnaire_total_price)}
           </Text>
         </GridItem>
         <GridItem colSpan={2} alignSelf="center">
