@@ -24,7 +24,7 @@ import LoaderOverlay from "@/components/elements/LoaderOverlay";
 import { useAuthStore } from "@/stores/auth";
 
 import dayjs from "dayjs";
-import { resolveStatusColor } from "@/utils/helper";
+import { resolveStatusColor, currencyFormat } from "@/utils/helper";
 
 export default function QuestionnaireComponent() {
   const { currentUser } = useAuthStore();
@@ -42,7 +42,7 @@ export default function QuestionnaireComponent() {
             <Grid
               templateColumns="repeat(12, 1fr)"
               gap={4}
-              w="100%"
+              w="93vw"
               position="fixed"
               background="#FFF"
               top="69"
@@ -51,7 +51,7 @@ export default function QuestionnaireComponent() {
               paddingX="12px"
             >
               <GridItem colSpan={4}>Survey Title</GridItem>
-              <GridItem colSpan={2}>Progress</GridItem>
+              <GridItem colSpan={2}>Price</GridItem>
               <GridItem colSpan={2}>Updated</GridItem>
               <GridItem colSpan={4}>Status</GridItem>
             </Grid>
@@ -138,7 +138,7 @@ export default function QuestionnaireComponent() {
                     {dayjs(val?.created_at).format("DD MMM YYYY")}
                   </Text>
                   <Text fontSize="xl" fontWeight="400">
-                    Progress: {val?.questionnaire_filled}/{val?.respondent_qty}
+                    Price: Rp {currencyFormat(val?.questionnaire_total_price)}
                   </Text>
                   <Text fontSize="xl" fontWeight="400">
                     Updated: {dayjs(val?.updated_at).format("DD MMM YYYY")}
