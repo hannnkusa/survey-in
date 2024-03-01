@@ -29,6 +29,10 @@ export const SIDEBAR_URLS = [
         title: "Customer",
         link: "user/customer",
       },
+      {
+        title: "Rating",
+        link: "user/rating",
+      },
     ],
   },
   {
@@ -43,22 +47,34 @@ export const SIDEBAR_URLS = [
   {
     title: "Master Data",
     sidebarItems: [
-      { title: "Busyness", link: "master-data/busyness" },
-      { title: "Ecommerce", link: "master-data/ecommerce" },
-      { title: "Education", link: "master-data/education" },
+      { title: "Agama", link: "master-data/religion" },
+      { title: "Lokasi", link: "master-data/location" },
+      { title: "Kesibukan", link: "master-data/busyness" },
+      { title: "Tingkat pendidikan", link: "master-data/education" },
       {
-        title: "Expenditure",
+        title: "Pengeluaran per bulan",
         link: "master-data/expenditure",
       },
+      { title: "Pengguna sosial media", link: "master-data/social-media" },
+      { title: "Pengguna e-commerce", link: "master-data/ecommerce" },
+      { title: "Olahraga", link: "master-data/sport" },
+      { title: "Hobi", link: "master-data/hobby" },
       {
-        title: "Food",
+        title: "Genre film / buku",
+        link: "master-data/genre",
+      },
+      {
+        title: "Genre musik",
+        link: "master-data/music-genre",
+      },
+      {
+        title: "Makanan / minuman",
         link: "master-data/food",
       },
       {
-        title: "Film Genre",
-        link: "master-data/genre",
+        title: "Hewan peliharaan",
+        link: "master-data/pet",
       },
-      { title: "Hobby", link: "master-data/hobby" },
     ],
   },
 ];

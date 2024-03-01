@@ -52,18 +52,11 @@ export async function POST(
   try {
     await dayjs.locale(id);
     const searchParams = req.nextUrl.searchParams;
-    const userId = searchParams.get("user-id");
+    const questionnaireId = searchParams.get("questionnaire-id");
 
     const payload = await req.json();
 
-    if (!userId) {
-      return NextResponse.json(
-        { error: "User ID is required" },
-        { status: 422 }
-      );
-    }
-
-    if (!payload.questionnaire_id) {
+    if (!questionnaireId) {
       return NextResponse.json(
         { error: "Questionnaire ID is required" },
         { status: 422 }
@@ -76,27 +69,27 @@ export async function POST(
 
     const { file, ...rest } = payload;
 
-    const questionnaireData = await addDoc(collection(database, "orders"), {
+    const orderData = await addDoc(collection(database, "orders"), {
       ...rest,
       created_at: dayjs().toISOString(),
-      created_by: userId,
     });
 
     const base64String = await file;
 
-    const storageRef = ref(storage, questionnaireData.id);
+    const storageRef = ref(storage, orderData.id);
 
     uploadString(storageRef, base64String, "data_url");
 
     await updateDoc(doc(database, "questionnaires", payload.questionnaire_id), {
       status: "in review",
+      order_id: orderData.id,
       updated_at: new Date().toISOString(),
     });
 
     await addDoc(collection(database, "notifications"), {
       title: "Payment Proof Uploaded",
       description: `Payment Proof uploaded by ${payload.created_by_name}`,
-      url: `/transaction/order/${questionnaireData.id}`,
+      url: `/transaction/order/${orderData.id}`,
       target: "super-admin",
       created_at: dayjs().toISOString(),
       updated_at: null,
@@ -107,7 +100,7 @@ export async function POST(
     return NextResponse.json({
       message: "Order added successfully👍",
       data: {
-        id: questionnaireData.id,
+        id: orderData.id,
         ...payload,
       }, // Return the unique key generated for the new task
     });

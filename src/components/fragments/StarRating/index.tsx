@@ -9,7 +9,7 @@ export default function StarRating({
   size,
 }: {
   rating: number;
-  setRating: Dispatch<SetStateAction<number>>;
+  setRating?: Dispatch<SetStateAction<number>>;
   count?: number;
   size?: number;
 }) {
@@ -31,7 +31,7 @@ export default function StarRating({
           >
             <Radio
               name="rating"
-              onChange={() => setRating(ratingValue)}
+              onChange={() => setRating?.(ratingValue)}
               value={ratingValue.toString()}
               display="none"
             ></Radio>

@@ -59,7 +59,7 @@ export default function SummaryComponent() {
 
   const { isLoading, data } = useQuestionnaireDetail(questionnaireId as string);
   const { isLoading: isLoadingOrderDetail, data: orderDetail } = useOrderDetail(
-    questionnaireId as string
+    data?.order_id as string
   );
   const { isLoading: isLoadingSubmitOrder, mutateAsync: submitOrder } =
     useOrderQuery(currentUser?.uid);

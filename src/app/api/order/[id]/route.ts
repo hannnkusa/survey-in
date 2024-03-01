@@ -1,5 +1,7 @@
 import { getDoc, updateDoc, doc } from "firebase/firestore";
-import { database } from "@/firebase/config";
+import { database, storage } from "@/firebase/config";
+import { uploadString, ref, getDownloadURL } from "firebase/storage";
+import { NextResponse, type NextRequest } from "next/server";
 
 export async function GET(
   req: Request,
@@ -8,10 +10,16 @@ export async function GET(
   try {
     const { id } = params;
 
-    const questionnaireData = await getDoc(
-      doc(database, "orders", id as string)
-    );
-    return Response.json(questionnaireData.data());
+    const orderData = await getDoc(doc(database, "orders", id as string));
+    const payment_proof_url = await getDownloadURL(ref(storage, orderData?.id));
+
+    return NextResponse.json({
+      message: "Data successfully fetched👍",
+      data: {
+        ...orderData,
+        payment_proof_url,
+      },
+    });
   } catch (error: any) {
     return new Response(error, {
       status: 400,
