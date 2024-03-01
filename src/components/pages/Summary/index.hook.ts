@@ -89,6 +89,7 @@ export default function useSummary({
 
       const payload = {
         ...data,
+        created_by: currentUser?.uid,
         created_by_name: currentUser?.displayName,
         questionnaire_id: questionnaireId,
       };

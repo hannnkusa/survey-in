@@ -4,7 +4,7 @@ import {
   OrderUI,
   OrderPostUI,
   OrderDetailUI,
-} from "../../types/order";
+} from "@/types/order";
 import { useMutation, useQuery } from "@tanstack/react-query";
 
 // USERS
@@ -29,9 +29,9 @@ export const getOrderDetail = async (questionnaireId: string) => {
   return res.data;
 };
 
-export const postOrder = async (data: any, userId: any) => {
+export const postOrder = async (data: any, questionnaireId: any) => {
   return await callAPI({
-    path: `/order?user-id=${userId}`,
+    path: `/order?questionnaire-id=${questionnaireId}`,
     method: "POST",
     data: data,
   });
@@ -63,8 +63,8 @@ export const useOrderDetail = (questionnaireId: string) => {
   });
 };
 
-export const useOrderQuery = (id: string | undefined) =>
+export const useOrderQuery = (questionnaireId: string | undefined) =>
   useMutation(["order"], async (body: OrderPostUI) => {
-    const res = await postOrder(body as OrderPostUI, id);
+    const res = await postOrder(body as OrderPostUI, questionnaireId);
     return res;
   });

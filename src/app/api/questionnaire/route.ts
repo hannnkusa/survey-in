@@ -14,6 +14,7 @@ export async function GET(req: NextRequest) {
     const startDate = searchParams.get("startDate");
     const endDate = searchParams.get("endDate");
     const status = searchParams.get("status");
+    const orderID = searchParams.get("order-id");
 
     let questionnaireRef = collection(database, "questionnaires");
     let questionnaireQuery = query(questionnaireRef);
@@ -29,6 +30,13 @@ export async function GET(req: NextRequest) {
       questionnaireQuery = query(
         questionnaireRef,
         where("status", "==", status?.trim())
+      );
+    }
+
+    if (orderID && orderID?.trim() !== "") {
+      questionnaireQuery = query(
+        questionnaireRef,
+        where("order_id", "==", orderID?.trim())
       );
     }
 

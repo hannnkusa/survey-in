@@ -2,7 +2,7 @@ import { callAPI } from "@/services/api";
 import {
   QuestionnaireResponseUI,
   QuestionnaireUI,
-} from "../../types/questionnaire";
+} from "@/types/questionnaire";
 import { useMutation, useQuery } from "@tanstack/react-query";
 
 // USERS
@@ -13,12 +13,14 @@ export const getQuestionnaireList = async ({
   endDate,
   status,
   userId,
+  orderID,
 }: {
   search?: string;
   startDate?: Date | null;
   endDate?: Date | null;
   status?: string;
   userId?: string;
+  orderID?: string;
 }) => {
   const params: any = {};
 
@@ -29,6 +31,7 @@ export const getQuestionnaireList = async ({
   }
   if (status) params.status = status;
   if (userId) params["user-id"] = userId;
+  if (orderID) params["order-id"] = orderID;
 
   const res = await callAPI({
     path: `/questionnaire`,
@@ -102,17 +105,19 @@ export const useQuestionnaireList = ({
   endDate,
   status,
   userId,
+  orderID,
 }: {
   search?: string;
   startDate?: Date | null;
   endDate?: Date | null;
   status?: string;
   userId?: string;
+  orderID?: string;
 }) => {
   return useQuery<QuestionnaireResponseUI>({
-    queryKey: ["questionnaire", search, startDate, endDate, status, userId],
+    queryKey: ["questionnaire", search, startDate, endDate, status, userId, orderID],
     queryFn: () =>
-      getQuestionnaireList({ search, startDate, endDate, status, userId }),
+      getQuestionnaireList({ search, startDate, endDate, status, userId, orderID }),
     keepPreviousData: false,
   });
 };

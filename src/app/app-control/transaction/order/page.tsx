@@ -55,10 +55,12 @@ export default function TransactionOrderPage() {
   const toast = useToast();
   const queryClient = useQueryClient();
   const [search, setSearch] = useState<string>("");
+  const [orderID, setOrderID] = useState<string>("");
   const [status, setStatus] = useState<string>("");
   const [startDate, setStartDate] = useState<Date | null>(null);
   const [endDate, setEndDate] = useState<Date | null>(null);
   const [debouncedSearch] = useDebounce(search, 500);
+  const [debouncedOrderID] = useDebounce(orderID, 500);
 
   const availableStatus = useMemo(() => {
     return ["on-going", "in review", "cancelled", "draft", "done"];
@@ -89,11 +91,17 @@ export default function TransactionOrderPage() {
   const handleSearchChange = (event: any) => {
     setSearch(event.target.value);
   };
+
+  const handleOrderIDChange = (event: any) => {
+    setOrderID(event.target.value);
+  };
+
   const { isLoading, data } = useQuestionnaireList({
     search: debouncedSearch,
     startDate,
     endDate,
     status: status,
+    orderID: debouncedOrderID,
   });
   return (
     <Flex direction="column" pt="12px" pl="24px" pr="56px">
@@ -112,7 +120,7 @@ export default function TransactionOrderPage() {
           />
         </InputGroup>
 
-        <Flex w={700} gap={4}>
+        <Flex w={700} gap={2}>
           <InputGroup>
             <InputLeftAddon>Start Date</InputLeftAddon>
             <DatePicker
@@ -158,6 +166,18 @@ export default function TransactionOrderPage() {
           <option value="done">Done</option>
         </Select>
       </Flex>
+      <Flex justifyContent="space-between" mb="24px" gap="48px">
+        <InputGroup>
+          <InputLeftElement pointerEvents="none">
+            <SearchIcon />
+          </InputLeftElement>
+          <Input
+            placeholder="Order ID"
+            onChange={handleOrderIDChange}
+            maxW={350}
+          />
+        </InputGroup>
+      </Flex>
       <TableContainer maxH="65vh" overflowY="auto">
         <Table variant="simple">
           <Thead>
@@ -166,6 +186,7 @@ export default function TransactionOrderPage() {
               <Th>Date</Th>
               <Th isNumeric>Amount</Th>
               <Th>Status</Th>
+              <Th>Order ID</Th>
               <Th textAlign="center">Action</Th>
             </Tr>
           </Thead>
@@ -216,6 +237,7 @@ export default function TransactionOrderPage() {
                     </Menu>
                   </Flex>
                 </Td>
+                <Td>{val?.order_id || "Not submitted yet/Request Segment"}</Td>
                 <Td textAlign="center">
                   <Button
                     bg="#E1F3FA"

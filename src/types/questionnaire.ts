@@ -17,6 +17,7 @@ export interface QuestionnaireUI extends RespondentPostUI {
   respondent_qty: number;
   questionnaire_filled: number;
   questionnaire_total_price: number;
+  order_id: string;
 }
 
 export interface QuestionnaireResponseUI {

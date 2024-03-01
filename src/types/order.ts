@@ -9,7 +9,6 @@ export interface OrderUI {
   email: string;
   phone_number: string;
   file_url: string;
-  questionnaire_id: string;
   created_at: string;
   created_by: string;
   updated_at: string;

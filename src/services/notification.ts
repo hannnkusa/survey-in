@@ -1,5 +1,5 @@
 import { callAPI } from "@/services/api";
-import { NotificationResponseUI } from "../../types/notification";
+import { NotificationResponseUI } from "@/types/notification";
 import { useQuery } from "@tanstack/react-query";
 
 // USERS

@@ -14,6 +14,7 @@ export default function Navigation() {
       borderBottomRightRadius="24px"
       pt="24px"
       pr="32px"
+      overflowX="auto"
     >
       <Flex direction="column">
         {SIDEBAR_URLS.map((menu, idx) => {
