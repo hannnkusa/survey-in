@@ -29,6 +29,9 @@ export async function GET(req: NextRequest) {
       })),
     });
   } catch (error) {
-    return NextResponse.json({ error: "There was some error" }, { status: 400 });
+    return NextResponse.json(
+      { error: "Failed to fetch notification list" },
+      { status: 400 }
+    );
   }
 }

@@ -32,6 +32,8 @@ import { SearchIcon, ChevronDownIcon } from "@chakra-ui/icons";
 
 import DatePicker from "react-datepicker";
 
+import LoaderOverlay from "@/components/elements/LoaderOverlay";
+
 import { useRouter } from "next/navigation";
 
 import {
@@ -257,6 +259,7 @@ export default function TransactionOrderPage() {
           </Tbody>
         </Table>
       </TableContainer>
+      <LoaderOverlay isLoading={isLoading} />
     </Flex>
   );
 }

@@ -21,9 +21,10 @@ export async function GET(
       },
     });
   } catch (error: any) {
-    return new Response(error, {
-      status: 400,
-    });
+    return NextResponse.json(
+      { error: "Failed to fetch order detail" },
+      { status: 400 }
+    );
   }
 }
 
@@ -47,8 +48,9 @@ export async function PUT(
       }, // Return the unique key generated for the new task
     });
   } catch (error: any) {
-    return new Response(error, {
-      status: 400,
-    });
+    return NextResponse.json(
+      { error: "Failed to update order detail" },
+      { status: 400 }
+    );
   }
 }

@@ -1,5 +1,6 @@
 import { getDoc, updateDoc, doc } from "firebase/firestore";
 import { database } from "@/firebase/config";
+import { NextResponse, type NextRequest } from "next/server";
 
 export async function GET(
   req: Request,
@@ -13,9 +14,10 @@ export async function GET(
     );
     return Response.json(questionnaireData.data());
   } catch (error: any) {
-    return new Response(error, {
-      status: 400,
-    });
+    return NextResponse.json(
+      { error: "Failed to fetch questionnaire detail" },
+      { status: 400 }
+    );
   }
 }
 
@@ -39,8 +41,9 @@ export async function PUT(
       }, // Return the unique key generated for the new task
     });
   } catch (error: any) {
-    return new Response(error, {
-      status: 400,
-    });
+    return NextResponse.json(
+      { error: "Failed to update questionnaire detail" },
+      { status: 400 }
+    );
   }
 }

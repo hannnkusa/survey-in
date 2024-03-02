@@ -69,7 +69,10 @@ export async function GET(req: NextRequest) {
     });
   } catch (error) {
     console.error("Error fetching data:", error);
-    return NextResponse.error();
+    return NextResponse.json(
+      { error: "Failed to fetch questionnaire list" },
+      { status: 400 }
+    );
   }
 }
 
@@ -120,6 +123,9 @@ export async function POST(req: NextRequest) {
       }, // Return the unique key generated for the new task
     });
   } catch (error) {
-    return NextResponse.error();
+    return NextResponse.json(
+      { error: "Failed to create questionnaire" },
+      { status: 400 }
+    );
   }
 }
