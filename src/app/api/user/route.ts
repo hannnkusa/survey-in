@@ -34,7 +34,10 @@ export async function GET(req: NextRequest) {
       data,
     });
   } catch (error) {
-    return NextResponse.error();
+    return NextResponse.json(
+      { error: "Failed to fetch user list" },
+      { status: 400 }
+    );
   }
 }
 
@@ -64,8 +67,9 @@ export async function POST(req: Request) {
       }, // Return the unique key generated for the new task
     });
   } catch (error: any) {
-    return new Response(error, {
-      status: 400,
-    });
+    return NextResponse.json(
+      { error: "Failed to create user" },
+      { status: 400 }
+    );
   }
 }

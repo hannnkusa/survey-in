@@ -1,8 +1,9 @@
 import { getAuth } from "firebase-admin/auth";
+import { NextResponse, type NextRequest } from "next/server";
 
 export async function PUT(
   req: Request,
-  { params }: { params: { id: string } },
+  { params }: { params: { id: string } }
 ) {
   try {
     const payload = await req.json();
@@ -17,8 +18,9 @@ export async function PUT(
       }, // Return the unique key generated for the new task
     });
   } catch (error: any) {
-    return new Response(error, {
-      status: 400,
-    });
+    return NextResponse.json(
+      { error: "Failed to update user status" },
+      { status: 400 }
+    );
   }
 }

@@ -13,7 +13,10 @@ export async function GET(req: Request) {
       })),
     });
   } catch (error) {
-    return NextResponse.error();
+    return NextResponse.json(
+      { error: "Failed to fetch social media list" },
+      { status: 400 }
+    );
   }
 }
 
@@ -30,6 +33,9 @@ export async function POST(req: Request) {
       }, // Return the unique key generated for the new task
     });
   } catch (error) {
-    return NextResponse.error();
+    return NextResponse.json(
+      { error: "Failed to create social media" },
+      { status: 400 }
+    );
   }
 }

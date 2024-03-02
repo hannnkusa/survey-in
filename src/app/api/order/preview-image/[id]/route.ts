@@ -1,5 +1,6 @@
 import { ref, getDownloadURL } from "firebase/storage";
 import { database, storage } from "@/firebase/config";
+import { NextResponse, type NextRequest } from "next/server";
 
 export async function GET(
   req: Request,
@@ -8,12 +9,13 @@ export async function GET(
   try {
     const { id } = params;
 
-    const url = await getDownloadURL(ref(storage, id))
+    const url = await getDownloadURL(ref(storage, id));
 
     return Response.json(url);
   } catch (error: any) {
-    return new Response(error, {
-      status: 400,
-    });
+    return NextResponse.json(
+      { error: "Failed to fetch notification list" },
+      { status: 400 }
+    );
   }
 }

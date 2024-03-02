@@ -29,6 +29,8 @@ import {
   useDisclosure,
 } from "@chakra-ui/react";
 
+import LoaderOverlay from "@/components/elements/LoaderOverlay";
+
 import { ChevronDownIcon } from "@chakra-ui/icons";
 
 import { SearchIcon } from "@chakra-ui/icons";
@@ -184,6 +186,7 @@ export default function UserCustomerPage() {
         selectedData={selectedData}
         setSelectedData={setSelectedData}
       />
+      <LoaderOverlay isLoading={isLoading} />
     </Flex>
   );
 }

@@ -10,62 +10,76 @@ import {
   Th,
   Td,
   TableContainer,
-  Text,
+  SimpleGrid,
+  Box,
   Heading,
-  Input,
-  Button,
-  InputGroup,
-  InputLeftElement,
-  useToast,
-  useDisclosure,
+  Text,
+  Skeleton,
 } from "@chakra-ui/react";
 
-import { ChevronDownIcon } from "@chakra-ui/icons";
+import { useRatingList, useRatingSummary } from "@/services/rating";
 
-import { SearchIcon } from "@chakra-ui/icons";
-
-import { useRatingList } from "@/services/rating";
-import { title } from "case";
-import { useDebounce } from "use-debounce";
-
-import { useQueryClient } from "@tanstack/react-query";
-
-import { CustomerModalComponent } from "@/components/pages/Admin/User/Customer";
-
+import LoaderOverlay from "@/components/elements/LoaderOverlay";
 import StarRating from "@/components/fragments/StarRating";
 
 export default function UserCustomerPage() {
-  const toast = useToast();
-  const queryClient = useQueryClient();
-  const { isOpen, onClose, onOpen } = useDisclosure();
-  const resolveStatusColor = (disabled: boolean) => {
-    return disabled ? "#F62525" : "#3ED556";
-  };
+  const [rating, setRating] = useState<number>(0);
 
-  const [selectedData, setSelectedData] = useState<any>(null);
-  const [search, setSearch] = useState<string>("");
-  const [debouncedSearch] = useDebounce(search, 500);
-
-  const handleSearchChange = (event: any) => {
-    setSearch(event.target.value);
-  };
-
-  const { isLoading, data } = useRatingList({ search: debouncedSearch });
+  const { isLoading, data } = useRatingList({ rating });
+  const { isLoading: isLoadingRatingSummary, data: dataRatingSummary } =
+    useRatingSummary();
 
   return (
     <Flex direction="column" pt="12px" pl="24px" pr="56px">
       <Heading mb="32px" color="#00ADF0" fontWeight={600} fontSize={40}>
         Ratings
       </Heading>
-      {/* <Flex justifyContent="space-between" mb="24px">
-        <InputGroup>
-          <InputLeftElement pointerEvents="none">
-            <SearchIcon />
-          </InputLeftElement>
-          <Input placeholder="Search" onChange={handleSearchChange} w="500px" />
-        </InputGroup>
-      </Flex> */}
-      <TableContainer maxH="65vh" overflowY="auto">
+      <Skeleton isLoaded={!isLoadingRatingSummary} borderRadius="30px">
+        <SimpleGrid columns={6} spacing="40px">
+          <Flex
+            cursor="pointer"
+            direction="column"
+            justifyContent="center"
+            alignItems="center"
+            gap={2}
+            transition="box-shadow 0.3s ease-in-out"
+            boxShadow="0px 8px 10px 1px rgba(8, 67, 115, 0.15)"
+            _hover={{
+              boxShadow: "0px 12px 16px -4px rgba(8, 67, 115, 0.50)",
+            }}
+            borderRadius="30px"
+            bg={rating === 0 ? "#E1F3FA" : "#FFFFFF"}
+            p="12px"
+            onClick={() => setRating(0)}
+          >
+            <Text>Semua</Text>
+            <Text>({dataRatingSummary?.data?.rating_picked_total})</Text>
+          </Flex>
+          {dataRatingSummary?.data?.rating_summary.map((val, index) => (
+            <Flex
+              cursor="pointer"
+              direction="column"
+              justifyContent="center"
+              alignItems="center"
+              key={index}
+              gap={2}
+              transition="box-shadow 0.3s ease-in-out"
+              boxShadow="0px 8px 10px 1px rgba(8, 67, 115, 0.15)"
+              _hover={{
+                boxShadow: "0px 12px 16px -4px rgba(8, 67, 115, 0.50)",
+              }}
+              borderRadius="30px"
+              bg={rating === val?.rating_value ? "#E1F3FA" : "#FFFFFF"}
+              p="12px"
+              onClick={() => setRating(val?.rating_value)}
+            >
+              <StarRating rating={val?.rating_value} size={4} isDisabled />
+              <Text>({val?.rating_picked})</Text>
+            </Flex>
+          ))}
+        </SimpleGrid>
+      </Skeleton>
+      <TableContainer maxH="65vh" overflowY="auto" mt={8}>
         <Table variant="simple">
           <Thead>
             <Tr>
@@ -76,19 +90,34 @@ export default function UserCustomerPage() {
             </Tr>
           </Thead>
           <Tbody>
-            {data?.data.map((val, idx) => (
-              <Tr key={idx}>
-                <Td>{val.created_by_name}</Td>
-                <Td>{val.created_by_email}</Td>
-                <Td>
-                  <StarRating rating={val?.rating} size={5} />
-                </Td>
-                <Td>{val.feedback}</Td>
-              </Tr>
-            ))}
+            {data?.data && data?.data.length > 0
+              ? data?.data.map((val, idx) => (
+                  <Tr key={idx}>
+                    <Td>{val.created_by_name}</Td>
+                    <Td>{val.created_by_email}</Td>
+                    <Td>
+                      <StarRating rating={val?.rating} size={5} />
+                    </Td>
+                    <Td>
+                      <Text textColor={val.feedback ? "" : "gray.400"}>
+                        {val.feedback || "No feedback given"}
+                      </Text>
+                    </Td>
+                  </Tr>
+                ))
+              : !isLoading && (
+                  <Tr>
+                    <Td colSpan={4}>
+                      <Text textAlign="center" textColor="gray.400">
+                        No Data Found
+                      </Text>
+                    </Td>
+                  </Tr>
+                )}
           </Tbody>
         </Table>
       </TableContainer>
+      <LoaderOverlay isLoading={isLoading || isLoadingRatingSummary} />
     </Flex>
   );
 }

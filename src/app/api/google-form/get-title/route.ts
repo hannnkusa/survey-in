@@ -39,6 +39,9 @@ export async function GET(req: NextRequest) {
     });
   } catch (error) {
     console.error("Error fetching Google Form response:", error);
-    return NextResponse.error();
+    return NextResponse.json(
+      { error: "Failed to fetch Google Form" + error },
+      { status: 400 }
+    );
   }
 }

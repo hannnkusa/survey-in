@@ -7,11 +7,13 @@ export default function StarRating({
   setRating,
   count,
   size,
+  isDisabled,
 }: {
   rating: number;
   setRating?: Dispatch<SetStateAction<number>>;
   count?: number;
   size?: number;
+  isDisabled?: boolean;
 }) {
   // count:  number of stars you want, pass as props
   //size: size of star that you want
@@ -24,10 +26,11 @@ export default function StarRating({
         return (
           <Box
             as="label"
+            cursor="pointer"
             key={index}
             color={ratingValue <= (hover || rating) ? "#ffc107" : "#e4e5e9"}
-            onMouseEnter={() => setHover(ratingValue)}
-            onMouseLeave={() => setHover(0)}
+            onMouseEnter={() => (!isDisabled ? setHover(ratingValue) : null)}
+            onMouseLeave={() => (!isDisabled ? setHover(0) : null)}
           >
             <Radio
               name="rating"
@@ -35,11 +38,7 @@ export default function StarRating({
               value={ratingValue.toString()}
               display="none"
             ></Radio>
-            <StarIcon
-              cursor={"pointer"}
-              boxSize={size || 20}
-              transition="color 200ms"
-            />
+            <StarIcon boxSize={size || 20} transition="color 200ms" />
           </Box>
         );
       })}

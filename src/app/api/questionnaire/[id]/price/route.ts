@@ -1,6 +1,7 @@
 import { updateDoc, doc, collection, addDoc, getDoc } from "firebase/firestore";
 import { database } from "@/firebase/config";
 import dayjs from "dayjs";
+import { NextResponse, type NextRequest } from "next/server";
 
 export async function PUT(
   req: Request,
@@ -38,8 +39,9 @@ export async function PUT(
       }, // Return the unique key generated for the new task
     });
   } catch (error: any) {
-    return new Response(error, {
-      status: 400,
-    });
+    return NextResponse.json(
+      { error: "Failed to update questionnaire price" },
+      { status: 400 }
+    );
   }
 }
