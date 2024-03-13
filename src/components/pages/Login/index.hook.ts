@@ -4,8 +4,10 @@ import { FormValue } from "./index.types";
 
 import { signIn, googleSignIn, facebookSignIn } from "@/firebase/auth/signin";
 import { useRouter } from "next/navigation";
+import { useToast } from "@chakra-ui/react";
 
 export default function useAuth() {
+  const toast = useToast();
   const router = useRouter();
 
   const [formData, setFormData] = useState<FormValue>({
@@ -38,15 +40,37 @@ export default function useAuth() {
 
   const onSubmitForm = async (event: any) => {
     event.preventDefault();
-    const { result, error } = await signIn(formData);
+    const checker = Object.entries(formData).every(([key, value]) => {
+      return !!value;
+    });
 
-    if (!!result) {
+    if (!checker) {
+      toast({
+        position: "top",
+        title: "Failed",
+        description: "please complete the form.",
+        status: "error",
+        duration: 3000,
+        isClosable: true,
+      });
+
+      return;
     }
 
-    if (error) {
-      // console.log(error);
-      return error;
-    }
+    const signinPromise = signIn(formData);
+
+    toast.promise(signinPromise, {
+      success: {
+        title: "Success",
+        description: "Successfully login to your account!",
+      },
+      error: { title: "Failed", description: "Email or Password could be wrong" },
+      loading: {
+        title: "Signing in to your account",
+        description: "Please wait",
+        position: "top",
+      },
+    });
   };
 
   return {
