@@ -21,27 +21,25 @@ export default async function signUp({
   full_name: string;
   phone_number: string;
 }) {
-  let result = null;
-  let error = null;
-
-  try {
-    await createUserWithEmailAndPassword(auth, email, password).then(
-      (userCredential) => {
-        updateProfile(userCredential.user, {
-          displayName: full_name,
-        });
-        putUserUpdate(
-          { role: "admin", phone_number: formatPhoneNumber(phone_number) },
-          userCredential.user.uid
-        );
-        // .then(() => {
-        //   signInWithEmailAndPassword(auth, email, password);
-        // });
-      }
-    );
-  } catch (e) {
-    error = e;
-  }
-
-  return { result, error };
+  return new Promise(async (resolve, reject) => {
+    try {
+      await createUserWithEmailAndPassword(auth, email, password).then(
+        (userCredential) => {
+          updateProfile(userCredential.user, {
+            displayName: full_name,
+          });
+          putUserUpdate(
+            { role: "admin", phone_number: formatPhoneNumber(phone_number) },
+            userCredential.user.uid
+          );
+          // .then(() => {
+          //   signInWithEmailAndPassword(auth, email, password);
+          // });
+          resolve('your account has been signed up')
+        }
+      );
+    } catch (e) {
+      reject('failed to sign up')
+    }
+  });
 }
