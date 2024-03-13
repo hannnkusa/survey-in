@@ -113,7 +113,7 @@ export function CustomerModalComponent({
               <Input
                 type="text"
                 placeholder="Input Full Name"
-                isDisabled={!!selectedData}
+                isReadOnly={!!selectedData}
                 {...register("full_name")}
               />
             </FormControl>
@@ -123,7 +123,7 @@ export function CustomerModalComponent({
               <Input
                 type="email"
                 placeholder="Input Email"
-                isDisabled={!!selectedData}
+                isReadOnly={!!selectedData}
                 {...register("email")}
               />
             </FormControl>
@@ -133,7 +133,7 @@ export function CustomerModalComponent({
               <Input
                 type="tel"
                 placeholder="Input Phone Number"
-                isDisabled={!!selectedData}
+                isReadOnly={!!selectedData}
                 {...register("phone_number")}
               />
             </FormControl>
