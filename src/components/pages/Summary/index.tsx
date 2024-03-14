@@ -110,7 +110,7 @@ export default function SummaryComponent() {
     onDropRejected,
     maxFiles: 1,
     maxSize: 819200,
-    accept: { "image/png": [".png"] },
+    accept: { "image/png": [".png"], "image/jpeg": [".jpg"] },
   });
 
   return (
